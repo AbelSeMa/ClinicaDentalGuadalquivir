@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PlanesController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,3 +16,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', HomeController::class);
+
+
+Route::get('/planes', [PlanesController::class, 'index'])->name('index.plan');
+
+Route::get('planes/{plan}', [PlanesController::class, 'show'])->name('show.planes');
