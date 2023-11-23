@@ -10,7 +10,7 @@
             Elige el plan que mejor se adapte a tí:</h1>
     </div>
 
-    <div class="h-auto w-auto grid grid-cols-1 content-stretch py-8 px-8 gap-4 md:grid-cols-2 xl:grid-cols-4"">
+    <div class="h-auto w-auto grid grid-cols-1 content-stretch py-8 px-8 gap-4 md:grid-cols-2 lg:grid-cols-4"">
         @for ($i = 0; $i < 4; $i++)
             <div
                 class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
