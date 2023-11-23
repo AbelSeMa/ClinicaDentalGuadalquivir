@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Service extends Model
 {
     use HasFactory;
+
+    protected $fillable = [ 'service', 'description' ];
+
+    public function planes()
+    {
+        return $this->belongsToMany(Plan::class);
+    }
 }

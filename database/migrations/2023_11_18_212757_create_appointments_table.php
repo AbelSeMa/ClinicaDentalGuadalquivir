@@ -16,9 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('patient_id');
             $table->unsignedBigInteger('worker_id');
             $table->date('date');
-            $table->time('time');
             $table->text('notes')->nullable();
-            $table->boolean('attended')->default(false); // Field to mark if the patient attended
+            $table->boolean('attended')->default(false); // campo que marca si el paciente acudió a la cita
         
             $table->foreign('patient_id')->references('id')->on('patients');
             $table->foreign('worker_id')->references('id')->on('workers');
