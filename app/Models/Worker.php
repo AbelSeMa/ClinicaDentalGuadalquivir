@@ -26,4 +26,5 @@ class Worker extends Model
     {
         return $this->hasMany(Report::class);
     }
+
 }

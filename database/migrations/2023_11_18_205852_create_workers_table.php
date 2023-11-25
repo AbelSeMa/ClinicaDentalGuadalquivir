@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('workers', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id')->unique();
             $table->string('title'); // Dentista, asistente, tecnico, laboratorio, etc
             $table->string('specialty')->nullable();
             $table->timestamps();

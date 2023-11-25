@@ -18,6 +18,7 @@ return new class extends Migration
             $table->date('date');
             $table->text('notes')->nullable();
             $table->boolean('attended')->default(false); // campo que marca si el paciente acudió a la cita
+            $table->timestamps();
         
             $table->foreign('patient_id')->references('id')->on('patients');
             $table->foreign('worker_id')->references('id')->on('workers');
