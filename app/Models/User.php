@@ -48,9 +48,9 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function cliente()
+    public function paciente()
     {
-        return $this->hasOne(Client::class);
+        return $this->hasOne(Patient::class);
     }
 
     public function trabajador()

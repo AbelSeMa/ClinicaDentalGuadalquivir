@@ -9,7 +9,7 @@ class Worker extends Model
 {
     use HasFactory;
 
-    protected $fillable = [ 'title', 'specialty' ];
+    protected $fillable = [ 'user_id','title', 'specialty' ];
 
     public function usuario()
     {

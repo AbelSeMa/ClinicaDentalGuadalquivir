@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('workers', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->string('title'); // Example: dentist, assistant, etc.
+            $table->string('title'); // Dentista, asistente, tecnico, laboratorio, etc
             $table->string('specialty')->nullable();
             $table->timestamps();
         
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('trabajadores');
+        Schema::dropIfExists('workers');
     }
 };
