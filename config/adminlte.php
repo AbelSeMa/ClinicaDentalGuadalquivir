@@ -311,61 +311,49 @@ return [
             'url'  => 'admin/blog',
             'can'  => 'manage-blog',
         ],
+        ['header' => 'Area de trabajo'],
         [
-            'text'        => 'pages',
-            'url'         => 'admin/pages',
-            'icon'        => 'far fa-fw fa-file',
-            'label'       => 4,
-            'label_color' => 'success',
-        ],
-        ['header' => 'account_settings'],
-        [
-            'text' => 'profile',
-            'url'  => 'admin/settings',
-            'icon' => 'fas fa-fw fa-user',
-        ],
-        [
-            'text' => 'change_password',
-            'url'  => 'admin/settings',
-            'icon' => 'fas fa-fw fa-lock',
-        ],
-        [
-            'text'    => 'multilevel',
-            'icon'    => 'fas fa-fw fa-share',
+            'text'    => 'Pacientes',
+            'icon'    => 'fa fa-users',
             'submenu' => [
                 [
-                    'text' => 'level_one',
-                    'url'  => '#',
+                    'text' => 'Crear nuevo paciente',
+                    'url'  => 'patient/create',
+                    'icon' => 'fa fa-user-plus'
                 ],
                 [
-                    'text'    => 'level_one',
-                    'url'     => '#',
-                    'submenu' => [
-                        [
-                            'text' => 'level_two',
-                            'url'  => '#',
-                        ],
-                        [
-                            'text'    => 'level_two',
-                            'url'     => '#',
-                            'submenu' => [
-                                [
-                                    'text' => 'level_three',
-                                    'url'  => '#',
-                                ],
-                                [
-                                    'text' => 'level_three',
-                                    'url'  => '#',
-                                ],
-                            ],
-                        ],
-                    ],
+                    'text' => 'Borrar paciente',
+                    'url'  => 'patient/delete',
+                    'icon' => 'fa fa-user-times'
                 ],
                 [
-                    'text' => 'level_one',
-                    'url'  => '#',
-                ],
+                    'text' => 'Editar paciente',
+                    'url'  => 'patient/edit',
+                    'icon' => 'fa fa-pen'
+                ]
             ],
+        ],
+        [
+            'text'    => 'Trabajadores',
+            'icon'    => 'fa fa-user-md',
+            'submenu' => [
+                [
+                    'text' => 'Crear nuevo trabajador',
+                    'url'  => '/admin/trabajador/crear',
+                    'icon' => 'fa fa-user-plus'
+
+                ],
+                [
+                    'text' => 'Borrar a un trabajador',
+                    'url'  => '/admin/trabajador/borrar',
+                    'icon' => 'fa fa-user-times'
+                ],
+                [
+                    'text' => 'Editar a un trabajador',
+                    'url'  => '/admin/trabajador/editar',
+                    'icon' => 'fa fa-pen'
+                ]
+            ]
         ],
         ['header' => 'labels'],
         [

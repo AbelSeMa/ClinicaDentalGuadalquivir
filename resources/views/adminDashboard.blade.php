@@ -7,7 +7,9 @@
 @stop
 
 @section('content')
-    <p>Welcome to this beautiful admin panel.</p>
+<iframe src="" frameborder="0">
+    @include('_tablaPacientes')
+</iframe>
 @stop
 
 @section('css')

@@ -1,40 +1,38 @@
 @extends('layouts.template')
 
-@section('title', 'Planes')
+@section('title', 'Contratar plan')
 
 @section('content')
 
     <div>
         <h1
-            class="px-5 text-center mt-5 mb-2 text-3xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl">
-            Elige el plan que mejor se adapte a tí:</h1>
+            class="px-5 text-center text-3xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl">
+            Elige el plan que mejor se adapte a tí.
+        </h1>
     </div>
 
-    <div class="h-auto w-auto grid grid-cols-1 content-stretch py-8 px-8 gap-4 md:grid-cols-2 lg:grid-cols-4"">
-        @for ($i = 0; $i < 4; $i++)
-            <div
-                class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow">
-                <a href="{{route('show.planes', 'premium')}}">
-                    <img class="p-8 rounded-t-lg" src="{{ asset('img/premium.png')}}" alt="product image" />
+    <div class="grid grid-cols-1 content-stretch mt-3 gap-4 md:grid-cols-2 lg:flex lg:justify-center">
+        @foreach ($planes as $plan)
+            <div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow">
+                <a href="{{ route('show.plan', $plan->id) }}">
+                    <img class="h-40 w-72 p-8 rounded-t-lg slide-top" src="{{ asset('img/' . $plan->name . '.png') }}"
+                        alt="Logo plan dental" />
                 </a>
                 <div class="px-5 pb-5">
-                    <a href="#">
-                        <a href="{{ route('show.planes', 'básico') }}"
-                            class="text-xl font-semibold tracking-tight text-gray-900">Plan básico
-                            dental</a>
-                    </a>
+                    <p class="text-xl font-semibold tracking-tight text-gray-900">
+                        Plan {{ $plan->name }}:</p>
                     <div>
 
                     </div>
                     <div class="grid grid-cols-1 content">
-                        <span class="text-3xl font-bold text-gray-900">599€</span>
-                        <a href="#"
-                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-2.5 text-center">Add
-                            to cart</a>
+                        <span class="text-3xl font-bold text-gray-900">{{ $plan->price }}€ / Año</span>
+                        <a href="{{ route('show.plan', $plan->id) }}"
+                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-2.5 text-center">
+                            Contratar</a>
                     </div>
                 </div>
             </div>
-        @endfor
+        @endforeach
     </div>
 
 

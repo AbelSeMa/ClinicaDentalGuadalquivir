@@ -58,11 +58,4 @@ class User extends Authenticatable
         return $this->hasOne(Worker::class);
     }
 
-    public function getRedireccion()
-    {
-        return match ($this->admin) {
-            true => 'dashboard',
-            2 => '/',
-        };
-    }
 }

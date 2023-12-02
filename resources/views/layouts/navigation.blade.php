@@ -20,9 +20,16 @@
             {{ __('Profile') }}
         </x-dropdown-link>
 
-        <x-dropdown-link :href="route('dashboard')">
+        @if(Auth::user()->admin)
+            
+        <x-dropdown-link :href="route('admin.dashboard')">
             {{ __('Panel de control') }}
         </x-dropdown-link>
+        @else
+        <x-dropdown-link :href="route('user.dashboard')">
+            {{ __('Panel de control') }}
+        </x-dropdown-link>
+        @endif
 
         <!-- Authentication -->
         <form method="POST" action="{{ route('logout') }}">

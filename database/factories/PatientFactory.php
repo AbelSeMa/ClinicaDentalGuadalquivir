@@ -23,7 +23,7 @@ class PatientFactory extends Factory
 
         return [
             'user_id' => static::$randomUserIds->pop(),
-            'plan_id' => null,
+            'plan_id' => $this->faker->randomElement([1, 2, 3]),
             'medical_history' => $this->faker->paragraph(),
             'payment_date' => null,
             'expiration_date' => null

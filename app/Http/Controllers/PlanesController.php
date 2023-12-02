@@ -2,18 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Plan;
 use Illuminate\Http\Request;
 
 class PlanesController extends Controller
 {
     public function index()
     {
-        return view('planes');
+        $planes = Plan::all();
+        return view('planes', compact('planes'));
     }
 
     public function show($plan)
     {
-        return view('mostrarPlanes', compact('plan'));
+        Plan::findOrFail($plan);
+
+        return view('mostrarPlan', compact('plan'));
     }
 
 }
