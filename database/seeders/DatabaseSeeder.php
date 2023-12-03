@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Appointment;
 use App\Models\Patient;
+use App\Models\Service;
 use App\Models\User;
 use App\Models\Worker;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -21,6 +22,9 @@ class DatabaseSeeder extends Seeder
         Worker::factory(25)->create();
         Patient::factory(70)->create();
         Appointment::factory(300)->create();
+        $this->call(PlanSeeder::class);
+        $this->call(ServicesSeeder::class);
+        $this->call(Services_plansSeeder::class);
 
         $admin = new User;
         $admin->first_name = 'Abel';
