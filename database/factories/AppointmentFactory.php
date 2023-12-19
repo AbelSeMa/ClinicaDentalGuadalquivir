@@ -36,6 +36,7 @@ class AppointmentFactory extends Factory
             'patient_id' => $randomPatientIds->pop(),
             'worker_id' => $randomWorkerIds->pop(),
             'date' => $faker->dateTimeBetween(now()->startOfYear(), now()->endOfYear())->format('Y-m-d'),
+            'hour' => $faker->dateTimeBetween('09:00', '16:00')->format('H:i'),
             'notes' => $faker->text,
             'attended' => $faker->boolean,
             'created_at' => now(),

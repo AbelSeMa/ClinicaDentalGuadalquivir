@@ -16,13 +16,6 @@
         </style>
     </head>
     <body class="antialiased">
-        <form action="">
-            <input type="text" name="" id="uno1">
-            <label for="uno1">Nombre</label>
-            <input type="text" name="" id="uno2">
-            <input type="text" name="" id="uno3">
-            <input type="text" name="" id="uno4">
-            <input type="text" name="" id="uno5">
-        </form>
+
     </body>
 </html>
