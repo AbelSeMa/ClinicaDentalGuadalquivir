@@ -15,11 +15,5 @@ class PatientController extends Controller
         return view('userDashboard', compact('patient'));
     }
 
-    public function create() {
 
-    }
-
-    public function store() {
-        
-    }
 }

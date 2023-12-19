@@ -30,17 +30,17 @@ class AppointmentFactory extends Factory
         if (!static::$randomWorkerIds) {
             $randomWorkerIds = Worker::all()->pluck('id')->shuffle();
         }
-
+        
+        // Genera una hora aleatoria entre las 8:00 y las 16:00
+        $hour = $this->faker->numberBetween(8, 15) . ':' . $this->faker->randomElement(['00', '30']);
 
         return [
             'patient_id' => $randomPatientIds->pop(),
             'worker_id' => $randomWorkerIds->pop(),
             'date' => $faker->dateTimeBetween(now()->startOfYear(), now()->endOfYear())->format('Y-m-d'),
-            'hour' => $faker->dateTimeBetween('09:00', '16:00')->format('H:i'),
-            'notes' => $faker->text,
-            'attended' => $faker->boolean,
-            'created_at' => now(),
-            'updated_at' => now(),
+            'hour' => $hour, // Hora ajustada
+            'notes' => $this->faker->text,
+            'attended' => $this->faker->boolean,
         ];
     }
 }

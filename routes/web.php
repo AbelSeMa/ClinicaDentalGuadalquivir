@@ -48,10 +48,11 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/reservar-cita',[CitasController::class, 'formulario']);
-
-    Route::get('/horas-disponible', [CitasController::class, 'horasDisponibles']);
-
+    Route::get('/prueba',[CitasController::class, 'diasSinCitas']);
+    
 });
+
+Route::get('/horas-disponibles', [CitasController::class, 'horasDisponibles']);
 
 Route::middleware('admin')->group(function () {
     Route::get('/editarworker/{id}', [WorkerController::class, 'edit'])->name('edit.worker');
