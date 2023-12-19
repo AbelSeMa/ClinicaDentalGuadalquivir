@@ -14,4 +14,12 @@ class PatientController extends Controller
         // Pasar la variable $patient a la vista, incluso si es null
         return view('userDashboard', compact('patient'));
     }
+
+    public function create() {
+
+    }
+
+    public function store() {
+        
+    }
 }

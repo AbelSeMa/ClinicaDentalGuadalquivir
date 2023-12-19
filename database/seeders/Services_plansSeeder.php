@@ -46,7 +46,7 @@ class Services_plansSeeder extends Seeder
         ];
 
         foreach ($serviciosPlanes as $servicio) {
-            DB::table('plans_services')->insert($servicio);
+            DB::table('plan_service')->insert($servicio);
         }
     }
 }

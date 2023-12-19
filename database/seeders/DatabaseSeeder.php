@@ -22,7 +22,6 @@ class DatabaseSeeder extends Seeder
         Worker::factory(25)->create();
         Patient::factory(70)->create();
         Appointment::factory(300)->create();
-        $this->call(PlanSeeder::class);
         $this->call(ServicesSeeder::class);
         $this->call(Services_plansSeeder::class);
 

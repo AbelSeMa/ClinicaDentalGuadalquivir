@@ -13,11 +13,12 @@ class PlanesController extends Controller
         return view('planes', compact('planes'));
     }
 
-    public function show($plan)
+    public function show($id)
     {
-        Plan::findOrFail($plan);
+        $plan = Plan::findOrFail($id);
+        $servicios = $plan->services;
 
-        return view('mostrarPlan', compact('plan'));
+        return view('mostrarPlan', compact('plan', 'servicios'));
     }
 
 }

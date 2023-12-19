@@ -3,7 +3,6 @@
 @tailwind utilities;
 
 body {
-  background-color: rgb(142, 248, 248);
   background-image: url(/public/img/fondo.jpg);
 }
 
@@ -27,4 +26,39 @@ body {
 .navbar-color {
   background-color: white;
   border: 1px black;
+}
+
+table { 
+  border-collapse: separate; 
+}
+
+tr td, th { 
+  border-top-right-radius: 0;               
+  border-top-left-radius: 0; 
+  border-bottom-left-radius: 0; 
+  border-bottom-right-radius: 0; 
+}
+th:first-child { 
+  border-top-left-radius: 10px; 
+}
+th:last-child {   
+  border-top-right-radius: 10px; 
+}
+
+.glow {
+  font-size: 80px;
+  color: #fff;
+  text-align: center;
+  -webkit-animation: glow 1s ease-in-out infinite alternate;
+  -moz-animation: glow 1s ease-in-out infinite alternate;
+  animation: glow 1s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from {
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #178cec, 0 0 40px #178cec, 0 0 50px #178cec, 0 0 60px #178cec, 0 0 70px #178cec;
+  }
+  to {
+    text-shadow: 0 0 20px rgb(0, 156, 166), 0 0 30px rgb(0, 156, 166), 0 0 40px rgb(0, 156, 166), 0 0 50px rgb(0, 156, 166), 0 0 60px rgb(0, 156, 166), 0 0 70px rgb(0, 156, 166), 0 0 80px rgb(0, 156, 166);
+  }
 }

@@ -11,7 +11,7 @@
         </h1>
     </div>
 
-    <div class="grid grid-cols-1 content-stretch mt-3 gap-4 md:grid-cols-2 lg:flex lg:justify-center">
+    <div class="grid grid-cols-1 content-stretch mt-3 gap-4 md:grid-cols-2 lg:flex lg:justify-between lg:mt-44">
         @foreach ($planes as $plan)
             <div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow">
                 <a href="{{ route('show.plan', $plan->id) }}">

@@ -11,7 +11,7 @@ class Plan extends Model
 
     protected $fillable = [ 'name', 'price', 'duration_in_months' ];
 
-    public function servicios()
+    public function services()
     {
         return $this->belongsToMany(Service::class);
     }

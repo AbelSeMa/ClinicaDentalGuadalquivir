@@ -9,26 +9,28 @@ class Appointment extends Model
 {
     use HasFactory;
 
-    protected $fillable = [ 'patient_id', 
-                            'worker_id', 
-                            'date',  
-                            'notes', 
-                            'attended' ];
+    protected $fillable = [
+        'patient_id',
+        'worker_id',
+        'date',
+        'notes',
+        'attended'
+    ];
 
-    public function paciente() 
+    public function patient()
     {
         return $this->belongsTo('App\Models\Patient');
     }
 
-    public function trabajador() 
+    public function worker()
     {
         return $this->belongsTo('App\Models\Worker');
     }
-    
+
     // Relación 1:1
 
-    public function informe()
+    public function appointment()
     {
-        return $this->hasOne('App\Models\Report');
+        return $this->belongsTo('App\Models\Appointment');
     }
 }
