@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Appointment;
 use App\Models\Worker;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use DateInterval;
 use DatePeriod;
 use DateTime;
-use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
 
 class CitasController extends Controller
 {
@@ -64,15 +66,6 @@ class CitasController extends Controller
         ]);
     }
 
-
-    public function formulario()
-    {
-
-        $doctores = Worker::all();
-
-        return view('formularioCita', compact('doctores'));
-    }
-
     public function diasSinCitas()
     {
         // Obtener todas las fechas con horas reservadas
@@ -100,6 +93,38 @@ class CitasController extends Controller
 
         $doctores = Worker::all();
 
-        return view('formularioCita', compact('doctores', 'fechas_sin_citas'));
+        return response()->json([
+            'dias' => $fechas_sin_citas
+        ]);
     }
+
+    public function formulario()
+    {
+
+        $doctores = Worker::all();
+
+        return view('formularioCita', compact('doctores'));
+    }
+
+    public function store(Request $request)
+    {
+        try {
+            DB::table('appointments')->insert([
+                'patient_id' => Auth::user()->id,
+                'worker_id' => $request->doctor,
+                'date' => $request->fecha,
+                'hour' => Carbon::createFromFormat('H:i:s', $request->hora)->format('H:i'),
+                'notes' => $request->descripcion,
+                'attended' => false,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+    
+            return redirect('user/dashboard')->with('success', 'Cita almacenada');
+        } catch (QueryException $e) {
+            // Manejar el error aquí
+            return redirect()->back()->with('error', 'Error al almacenar la cita: ' . $e->getMessage());
+        }
+    }
+
 }

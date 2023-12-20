@@ -1,5 +1,6 @@
 $('#fecha').change(function () {
     var fecha = $(this).val();
+    console.log(fecha);
 
     $.ajax({
         url: '/horas-disponibles',
@@ -17,7 +18,8 @@ $('#fecha').change(function () {
 
             // Agregar las nuevas opciones
             $.each(horas, function (index, hora) {
-                $('<option>').val(hora).text(hora).appendTo(select);
+                let formateada = hora.split(':');
+                $('<option>').val(hora).text(formateada[0] + ':' + formateada[1]).appendTo(select);
             });
         },
         error: function () {
