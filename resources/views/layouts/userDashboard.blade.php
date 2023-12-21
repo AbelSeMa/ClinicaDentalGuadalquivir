@@ -15,6 +15,16 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <style>
+        .material-symbols-outlined {
+          font-variation-settings:
+          'FILL' 0,
+          'wght' 400,
+          'GRAD' 0,
+          'opsz' 24
+        }
+        </style>
 
 
     @vite('resources/js/app.js')
@@ -58,11 +68,11 @@
                                 <path
                                     d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z" />
                             </svg>
-                            <span class="ms-3">Dashboard</span>
+                            <span class="ms-3">Menú</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#"
+                        <a href="/user/dashboard"
                             class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                             <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                                 aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
@@ -70,9 +80,7 @@
                                 <path
                                     d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z" />
                             </svg>
-                            <span class="flex-1 ms-3 whitespace-nowrap">Kanban</span>
-                            <span
-                                class="inline-flex items-center justify-center px-2 ms-3 text-sm font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-300">Pro</span>
+                            <span class="flex-1 ms-3 whitespace-nowrap">Inicio</span>
                         </a>
                     </li>
                     <li>
@@ -183,8 +191,7 @@
                         d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
                 </svg>
                 <div class="ms-3 text-sm font-medium">
-                    La cita ha sido reservada con <a href="#"
-                        class="font-semibold underline hover:no-underline">éxito</a>.
+                    La cita no ha podido ser reservada. Intentelo de nuevo.
                 </div>
                 <button type="button"
                     class="ms-auto -mx-1.5 -my-1.5 bg-blue-50 text-blue-500 rounded-lg focus:ring-2 focus:ring-blue-400 p-1.5 hover:bg-blue-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-blue-400 dark:hover:bg-gray-700"
@@ -204,11 +211,11 @@
                 <div class="flex border-2 items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
                     <button class="text-2xl text-gray-400 dark:text-gray-500">Útimas citas</button>
                 </div>
-                <div class="flex border-2 items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
+                <div class="flex border-2 mx-auto items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
                     <button class="text-2xl text-gray-400 dark:text-gray-500"> Informes </button>
                 </div>
                 <div class="flex border-2 items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
-                    <a href="/reservar-cita" class="text-2xl text-gray-400 dark:text-gray-500">Coger cita</a>
+                    <a href="/reservar-cita" class="text-center text-2xl text-gray-400 dark:text-gray-500">Coger cita</a>
                 </div>
             </div>
         </div>

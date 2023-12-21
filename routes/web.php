@@ -47,8 +47,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/horas-disponibles', [CitasController::class, 'horasDisponibles']);
     Route::get('/obtener-dias-sin-citas', [CitasController::class, 'diasSinCitas']);
     Route::post('/almacenar-cita', [CitasController::class, 'store']);
-
-    
+    Route::delete('citas/{appointment}', [CitasController::class, 'destroy'])->name('citas.destroy');
+            
 });
 
 Route::get('/prueba',[CitasController::class, 'diasSinCitas']);

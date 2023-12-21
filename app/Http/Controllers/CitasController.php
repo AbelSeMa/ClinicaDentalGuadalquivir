@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use DateInterval;
 use DatePeriod;
 use DateTime;
+use Illuminate\Validation\Rule;
 
 class CitasController extends Controller
 {
@@ -108,13 +109,26 @@ class CitasController extends Controller
 
     public function store(Request $request)
     {
+
+        $horasValidas = [
+            '08:00:00', '08:30:00', '09:00:00', '09:30:00', '10:00:00', '10:30:00', '11:00:00', '11:30:00',
+            '12:00:00', '12:30:00', '13:00:00', '13:30:00', '14:00:00', '14:30:00', '15:00:00', '15:30:00'
+         ];
+        $request->validate([
+            'fecha' => 'required|date',
+            'hora' => ['required', 'date_format:H:i:s', Rule::in($horasValidas)],
+            'doctor' => 'required'
+            ]
+        );
+
+
         try {
             DB::table('appointments')->insert([
                 'patient_id' => Auth::user()->id,
                 'worker_id' => $request->doctor,
                 'date' => $request->fecha,
                 'hour' => Carbon::createFromFormat('H:i:s', $request->hora)->format('H:i'),
-                'notes' => $request->descripcion,
+                'notes' => $request->notas,
                 'attended' => false,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -125,6 +139,13 @@ class CitasController extends Controller
             // Manejar el error aquí
             return redirect()->back()->with('error', 'Error al almacenar la cita: ' . $e->getMessage());
         }
+    }
+
+    public function destroy(Appointment $appointment)
+    {
+        $appointment->delete();
+        
+        return redirect('/user/dashboard');
     }
 
 }
