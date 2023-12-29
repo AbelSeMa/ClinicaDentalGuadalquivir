@@ -18,4 +18,6 @@ class AdminController extends Controller
                 'pacientes' => $pacientes,
             ]);
     }
+
+    
 }

@@ -1,7 +1,10 @@
-$('#fecha').change(function () {
-    var fecha = $(this).val();
+$('.editar-cita').click(function () {
+    var fecha = $(this).data('fecha');
     console.log(fecha);
 
+    $('#hora').empty();
+    
+    // Realizar una solicitud AJAX para obtener las horas disponibles
     $.ajax({
         url: '/horas-disponibles',
         type: 'GET',
@@ -11,12 +14,9 @@ $('#fecha').change(function () {
             var horas = response.horas;
             console.log(horas)
 
-            var select = $('#horas-disponibles');
+            // Generar las opciones de hora para el select
+            var select = $('#hora');
 
-            // Limpiar las opciones existentes
-            select.empty();
-
-            // Agregar las nuevas opciones
             $.each(horas, function (index, hora) {
                 let formateada = hora.split(':');
                 $('<option>').val(hora).text(formateada[0] + ':' + formateada[1]).appendTo(select);
@@ -26,4 +26,5 @@ $('#fecha').change(function () {
             alert('Error al cargar las horas disponibles');
         }
     });
+
 });

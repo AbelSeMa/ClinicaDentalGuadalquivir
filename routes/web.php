@@ -28,12 +28,8 @@ Route::get('/planes', [PlanesController::class, 'index'])->name('index.plan');
 
 Route::get('plan/{id}', [PlanesController::class, 'show'])->name('show.plan');
 
-Route::get('/editarworker/{id}', [WorkerController::class, 'edit'])->middleware('auth')->name('edit.worker');
-Route::put('/update-worker/{id}', [WorkerController::class, 'update'])->middleware(['auth', 'verified'])->name('update.worker');
 
-Route::get('/admin/dashboard', [CitasController::class, 'index'])
-    ->middleware(['auth', 'admin'])
-    ->name('admin.dashboard');
+
 
 Route::get('/user/dashboard', [PatientController::class, 'index'])
     ->middleware(['auth'])
@@ -48,16 +44,22 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/reservar-cita',[CitasController::class, 'formulario']);
-
-    Route::get('/horas-disponible', [CitasController::class, 'horasDisponibles']);
-
+    Route::get('/horas-disponibles', [CitasController::class, 'horasDisponibles']);
+    Route::get('/obtener-dias-sin-citas', [CitasController::class, 'diasSinCitas']);
+    Route::post('/almacenar-cita', [CitasController::class, 'store']);
+    Route::delete('citas/{appointment}', [CitasController::class, 'destroy'])->name('citas.destroy');
+    Route::put('/actualizar-hora-cita/{id}', [CitasController::class, 'update'])->name('citas.update');
+            
 });
+
+Route::get('/prueba',[CitasController::class, 'diasSinCitas']);
 
 Route::middleware('admin')->group(function () {
     Route::get('/editarworker/{id}', [WorkerController::class, 'edit'])->name('edit.worker');
     Route::put('/update-worker/{id}', [WorkerController::class, 'update'])->name('update.worker');
     Route::get('/altapaciente', [PatientController::class, 'create'])->name('altapaciente');
     Route::post('/altapaciente', [PatientController::class, 'storage'])->name('altapaciente');
+    Route::get('/admin/dashboard', [CitasController::class, 'index'])->name('admin.dashboard');
 
 });
 

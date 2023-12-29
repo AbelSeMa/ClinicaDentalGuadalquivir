@@ -3,7 +3,19 @@
 @tailwind utilities;
 
 body {
-  background-image: url(/public/img/fondo.jpg);
+  background-image: url(/public/img/fondo3.jpg);
+  /* Asegurarse de que la imagen de fondo cubra todo el ancho de la pantalla */
+  background-size: cover;
+
+  /* Evitar que la imagen de fondo se repita */
+  background-repeat: no-repeat;
+
+  /* Centrar la imagen de fondo verticalmente */
+  background-position: center center;
+
+  /* Establecer una altura mínima para garantizar que la imagen cubra toda la pantalla en dispositivos de menor altura */
+  min-height: 100vh;
+
 }
 
 .slide-top {
@@ -28,21 +40,23 @@ body {
   border: 1px black;
 }
 
-table { 
-  border-collapse: separate; 
+table {
+  border-collapse: separate;
 }
 
-tr td, th { 
-  border-top-right-radius: 0;               
-  border-top-left-radius: 0; 
-  border-bottom-left-radius: 0; 
-  border-bottom-right-radius: 0; 
+tr td, th {
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }
-th:first-child { 
-  border-top-left-radius: 10px; 
+
+th:first-child {
+  border-top-left-radius: 10px;
 }
-th:last-child {   
-  border-top-right-radius: 10px; 
+
+th:last-child {
+  border-top-right-radius: 10px;
 }
 
 .glow {
@@ -58,6 +72,7 @@ th:last-child {
   from {
     text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #178cec, 0 0 40px #178cec, 0 0 50px #178cec, 0 0 60px #178cec, 0 0 70px #178cec;
   }
+
   to {
     text-shadow: 0 0 20px rgb(0, 156, 166), 0 0 30px rgb(0, 156, 166), 0 0 40px rgb(0, 156, 166), 0 0 50px rgb(0, 156, 166), 0 0 60px rgb(0, 156, 166), 0 0 70px rgb(0, 156, 166), 0 0 80px rgb(0, 156, 166);
   }
