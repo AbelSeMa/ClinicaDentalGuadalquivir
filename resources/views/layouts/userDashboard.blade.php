@@ -15,28 +15,30 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <style>
         .material-symbols-outlined {
-          font-variation-settings:
-          'FILL' 0,
-          'wght' 400,
-          'GRAD' 0,
-          'opsz' 24
+            font-variation-settings:
+                'FILL' 0,
+                'wght' 400,
+                'GRAD' 0,
+                'opsz' 24
         }
-        </style>
+    </style>
 
 
-    @vite('resources/js/app.js')
     @vite('resources/js/horas.js')
+    @vite('resources/js/editar-horas.js')
+    @vite('resources/js/app.js')
     @vite('resources/css/app.css')
 </head>
 
 <body class="h-ful">
     <!-- Header -->
     <!-- NavBar -->
-    
-    
+
+
     <div class="flex flex-col">
         @include('layouts.navbar')
 
@@ -208,14 +210,15 @@
 
         <div class="p-4 border-gray-200 rounded-lg dark:border-gray-700">
             <div class="grid grid-cols-3 gap-4 mb-4">
-                <div class="flex border-2 items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
+                <div class="flex border-2  items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
                     <button class="text-2xl text-gray-400 dark:text-gray-500">Útimas citas</button>
                 </div>
-                <div class="flex border-2 mx-auto items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
+                <div class="flex border-2  items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
                     <button class="text-2xl text-gray-400 dark:text-gray-500"> Informes </button>
                 </div>
-                <div class="flex border-2 items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
-                    <a href="/reservar-cita" class="text-center text-2xl text-gray-400 dark:text-gray-500">Coger cita</a>
+                <div class="flex border-2  items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
+                    <a href="/reservar-cita" class="text-center text-2xl text-gray-400 dark:text-gray-500">Coger
+                        cita</a>
                 </div>
             </div>
         </div>

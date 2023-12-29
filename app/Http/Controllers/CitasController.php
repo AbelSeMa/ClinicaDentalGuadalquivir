@@ -148,4 +148,14 @@ class CitasController extends Controller
         return redirect('/user/dashboard');
     }
 
+    public function update(Request $request, $id)
+{
+    $cita = Appointment::find($id);
+    $cita->hour = $request->input('hora');
+    $cita->save();
+
+    return redirect()->back()->with('success', 'La hora de la cita se ha actualizado correctamente.');
+}
+    
+
 }
