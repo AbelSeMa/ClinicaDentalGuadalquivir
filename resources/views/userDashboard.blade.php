@@ -1,5 +1,10 @@
 @extends('layouts.userDashboard')
 
+@section('numCitas')
+    {{$numCitas}}
+@endsection
+    
+
 @section('content')
     <br>
     <h2 class="text-3xl  font-extrabold text-gray-400 dark:text-gray-500 text-center">Plan actual</h2>

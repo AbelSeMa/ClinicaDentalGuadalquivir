@@ -95,6 +95,7 @@
 
                     flatpickr("#fecha", {
                         minDate: 'today',
+                        maxDate: new Date().getFullYear() + "-12-31",
                         disable: diasDeshabilitados,
                         dateFormat: "d-m-Y",
                         locale: "es",

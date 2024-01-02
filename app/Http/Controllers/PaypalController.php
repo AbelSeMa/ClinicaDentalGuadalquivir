@@ -117,7 +117,7 @@ class PaypalController extends Controller
             
             
                 } catch (\Exception $e) {
-                    return redirect()->route('user.dashboard')->with('error', 'Error al actualizar el paciente: ' . $e->getMessage());
+                    return redirect()->route('user.dashboard')->with('error', 'Error al actualizar el plan ' . $e->getMessage());
                 }
             } else {
                 // Maneja el caso en el que el paciente no existe (opcional)
