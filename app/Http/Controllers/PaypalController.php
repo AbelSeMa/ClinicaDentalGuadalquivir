@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Patient;
 use App\Models\Plan;
+use App\Models\User;
+use Carbon\Carbon;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class PaypalController extends Controller
 {
@@ -15,9 +16,12 @@ class PaypalController extends Controller
      *
      * @return response()
      */
-    public function index()
+    public function resumen($id)
     {
-        return view('paypal');
+        $user = User::find(auth()->user()->id);
+        $plan = Plan::find($id);
+
+        return view('contratarPlan', compact('user', 'plan'));
     }
 
     /**
@@ -61,12 +65,12 @@ class PaypalController extends Controller
                     return redirect()->away($links['href']);
                 }
             }
-            
+
             return redirect()
                 ->route('cancel.payment')
                 ->with('error', 'Something went wrong.');
         } else {
-            
+
             return redirect()
                 ->route('create.payment')
                 ->with('error', $response['message'] ?? 'Something went wrong.');
@@ -92,47 +96,46 @@ class PaypalController extends Controller
      */
     public function paymentSuccess(Request $request)
     {
-        $provider = new PayPalClient;
-        $provider->setApiCredentials(config('paypal'));
-        $provider->getAccessToken();
-        $response = $provider->capturePaymentOrder($request['token']);
+        if (auth()->user()->paciente->plan_id) {
+            $provider = new PayPalClient;
+            $provider->setApiCredentials(config('paypal'));
+            $provider->getAccessToken();
+            $response = $provider->capturePaymentOrder($request['token']);
 
-        if (isset($response['status']) && $response['status'] == 'COMPLETED') {
-            $planId = intval($request->session()->get('idPlan'));
-            $userId = auth()->user()->paciente->user_id;
+            if (isset($response['status']) && $response['status'] == 'COMPLETED') {
+                $planId = intval($request->session()->get('idPlan'));
+                $userId = auth()->user()->paciente->user_id;
 
-            // Busca el paciente existente por user_id
-            $patient = Patient::where('user_id', $userId)->first();
+                // Busca el paciente existente por user_id
+                $patient = Patient::where('user_id', $userId)->first();
 
-            
-            if ($patient) {
-                // Si el paciente existe, actualiza los campos relevantes
-                try {
-                    
-                    $patient->plan_id = $planId;
-                    $patient->payment_date = now();
-                    $patient->expiration_date = now()->addYear();
-                
-                    $patient->save();
-            
-            
-                } catch (\Exception $e) {
-                    return redirect()->route('user.dashboard')->with('error', 'Error al actualizar el plan ' . $e->getMessage());
+
+                if ($patient) {
+                    // Si el paciente existe, actualiza los campos relevantes
+                    try {
+
+                        $patient->plan_id = $planId;
+                        $patient->payment_date = Carbon::now();
+                        $patient->expiration_date = Carbon::now()->addYear();
+
+                        $patient->save();
+                    } catch (\Exception $e) {
+                        return redirect()->route('user.dashboard')->with('error', 'Error al actualizar el plan ' . $e->getMessage());
+                    }
+                } else {
+                    // Maneja el caso en el que el paciente no existe (opcional)
+                    return redirect()->route('user.dashboard')->with('error', 'No ha sido posible actualizar los datos del paciente.');
                 }
+
+
+                return redirect()
+                    ->route('user.dashboard')
+                    ->with('success', 'Transacción completada. Su plan anual ahora está disponible');
             } else {
-                // Maneja el caso en el que el paciente no existe (opcional)
-                return redirect()->route('user.dashboard')->with('error', 'No ha sido posible actualizar los datos del paciente.');
+                return redirect()
+                    ->route('user.dashboard')
+                    ->with('error', $response['message'] ?? 'Algo ha salido mal. Por favor intentelo de nuevo.');
             }
-
-
-
-            return redirect()
-                ->route('user.dashboard')
-                ->with('success', 'Transacción completada. Su plan anual ahora está disponible');
-        } else {
-            return redirect()
-                ->route('user.dashboard')
-                ->with('error', $response['message'] ?? 'Algo ha salido mal. Por favor intentelo de nuevo.');
         }
     }
 }

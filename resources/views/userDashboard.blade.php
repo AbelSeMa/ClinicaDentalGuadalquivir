@@ -17,7 +17,7 @@
                             Nombre del plan actual
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Duración del plan
+                            Fecha vencimiento
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Precio
@@ -32,7 +32,7 @@
                                 {{ $patient->plan->name }}
                             </td>
                             <td class="px-6 py-4">
-                                {{ $patient->plan->duration_in_months }}
+                                {{ \Carbon\Carbon::parse($patient->expiration_date)->format('d-m-Y')}}
                             </td>
                             <td class="px-6 py-4">
                                 {{ $patient->plan->price }}€

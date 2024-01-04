@@ -13,7 +13,7 @@
                 fecha:</label>
             @error('fecha')
                 <div class="text-orange-700 p-4" role="alert">
-                    <p class="font-bold">!CUIDADO¡</p>
+                    <p class="font-bold">¡CUIDADO!</p>
                     <p>{{ $message }}</p>
                 </div>
             @enderror
@@ -26,7 +26,7 @@
                 hora: </label>
                 @error('hora')
                 <div class="text-orange-700 p-4" role="alert">
-                    <p class="font-bold">!CUIDADO¡</p>
+                    <p class="font-bold">¡CUIDADO!</p>
                     <p>{{ $message }}</p>
                 </div>
             @enderror
@@ -38,7 +38,7 @@
                 doctor:</label>
                 @error('doctor')
                 <div class="text-orange-700 p-4" role="alert">
-                    <p class="font-bold">!CUIDADO¡</p>
+                    <p class="font-bold">¡CUIDADO!</p>
                     <p>{{ $message }}</p>
                 </div>
             @enderror

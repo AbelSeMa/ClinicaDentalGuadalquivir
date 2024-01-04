@@ -50,7 +50,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/almacenar-cita', [CitasController::class, 'store']);
     Route::delete('citas/{appointment}', [CitasController::class, 'destroy'])->name('citas.destroy');
     Route::put('/actualizar-hora-cita/{id}', [CitasController::class, 'update'])->name('citas.update');
-    Route::get('plan/{id}/pagar', [PaypalController::class, 'pagoConPaypal'])->name('pagar.paypal');
+    Route::get('plan/{id}/pagar', [PaypalController::class, 'resumen'])->name('pagar.paypal');
 
     Route::post('paypal/payment', [PayPalController::class, 'payment'])->name('paypal.payment');
     Route::get('paypal/payment/success', [PayPalController::class, 'paymentSuccess'])->name('paypal.payment.success');
