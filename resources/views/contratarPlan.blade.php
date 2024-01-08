@@ -80,7 +80,7 @@
                     </table>
 
                 </div>
-                <div>
+                <div class="md:flex">
                     <form action="{{ route('paypal.payment') }}" method="post">
                         @csrf
                         <input type="text" name="idPlan" value="{{ $plan->id }}" hidden>
@@ -93,7 +93,9 @@
                             </svg>
                         </button>
                     </form>
-
+                    <a href="{{ route('index.plan') }}"
+                        class="button mt-4 md:ml-4">
+                        Elegir otro plan</a>
                 </div>
                 
                 <form class="space-y-4 md:space-y-6" method="POST" action="{{ route('login') }}">
