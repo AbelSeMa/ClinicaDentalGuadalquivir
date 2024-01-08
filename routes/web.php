@@ -29,18 +29,8 @@ Route::get('/planes', [PlanesController::class, 'index'])->name('index.plan');
 
 Route::get('plan/{id}', [PlanesController::class, 'show'])->name('show.plan');
 
-
-
-
-Route::get('/user/dashboard', [PatientController::class, 'index'])
-    ->middleware(['auth'])
-    ->name('user.dashboard');
-
-Route::get('/altapaciente', [PatientController::class])
-    ->middleware(['auth', 'admin'])
-    ->name('altapaciente');
-
 Route::middleware('auth')->group(function () {
+    Route::get('/user/dashboard', [PatientController::class, 'index'])->name('user.dashboard');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
