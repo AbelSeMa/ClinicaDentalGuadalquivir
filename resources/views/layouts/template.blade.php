@@ -13,6 +13,7 @@
 
     @vite('resources/js/app.js')
     @vite('resources/css/app.css')
+    @yield('css')
 </head>
 
 <body class="h-ful">

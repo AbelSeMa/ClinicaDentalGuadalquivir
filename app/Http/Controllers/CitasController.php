@@ -134,7 +134,7 @@ class CitasController extends Controller
                 'updated_at' => now(),
             ]);
     
-            return redirect('user/dashboard')->with('success', 'Cita almacenada');
+            return redirect('user/dashboard')->with('success', 'Su cita ha sido reservada correctamente.');
         } catch (QueryException $e) {
             // Manejar el error aquí
             return redirect()->back()->with('error', 'Error al almacenar la cita: ' . $e->getMessage());

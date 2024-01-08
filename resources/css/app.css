@@ -74,6 +74,40 @@ th:last-child {
   }
 
   to {
-    text-shadow: 0 0 20px rgb(0, 156, 166), 0 0 30px rgb(0, 156, 166), 0 0 40px rgb(0, 156, 166), 0 0 50px rgb(0, 156, 166), 0 0 60px rgb(0, 156, 166), 0 0 70px rgb(0, 156, 166), 0 0 80px rgb(0, 156, 166);
+    text-shadow: 0 0 20px rgb(0, 156, 166), 0 0 30px #009ca6, 0 0 40px rgb(0, 156, 166), 0 0 50px rgb(0, 156, 166), 0 0 60px rgb(0, 156, 166), 0 0 70px rgb(0, 156, 166), 0 0 80px rgb(0, 156, 166);
   }
+}
+
+
+
+.button {
+  width: 180px;
+  height: 40px;
+  background-image: linear-gradient(rgb(0, 69, 124), rgb(0, 121, 193));
+  border: none;
+  border-radius: 50px;
+  color: rgb(255, 255, 255);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  cursor: pointer;
+  box-shadow: 1px 3px 0px rgb(0, 69, 124);
+  transition-duration: .3s;
+}
+
+.cartIcon {
+  width: 14px;
+  height: fit-content;
+}
+
+.cartIcon path {
+  fill: white;
+}
+
+.button:active {
+  transform: translate(2px ,0px);
+  box-shadow: 0px 1px 0px rgb(139, 113, 255);
+  padding-bottom: 1px;
 }

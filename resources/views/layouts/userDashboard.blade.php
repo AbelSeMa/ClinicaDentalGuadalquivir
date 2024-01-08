@@ -35,12 +35,15 @@
 </head>
 
 <body class="h-ful">
-    <!-- Header -->
     <!-- NavBar -->
 
+    <header>
+        <div>
+            @include('layouts.navbar')
+        </div>
+    </header>
 
     <div class="flex flex-col">
-        @include('layouts.navbar')
 
         <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar"
             aria-controls="default-sidebar" type="button"
@@ -96,7 +99,7 @@
                             </svg>
                             <span class="flex-1 ms-3 whitespace-nowrap">Citas actuales</span>
                             <span
-                                class="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">3</span>
+                                class="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">@yield('numCitas')</span>
                         </a>
                     </li>
                     <li>
@@ -167,9 +170,7 @@
                         d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
                 </svg>
                 <div class="ms-3 text-sm font-medium">
-                    La cita ha sido reservada con <a href="#"
-                        class="font-semibold underline hover:no-underline">éxito</a>.
-                </div>
+                    {{ session('success') }} </div>
                 <button type="button"
                     class="ms-auto -mx-1.5 -my-1.5 bg-blue-50 text-blue-500 rounded-lg focus:ring-2 focus:ring-blue-400 p-1.5 hover:bg-blue-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-blue-400 dark:hover:bg-gray-700"
                     data-dismiss-target="#alert-border-1" aria-label="Close">
@@ -193,7 +194,7 @@
                         d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
                 </svg>
                 <div class="ms-3 text-sm font-medium">
-                    La cita no ha podido ser reservada. Intentelo de nuevo.
+                    {{ session('error')}}
                 </div>
                 <button type="button"
                     class="ms-auto -mx-1.5 -my-1.5 bg-blue-50 text-blue-500 rounded-lg focus:ring-2 focus:ring-blue-400 p-1.5 hover:bg-blue-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-blue-400 dark:hover:bg-gray-700"
