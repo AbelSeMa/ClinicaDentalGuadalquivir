@@ -74,10 +74,17 @@ class WorkerController extends Controller
 
         return view('borrarTrabajador', compact('trabajadores'));
     }
+
     public function destroy(Worker $worker)
     {
-        $worker->delete();
+        try {
+            //code...
+            $worker->delete();
+            return redirect('/admin/dashboard')->with('success', 'Trabajador eliminado con éxito.');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect('/admin/dashboard')->with('error', 'No se ha podido eliminar el trabajador. Revisa que no tenga citas pendientes.');
+        }
 
-        return redirect('/admin/dashboard');
     }
 }

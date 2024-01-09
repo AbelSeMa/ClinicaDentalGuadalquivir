@@ -1,5 +1,4 @@
 function trabajadorExiste() {
-    var radios = document.getElementsByName("respuesta");
     var selectContainer = document.getElementById("selectUsuarios");
     selectContainer.innerHTML = ""; // Limpiar el contenedor
 
@@ -138,9 +137,14 @@ function trabajadorExiste() {
 }
 
 
+function trabajadorNoExiste() {
+
+    window.location.href = '/admin/crear-usuario';
+}
+
 
 document.addEventListener('DOMContentLoaded', function () {
-    var formulario = document.getElementById('contenido');
+    var formulario = document.getElementById('form-existe');
 
     formulario.addEventListener('submit', function (event) {
         // Cancelar el envío predeterminado del formulario

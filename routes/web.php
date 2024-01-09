@@ -41,7 +41,7 @@ Route::get('/altapaciente', [PatientController::class])
     ->middleware(['auth', 'admin'])
     ->name('altapaciente');
 
-Route::middleware('auth')->group(function () {
+Route::middleware('patient')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -62,15 +62,18 @@ Route::get('/prueba', [CitasController::class, 'diasSinCitas']);
 
 Route::middleware('admin')->group(function () {
     Route::get('/admin/dashboard', [CitasController::class, 'index'])->name('admin.dashboard');
-
-    Route::get('admin/crear-trabajador', [WorkerController::class, 'crearTrabajador'])->name('worker.create');
-    Route::post('admin/almacenar-trabajador', [WorkerController::class, 'store'])->name('worker.storage');
-    Route::get('admin/eliminar-trabajador', [WorkerController::class, 'borrarTrabajador'])->name('worker.delete');
-    Route::delete('admin/eliminar-trabajador/{worker}', [WorkerController::class, 'destroy'])->name('worker.destroy');
     Route::get('/usuarios-sin-roles', [AdminController::class, 'sinRoles'])->name('usuarios.sinroles');
-    Route::get('admin/editar-trabajador', [WorkerController::class, 'editarTrabajador'])->name('index.worker');
-    Route::get('admin/editar-trabajador/{id}', [WorkerController::class, 'edit'])->name('edit.worker');
-    Route::put('admin/update-trabajador/{id}', [WorkerController::class, 'update'])->name('update.worker');
+
+    Route::get('/admin/crear-usuario', [AdminController::class, 'crearUsuario'])->name('user.create');
+    Route::post('/admin/almacenar-usuario', [AdminController::class, 'storeUser'])->name('user.storage');
+
+    Route::get('admin/crear-trabajador', [AdminController::class, 'crearTrabajador'])->name('worker.create');
+    Route::post('admin/almacenar-trabajador', [AdminController::class, 'storeWorker'])->name('worker.storage');
+    Route::get('admin/eliminar-trabajador', [AdminController::class, 'borrarTrabajador'])->name('worker.delete');
+    Route::get('admin/editar-trabajador', [AdminController::class, 'editarTrabajador'])->name('index.worker');
+    Route::get('admin/editar-trabajador/{id}', [AdminController::class, 'edit'])->name('edit.worker');
+    Route::put('admin/update-trabajador/{id}', [AdminController::class, 'update'])->name('update.worker');
+    Route::delete('admin/eliminar-trabajador/{worker}', [AdminController::class, 'destroy'])->name('worker.destroy');
 });
 
 require __DIR__ . '/auth.php';
