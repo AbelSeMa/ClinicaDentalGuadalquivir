@@ -9,6 +9,7 @@ use App\Http\Controllers\PlanesController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WorkerController;
 use App\Models\Patient;
+use App\Models\Worker;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -60,11 +61,16 @@ Route::middleware('auth')->group(function () {
 Route::get('/prueba', [CitasController::class, 'diasSinCitas']);
 
 Route::middleware('admin')->group(function () {
-    Route::get('/editarworker/{id}', [WorkerController::class, 'edit'])->name('edit.worker');
-    Route::put('/update-worker/{id}', [WorkerController::class, 'update'])->name('update.worker');
-    Route::get('/altapaciente', [PatientController::class, 'create'])->name('altapaciente');
-    Route::post('/altapaciente', [PatientController::class, 'storage'])->name('altapaciente');
     Route::get('/admin/dashboard', [CitasController::class, 'index'])->name('admin.dashboard');
+
+    Route::get('admin/crear-trabajador', [WorkerController::class, 'crearTrabajador'])->name('worker.create');
+    Route::post('admin/almacenar-trabajador', [WorkerController::class, 'store'])->name('worker.storage');
+    Route::get('admin/eliminar-trabajador', [WorkerController::class, 'borrarTrabajador'])->name('worker.delete');
+    Route::delete('admin/eliminar-trabajador/{worker}', [WorkerController::class, 'destroy'])->name('worker.destroy');
+    Route::get('/usuarios-sin-roles', [AdminController::class, 'sinRoles'])->name('usuarios.sinroles');
+    Route::get('admin/editar-trabajador', [WorkerController::class, 'editarTrabajador'])->name('index.worker');
+    Route::get('admin/editar-trabajador/{id}', [WorkerController::class, 'edit'])->name('edit.worker');
+    Route::put('admin/update-trabajador/{id}', [WorkerController::class, 'update'])->name('update.worker');
 });
 
 require __DIR__ . '/auth.php';

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Worker;
 use App\Models\Patient;
+use App\Models\User;
 
 class AdminController extends Controller
 {
@@ -18,6 +19,19 @@ class AdminController extends Controller
                 'pacientes' => $pacientes,
             ]);
     }
+
+    public function sinRoles()
+    {
+        $usuarios = array_merge(
+            Patient::pluck('user_id')->toArray(),
+            Worker::pluck('user_id')->toArray(),
+        );
+    
+        $usuariosSinRol = User::whereNotIn('id', $usuarios)->get()->toArray();
+    
+        return response()->json(['users' => $usuariosSinRol]);
+    }
+    
 
     
 }
