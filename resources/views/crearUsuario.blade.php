@@ -3,7 +3,7 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
-    <h1>Dar de alta a un trabajador</h1>
+    <h1>Dar de alta a un usuario</h1>
 @stop
 
 @section('content')
@@ -19,7 +19,8 @@
 
 
     <form class="max-w-md mx-auto" action="/admin/almacenar-usuario" method="POST" id="form-usuario">
-
+        
+        @csrf
         <div class="mb-2">
             <label for="nombre" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre</label>
             <input type="text" id="nombre" name="first_name"

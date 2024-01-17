@@ -25,9 +25,9 @@
             <label for="si" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Si</label>
         </div>
         <div class="flex items-center mb-2">
-            <input type="radio" name="respuesta" id="no" value="no"
+            <input type="radio" name="respuesta" id="no" value="no" onclick="trabajadorNoExiste()"
                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-            <label for="no" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300" onclick="trabajadorNoExiste()">No</label>
+            <label for="no" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300" >No</label>
         </div>
     </div>
     <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">

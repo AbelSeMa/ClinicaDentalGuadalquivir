@@ -23,10 +23,10 @@ document.addEventListener('DOMContentLoaded', function () {
         var telefono = document.getElementById('telefono').value;
         var nacimiento = document.getElementById('nacimiento').value;
         var dni = document.getElementById('dni').value;
-        var correo = document.getElementById('email')
+        var correo = document.getElementById('email').value;
 
         // Realizar la validación (cadena de letras incluyendo mayúsculas)
-        var regexAlfabetico = /^[A-Za-z]+$/;
+        var regexAlfabetico = /^[A-Za-zÑñÁáÉéÍíÓóÚúÜü]+$/;
         var regexDireccion = /^[a-zA-Z0-9\s\-\/\.,]+$/;
         var regexTelefono = /^(956\d{6}|[67]\d{8})$/;
         var regexDNI = /^[0-9]{8}[a-zA-Z]$/;

@@ -114,4 +114,29 @@ class AdminController extends Controller
     {
         return view('crearUsuario');
     }
+
+    public function storeUser(Request $request)
+    {
+        $request->validate([
+            'first_name' => 'required|string|max:100|regex:/^[A-Za-zÑñÁáÉéÍíÓóÚúÜü]+$/',
+            'last_name' => 'required|string|max:100|regex:/^[A-Za-zÑñÁáÉéÍíÓóÚúÜü]+$/',
+            'address' => 'required|string|min:5|max:100|regex:/^[a-zA-ZzÑñÁáÉéÍíÓóÚúÜü0-9\s\-\/\.,]+$/',
+            'phone' => 'required|regex:/^(956\d{6}|[67]\d{8})$/',
+            'birth_date' => 'required|date|before:-18 years',
+            'dni' => ['required|regex:/^[0-9]{8}[A-Z]$/',  ]
+        ]);
+
+        try {
+            DB::table('workers')->insert([
+                'user_id' => $request->usuario,
+                'title' => $request->titulacion,
+                'specialty' => $request->especializacion
+            ]);
+
+            return redirect()->route('admin.dashboard')->with('success', 'Trabajador creado correctamente.');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->route('admin.dashboard')->with('error', 'Algo ha salido mal. Inténtelo de nuevo.');
+        }
+    }
 }
