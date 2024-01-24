@@ -69,10 +69,11 @@ Route::middleware('admin')->group(function () {
 
     Route::get('admin/crear-trabajador', [AdminController::class, 'crearTrabajador'])->name('worker.create');
     Route::post('admin/almacenar-trabajador', [AdminController::class, 'storeWorker'])->name('worker.storage');
-    Route::get('admin/eliminar-trabajador', [AdminController::class, 'borrarTrabajador'])->name('worker.delete');
     Route::get('admin/editar-trabajador', [AdminController::class, 'editarTrabajador'])->name('index.worker');
-    Route::get('admin/editar-trabajador/{id}', [AdminController::class, 'edit'])->name('edit.worker');
+    Route::get('admin/editar-trabajador/{id}', [AdminController::class, 'editWorker'])->name('edit.worker');
     Route::put('admin/update-trabajador/{id}', [AdminController::class, 'update'])->name('update.worker');
+    
+    Route::get('admin/eliminar-trabajador', [AdminController::class, 'borrarTrabajador'])->name('worker.delete');
     Route::delete('admin/eliminar-trabajador/{worker}', [AdminController::class, 'destroy'])->name('worker.destroy');
 });
 

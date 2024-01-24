@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Worker;
 use App\Models\Patient;
 use App\Models\User;
+use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rules\Unique;
 
 class AdminController extends Controller
 {
@@ -41,26 +43,36 @@ class AdminController extends Controller
         return view('editarTrabajadores', compact('trabajadores'));
     }
 
-    public function edit($id)
+    public function editWorker($id)
     {
         $trabajador = Worker::findOrFail($id);
 
         return view('editarTrabajador', compact('trabajador'));
     }
 
-    public function update(Request $request, $id)
+    public function updateWorker(Request $request, $id)
     {
         $trabajador = Worker::findOrFail($id);
 
-        // Validación y lógica de actualización según tus necesidades
-
-        $trabajador->update([
-            'title' => $request->input('title'),
-            'specialty' => $request->input('specialty'),
-            // Otros campos según tus necesidades
+        $request->validate([
+            'usuario' => 'required|exists:users,id',
+            'titulacion' => 'required|string|min:5|max:100',
+            'especializacion' => 'required|string|min:5|max:100'
         ]);
 
-        return redirect()->route('admin.dashboard')->with('success', 'Trabajador actualizado exitosamente');
+        try {
+            $trabajador->update([
+                'title' => $request->input('title'),
+                'specialty' => $request->input('specialty'),
+            ]);
+
+            return redirect()->route('admin.dashboard')->with('success', 'Trabajador actualizado exitosamente');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->route('admin.dashboard')->with('error', 'No se ha podido actualizar el trabajdor. Intentelo de nuevo.');
+
+        }
+
     }
 
 
@@ -98,10 +110,10 @@ class AdminController extends Controller
         return view('borrarTrabajador', compact('trabajadores'));
     }
 
-    public function destroy(Worker $worker)
+    public function destroy($id)
     {
+        $worker = Worker::findOrFail($id);
         try {
-            //code...
             $worker->delete();
             return redirect('/admin/dashboard')->with('success', 'Trabajador eliminado con éxito.');
         } catch (\Throwable $th) {
@@ -109,6 +121,7 @@ class AdminController extends Controller
             return redirect('/admin/dashboard')->with('error', 'No se ha podido eliminar el trabajador. Revisa que no tenga citas pendientes.');
         }
     }
+    
 
     public function crearUsuario()
     {
@@ -118,25 +131,40 @@ class AdminController extends Controller
     public function storeUser(Request $request)
     {
         $request->validate([
-            'first_name' => 'required|string|max:100|regex:/^[A-Za-zÑñÁáÉéÍíÓóÚúÜü]+$/',
-            'last_name' => 'required|string|max:100|regex:/^[A-Za-zÑñÁáÉéÍíÓóÚúÜü]+$/',
-            'address' => 'required|string|min:5|max:100|regex:/^[a-zA-ZzÑñÁáÉéÍíÓóÚúÜü0-9\s\-\/\.,]+$/',
-            'phone' => 'required|regex:/^(956\d{6}|[67]\d{8})$/',
-            'birth_date' => 'required|date|before:-18 years',
-            'dni' => ['required|regex:/^[0-9]{8}[A-Z]$/',  ]
+            'first_name' => ['required', 'string', 'max:100', 'regex:/^[A-Za-zÑñÁáÉéÍíÓóÚúÜü]+$/'],
+            'last_name' => ['required', 'string', 'max:100', 'regex:/^[A-Za-zÑñÁáÉéÍíÓóÚúÜü]+$/'],
+            'address' => ['required', 'string', 'min:5', 'max:100', 'regex:/^[a-zA-ZzÑñÁáÉéÍíÓóÚúÜü0-9\s\º\-\/\.,]+$/'],
+            'phone' => ['required', 'regex:/^(956\d{6}|[67]\d{8})$/'],
+            'birth_date' => ['required', 'date', 'before:-18 years'],
+            'dni' => ['required', 'Unique:users', 'regex:/^[0-9]{8}[A-Z]$/'],
+            'email' => ['required', 'email', 'Unique:users', 'regex:/^[^\s@]+@[^\s@]+\.[^\s@]+$/'],
+            [
+                'birth_date.required' => 'La fecha de nacimiento es obligatorio.',
+                'birth_date.date' => 'La fecha de nacimiento debe ser una fecha válida.',
+                'birth_date.before' => 'Debes tener al menos 18 años.',
+            ]
         ]);
 
         try {
-            DB::table('workers')->insert([
-                'user_id' => $request->usuario,
-                'title' => $request->titulacion,
-                'specialty' => $request->especializacion
-            ]);
+            $user = new User();
 
-            return redirect()->route('admin.dashboard')->with('success', 'Trabajador creado correctamente.');
+            $user->first_name = $request->first_name;
+            $user->last_name = $request->last_name;
+            $user->address = $request->address;
+            $user->phone = $request->phone;
+            $user->birth_date = $request->birth_date;
+            $user->dni = $request->dni;
+            $user->email = $request->email;
+            $user->password = bcrypt($request->password);
+
+            $user->save();
+
+            return redirect()->route('admin.dashboard')->with('success', 'El usuario se ha creado correctamente.');
+
         } catch (\Throwable $th) {
-            //throw $th;
-            return redirect()->route('admin.dashboard')->with('error', 'Algo ha salido mal. Inténtelo de nuevo.');
+            return redirect()->route('admin.dashboard')->with('error', 'No se ha podido crear el usuario. Por favor intentelo de nuevo');
         }
+
+
     }
 }

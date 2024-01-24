@@ -24,7 +24,7 @@ return new class extends Migration
             $table->foreign('patient_id')->references('id')->on('patients');
             $table->foreign('worker_id')->references('id')->on('workers');
 
-            $table->unique(['date', 'hour']);
+            $table->unique(['date', 'hour', 'worker_id']);
         });
     }
 

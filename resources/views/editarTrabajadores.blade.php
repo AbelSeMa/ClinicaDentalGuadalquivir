@@ -28,7 +28,9 @@
                 <td scope="row" class="px-6 py-4">{{$trabajador->usuario->first_name}} {{$trabajador->usuario->last_name}}</td>
                 <td scope="row" class="px-6 py-4">{{$trabajador->title}}</td>
                 <td scope="row" class="px-6 py-4">{{$trabajador->specialty}}</td>
-                <td scope="row" class="px-6 py-4"><a href="/admin/editar-trabajador/{{$trabajador->id}}">Editar</a></td>
+                <td scope="row" class="px-6 py-4"><a href="/admin/editar-trabajador/{{$trabajador->id}}"><span class="material-symbols-outlined">
+                    edit
+                    </span></a></td>
             </tr>
             @endforeach
         </tbody>

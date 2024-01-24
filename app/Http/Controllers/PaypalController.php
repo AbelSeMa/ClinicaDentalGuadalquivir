@@ -96,7 +96,7 @@ class PaypalController extends Controller
      */
     public function paymentSuccess(Request $request)
     {
-        if (auth()->user()->paciente->plan_id) {
+        if (auth()->user()->paciente) {
             $provider = new PayPalClient;
             $provider->setApiCredentials(config('paypal'));
             $provider->getAccessToken();

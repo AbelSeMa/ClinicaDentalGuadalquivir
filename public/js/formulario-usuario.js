@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Realizar la validación (cadena de letras incluyendo mayúsculas)
         var regexAlfabetico = /^[A-Za-zÑñÁáÉéÍíÓóÚúÜü]+$/;
-        var regexDireccion = /^[a-zA-Z0-9\s\-\/\.,]+$/;
+        var regexDireccion = /^[a-zA-ZzÑñÁáÉéÍíÓóÚúÜü0-9\s\º\-\/\.,]+$/;
         var regexTelefono = /^(956\d{6}|[67]\d{8})$/;
         var regexDNI = /^[0-9]{8}[a-zA-Z]$/;
         var regexCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Verificar el formato del DNI
             if (!regexDNI.test(dni)) {
-                document.getElementById('telefono').className = 'border-red-500';
+                document.getElementById('dni').className = 'border-red-500';
                 return false;
             }
 

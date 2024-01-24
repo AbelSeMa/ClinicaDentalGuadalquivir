@@ -1,11 +1,12 @@
 $('#fecha').change(function () {
     var fecha = $(this).val();
+    var doctor = $('#doctor').val();
     console.log(fecha);
 
     $.ajax({
         url: '/horas-disponibles',
         type: 'GET',
-        data: {fecha: fecha},
+        data: {fecha: fecha, doctor: doctor},
         dataType: 'json',
         success: function (response) {
             var horas = response.horas;
