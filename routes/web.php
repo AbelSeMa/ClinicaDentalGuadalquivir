@@ -9,6 +9,7 @@ use App\Http\Controllers\PlanesController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WorkerController;
 use App\Models\Patient;
+use App\Models\Worker;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,8 +30,19 @@ Route::get('/planes', [PlanesController::class, 'index'])->name('index.plan');
 
 Route::get('plan/{id}', [PlanesController::class, 'show'])->name('show.plan');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/user/dashboard', [PatientController::class, 'index'])->name('user.dashboard');
+
+
+
+
+Route::get('/user/dashboard', [PatientController::class, 'index'])
+    ->middleware(['auth'])
+    ->name('user.dashboard');
+
+Route::get('/altapaciente', [PatientController::class])
+    ->middleware(['auth', 'admin'])
+    ->name('altapaciente');
+
+Route::middleware('patient')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -50,11 +62,20 @@ Route::middleware('auth')->group(function () {
 Route::get('/prueba', [CitasController::class, 'diasSinCitas']);
 
 Route::middleware('admin')->group(function () {
-    Route::get('/editarworker/{id}', [WorkerController::class, 'edit'])->name('edit.worker');
-    Route::put('/update-worker/{id}', [WorkerController::class, 'update'])->name('update.worker');
-    Route::get('/altapaciente', [PatientController::class, 'create'])->name('altapaciente');
-    Route::post('/altapaciente', [PatientController::class, 'storage'])->name('altapaciente');
     Route::get('/admin/dashboard', [CitasController::class, 'index'])->name('admin.dashboard');
+    Route::get('/usuarios-sin-roles', [AdminController::class, 'sinRoles'])->name('usuarios.sinroles');
+
+    Route::get('/admin/crear-usuario', [AdminController::class, 'crearUsuario'])->name('user.create');
+    Route::post('/admin/almacenar-usuario', [AdminController::class, 'storeUser'])->name('user.storage');
+
+    Route::get('admin/crear-trabajador', [AdminController::class, 'crearTrabajador'])->name('worker.create');
+    Route::post('admin/almacenar-trabajador', [AdminController::class, 'storeWorker'])->name('worker.storage');
+    Route::get('admin/editar-trabajador', [AdminController::class, 'editarTrabajador'])->name('index.worker');
+    Route::get('admin/editar-trabajador/{id}', [AdminController::class, 'editWorker'])->name('edit.worker');
+    Route::put('admin/update-trabajador/{id}', [AdminController::class, 'update'])->name('update.worker');
+    
+    Route::get('admin/eliminar-trabajador', [AdminController::class, 'borrarTrabajador'])->name('worker.delete');
+    Route::delete('admin/eliminar-trabajador/{worker}', [AdminController::class, 'destroy'])->name('worker.destroy');
 });
 
 require __DIR__ . '/auth.php';

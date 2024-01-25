@@ -339,18 +339,18 @@ return [
             'submenu' => [
                 [
                     'text' => 'Crear nuevo trabajador',
-                    'url'  => '/admin/trabajador/crear',
+                    'url'  => '/admin/crear-trabajador',
                     'icon' => 'fa fa-user-plus'
 
                 ],
                 [
                     'text' => 'Borrar a un trabajador',
-                    'url'  => '/admin/trabajador/borrar',
+                    'url'  => '/admin/eliminar-trabajador',
                     'icon' => 'fa fa-user-times'
                 ],
                 [
                     'text' => 'Editar a un trabajador',
-                    'url'  => '/admin/trabajador/editar',
+                    'url'  => '/admin/editar-trabajador',
                     'icon' => 'fa fa-pen'
                 ]
             ]

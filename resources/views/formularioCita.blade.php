@@ -9,6 +9,22 @@
     <div class="rounded-lg w-[355px] text-center mx-auto backdrop-blur-xl bg-white/30 lg:w-[500px]">
         <form action="/almacenar-cita" method="POST" class="max-w-sm mx-auto py-3">
             @csrf
+            <label for="doctor" class="block mb-2 text-lg font-medium text-gray-900 dark:text-white">Selecciona un
+                doctor:</label>
+            @error('doctor')
+                <div class="text-orange-700 p-4" role="alert">
+                    <p class="font-bold">¡CUIDADO!</p>
+                    <p>{{ $message }}</p>
+                </div>
+            @enderror
+            <select name="doctor" id="doctor"
+                class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-[90%] mx-5  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <option value="" default>--Elige una opción--</option>
+                @foreach ($doctores as $doctor)
+                    <option value="{{ $doctor->id }}">{{ $doctor->usuario->first_name }} - {{ $doctor->specialty }}
+                    </option>
+                @endforeach
+            </select><br>
             <label for="fecha" class="block mb-2 text-lg font-medium text-gray-900 dark:text-white">Selecciona una
                 fecha:</label>
             @error('fecha')
@@ -24,7 +40,7 @@
             <label for="horas-disponibles" class="block mb-2 text-lg font-medium text-gray-900 dark:text-white">Elige
                 una
                 hora: </label>
-                @error('hora')
+            @error('hora')
                 <div class="text-orange-700 p-4" role="alert">
                     <p class="font-bold">¡CUIDADO!</p>
                     <p>{{ $message }}</p>
@@ -34,22 +50,6 @@
                 class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-[90%] mx-5  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></select><br>
 
 
-            <label for="doctor" class="block mb-2 text-lg font-medium text-gray-900 dark:text-white">Selecciona un
-                doctor:</label>
-                @error('doctor')
-                <div class="text-orange-700 p-4" role="alert">
-                    <p class="font-bold">¡CUIDADO!</p>
-                    <p>{{ $message }}</p>
-                </div>
-            @enderror
-            <select name="doctor" id="doctor"
-                class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-[90%] mx-5  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                <option value="" default>--Elige una opción--</option>
-                @foreach ($doctores as $doctor)
-                    <option value="{{ $doctor->id }}">{{ $doctor->usuario->first_name }} - {{ $doctor->specialty }}
-                    </option>
-                @endforeach
-            </select><br>
 
             <label for="notas" class="block mb-2 text-lg font-medium text-gray-900 dark:text-white">Describe brevemente
                 el motivo de tu consulta:</label>
@@ -63,48 +63,65 @@
         </form>
     </div>
 
+
+
     <script>
         $(document).ready(function() {
-            $.ajax({
-                url: '/obtener-dias-sin-citas',
-                type: 'GET',
-                success: function(data) {
-                    const diasSinCitas = data.dias;
+            $('#doctor').select2();
+        });
 
-                    const finesDeSemana = obtenerFinesDeSemana();
+        $(document).ready(function() {
 
-                    const anyo = new Date();
-                    const anyoActual = anyo.getFullYear();
+            $('#doctor').change(function() {
+                var doctor = $(this).val();
+                $.ajax({
+                    url: '/obtener-dias-sin-citas',
+                    data: {
+                        doctor: doctor
+                    },
+                    type: 'GET',
+                    success: function(data) {
+                        const diasSinCitas = data.dias;
+                        console.log(diasSinCitas)
 
-                    const diasFiesta = [
-                        `${anyoActual}-01-01`,
-                        `${anyoActual}-01-06`,
-                        `${anyoActual}-02-28`,
-                        `${anyoActual}-05-01`,
-                        `${anyoActual}-08-15`,
-                        `${anyoActual}-10-12`,
-                        `${anyoActual}-11-01`,
-                        `${anyoActual}-12-06`,
-                        `${anyoActual}-12-08`,
-                        `${anyoActual}-12-06`,
-                        `${anyoActual}-12-25`,
-                    ]
+                        const finesDeSemana = obtenerFinesDeSemana();
 
-                    // Combinar días sin citas y fines de semana
-                    const diasDeshabilitados = [...diasSinCitas, ...finesDeSemana, ...diasFiesta];
+                        const anyo = new Date();
+                        const anyoActual = anyo.getFullYear();
 
-                    flatpickr("#fecha", {
-                        minDate: 'today',
-                        maxDate: new Date().getFullYear() + "-12-31",
-                        disable: diasDeshabilitados,
-                        dateFormat: "d-m-Y",
-                        locale: "es",
-                    });
-                },
-                error: function(error) {
-                    console.log(error);
-                }
-            });
+                        const diasFiesta = [
+                            `${anyoActual}-01-01`,
+                            `${anyoActual}-01-06`,
+                            `${anyoActual}-02-28`,
+                            `${anyoActual}-05-01`,
+                            `${anyoActual}-08-15`,
+                            `${anyoActual}-10-12`,
+                            `${anyoActual}-11-01`,
+                            `${anyoActual}-12-06`,
+                            `${anyoActual}-12-08`,
+                            `${anyoActual}-12-06`,
+                            `${anyoActual}-12-25`,
+                        ]
+
+                        // Combinar días sin citas y fines de semana
+                        const diasDeshabilitados = [...diasSinCitas, 
+                                                    ...finesDeSemana, 
+                                                    ...diasFiesta
+                        ];
+
+                        flatpickr("#fecha", {
+                            minDate: 'today',
+                            maxDate: new Date().getFullYear() + "-12-31",
+                            disable: diasDeshabilitados,
+                            dateFormat: "d-m-Y",
+                            locale: "es",
+                        });
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            })
         });
 
         function obtenerFinesDeSemana() {
@@ -112,7 +129,8 @@
             const hoy = new Date();
             const finDeSemana = [];
 
-            for (let i = 0; i < 365; i++) { // Agregar los próximos 365 días y descartamos los sábados y domingos
+            for (let i = 0; i <
+                365; i++) { // Agregar los próximos 365 días y descartamos los sábados y domingos
                 const dia = new Date();
                 dia.setDate(hoy.getDate() + i);
 
