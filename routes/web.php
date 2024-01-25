@@ -33,6 +33,7 @@ Route::get('plan/{id}', [PlanesController::class, 'show'])->name('show.plan');
 
 
 
+
 Route::get('/user/dashboard', [PatientController::class, 'index'])
     ->middleware(['auth'])
     ->name('user.dashboard');

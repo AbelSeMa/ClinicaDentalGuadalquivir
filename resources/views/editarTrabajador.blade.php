@@ -6,7 +6,6 @@
 @section('content')
 
 
-
     <h2 class="text-center">Editar información de un trabajador</h2>
     <form class="max-w-sm mx-auto" action="{{ route('update.worker', $trabajador->id) }}" method="post">
         @csrf
