@@ -9,31 +9,63 @@
 @section('content')
     @include('_mensajesError')
     <div>
-        <h2>Panel de citas</h2>
-        <div class="grid grid-cols-1 gap-2 lg:grid-cols-3 pb-2">
+        <h2 class="text-center">Panel de citas</h2>
+        <div class="grid grid-cols-1 gap-2 lg:grid-cols-2-">
             <div>
                 <form method="GET" action="{{ route('admin.dashboard') }}">
-                    <label for="filtro_anio">Filtrar por año:</label>
-                    <input type="number" name="filtro_anio" id="filtro_anio" min="1900" max="{{ date('Y') + 1 }}">
-                    <button type="submit"
-                        class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800">
-                        <span
-                            class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                    <fieldset>
+                        <legend> Búsqueda
+                        </legend>
+                        <label for="filtro_anio" class="sr-only">Filtrar por
+                            año:</label>
+                        <input type="number" name="filtro_anio" id="filtro_anio" min="1900" max="{{ date('Y') + 1 }}"
+                            aria-describedby="helper-text-explanation" placeholder="Indica el año de busqueda"
+                            class="block w-48 mb-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+
+                        <label for="doctor" class="sr-only">Elige un
+                            doctor</label>
+                        <select name="doctor" id="doctor"
+                            class=" py-2.5 px-0 w-48 text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
+                            <option value="">Selecciona un doctor</option>
+                            @foreach ($trabajadores as $trabajador)
+                                <option value="{{ $trabajador->id }}">{{ $trabajador->usuario->last_name }},
+                                    {{ $trabajador->usuario->first_name }}</option>
+                            @endforeach
+                        </select>
+
+                        <button type="submit"
+                            class="block px-3 py-2 text-xs font-medium text-center text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 rounded-lg me-2 my-4 ">
                             Buscar
-                        </span>
-                    </button>
+                        </button>
+                    </fieldset>
                 </form>
             </div>
 
-            <div class="flex items-center">
-                <form method="GET" action="{{ route('admin.dashboard') }}">
-                    <input type="hidden" name="ver_citas_hoy" value="1">
-                    <button type="submit">Ver citas para hoy</button>
-                </form>
-            </div>
+            <div class="flex content-around">
+                <div class="flex items-center">
+                    <form method="GET" action="{{ route('admin.dashboard') }}">
+                        <input type="hidden" name="ver_citas_hoy" value="1">
+                        <button type="submit"
+                            class="px-3 py-2 text-xs font-medium text-center text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 rounded-lg me-2 my-4 ">
+                            Citas para hoy</button>
+                    </form>
+                </div>
 
-            <div class="flex items-center">
-                <a href="{{ route('admin.dashboard') }}" class="button">Mostrar todas las citas</a>
+
+                <div class="flex items-center">
+                    <form method="GET" action="{{ route('admin.dashboard') }}">
+                        <input type="hidden" name="filtro_semana" value="1">
+                        <button type="submit"
+                            class="px-3 py-2 text-xs font-medium text-center text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 rounded-lg me-2 my-4 ">
+                            Citas de la semana</button>
+                    </form>
+                </div>
+
+                <div class="flex items-center">
+                    <a href="{{ route('admin.dashboard') }}"
+                        class="px-3 py-2 text-xs font-medium text-center text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 rounded-lg me-2 my-4 ">
+                        Todas las citas</a>
+                </div>
             </div>
         </div>
         <div>
@@ -96,5 +128,4 @@
 
             });
         </script>
-
     @stop

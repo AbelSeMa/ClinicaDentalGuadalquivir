@@ -18,23 +18,34 @@ class CitasController extends Controller
 {
     public function index(Request $request)
     {
-        $filtroAnio = $request->input('filtro_anio');
+        $trabajadores = Worker::all();
+        $citas = $this->getCitasFiltradas($request);
+        return view('adminDashboard', compact('citas', 'trabajadores'));
+    }
 
-        $fechaActual = Carbon::now()->toDateString();
+    private function getCitasFiltradas(Request $request)
+    {
+        $query = Appointment::with(['patient.usuario', 'worker.usuario']);
 
-        if ($filtroAnio) {
-            $citas = Appointment::with(['patient.usuario', 'worker.usuario'])
-                ->whereYear('date', $filtroAnio)
-                ->paginate(25);
-        } elseif ($request->has('ver_citas_hoy')) {
-            $citas = Appointment::with(['patient.usuario', 'worker.usuario'])
-                ->whereDate('date', $fechaActual)
-                ->paginate(25);
-        } else {
-            $citas = Appointment::with(['patient.usuario', 'worker.usuario'])->paginate(25);
+        if ($request->has('filtro_anio') && $request->input('filtro_anio') !== null) {
+            $query->whereYear('date', $request->input('filtro_anio'));
         }
 
-        return view('adminDashboard', compact('citas'));
+        if ($request->has('ver_citas_hoy') && $request->input('ver_citas_hoy') !== null) {
+            $query->whereDate('date', Carbon::now()->toDateString());
+        }
+
+        if ($request->has('filtro_semana') && $request->input('filtro_semana') !== null) {
+            $inicioSemana = Carbon::now()->startOfWeek()->toDateString();
+            $finSemana = Carbon::now()->endOfWeek()->toDateString();
+            $query->whereBetween('date', [$inicioSemana, $finSemana]);
+        }
+
+        if ($request->has('doctor') && $request->input('doctor') !== null) {
+            $query->where('worker_id', $request->input('doctor'));
+        }
+
+        return $query->paginate(25);
     }
 
     public function horasDisponibles(Request $request)
@@ -44,8 +55,8 @@ class CitasController extends Controller
 
         // Obtener las citas para la fecha especificada
         $citas = Appointment::where('date', $fecha)
-                            ->where('worker_id', $doctor)
-                            ->pluck('hour');
+            ->where('worker_id', $doctor)
+            ->pluck('hour');
 
         // Definir el rango de horas disponibles
         $inicio = new DateTime('8:00:00');
