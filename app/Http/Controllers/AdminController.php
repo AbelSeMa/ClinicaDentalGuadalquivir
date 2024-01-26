@@ -179,7 +179,42 @@ class AdminController extends Controller
             return redirect('/admin/dashboard')->with('success', 'Usuario eliminado con éxito.');
         } catch (\Throwable $th) {
             //throw $th;
-            return redirect('/admin/dashboard')->with('error', 'No se ha podido eliminar el Usuario. Revisa que no tenga citas pendientes.');
+            return redirect('/admin/dashboard')->with('error', 'No se ha podido eliminar el Usuario. Revisa que no tenga citas pendientes o aún conserve algún rol.');
+        }
+    }
+
+    public function editarUsuario()
+    {
+        $usuarios = User::all();
+
+        return view('editarUsuarios', compact('usuarios'));
+    }
+
+    public function editUser($id)
+    {
+        $usuario = User::findOrFail($id);
+
+        return view('editarUsuario', compact('usuario'));
+    }
+
+    public function updateUser(Request $request, $id)
+    {
+        $usuario = User::findOrFail($id);
+
+        $request->validate([
+            #TODO
+        ]);
+
+        try {
+            $usuario->update([
+                'title' => $request->input('title'),
+                'specialty' => $request->input('specialty'),
+            ]);
+
+            return redirect()->route('admin.dashboard')->with('success', 'Usuario actualizado exitosamente');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->route('admin.dashboard')->with('error', 'No se ha podido actualizar el usuario. Intentelo de nuevo.');
         }
     }
 }
