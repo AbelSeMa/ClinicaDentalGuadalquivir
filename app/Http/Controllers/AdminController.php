@@ -70,9 +70,7 @@ class AdminController extends Controller
         } catch (\Throwable $th) {
             //throw $th;
             return redirect()->route('admin.dashboard')->with('error', 'No se ha podido actualizar el trabajdor. Intentelo de nuevo.');
-
         }
-
     }
 
 
@@ -110,7 +108,7 @@ class AdminController extends Controller
         return view('borrarTrabajador', compact('trabajadores'));
     }
 
-    public function destroy($id)
+    public function destroyWorker($id)
     {
         $worker = Worker::findOrFail($id);
         try {
@@ -121,7 +119,7 @@ class AdminController extends Controller
             return redirect('/admin/dashboard')->with('error', 'No se ha podido eliminar el trabajador. Revisa que no tenga citas pendientes.');
         }
     }
-    
+
 
     public function crearUsuario()
     {
@@ -160,11 +158,28 @@ class AdminController extends Controller
             $user->save();
 
             return redirect()->route('admin.dashboard')->with('success', 'El usuario se ha creado correctamente.');
-
         } catch (\Throwable $th) {
             return redirect()->route('admin.dashboard')->with('error', 'No se ha podido crear el usuario. Por favor intentelo de nuevo');
         }
+    }
 
 
+    public function borrarUsuario()
+    {
+        $usuarios = User::all();
+
+        return view('borrarUsuario', compact('usuarios'));
+    }
+
+    public function destroyUser($id)
+    {
+        $user = User::findOrFail($id);
+        try {
+            $user->delete();
+            return redirect('/admin/dashboard')->with('success', 'Usuario eliminado con éxito.');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect('/admin/dashboard')->with('error', 'No se ha podido eliminar el Usuario. Revisa que no tenga citas pendientes.');
+        }
     }
 }

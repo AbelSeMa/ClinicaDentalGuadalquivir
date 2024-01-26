@@ -313,6 +313,27 @@ return [
         ],
         ['header' => 'Area de trabajo'],
         [
+            'text'    => 'Usuarios',
+            'icon'    => 'fa fa-users',
+            'submenu' => [
+                [
+                    'text' => 'Crear nuevo usuario.',
+                    'url'  => '/admin/crear-usuario',
+                    'icon' => 'fa fa-user-plus'
+                ],
+                [
+                    'text' => 'Borrar usuario',
+                    'url'  => 'admin/eliminar-usuario',
+                    'icon' => 'fa fa-user-times'
+                ],
+                [
+                    'text' => 'Editar usuario',
+                    'url'  => 'admin/editar-usuario',
+                    'icon' => 'fa fa-pen'
+                ]
+            ],
+        ],
+        [
             'text'    => 'Pacientes',
             'icon'    => 'fa fa-users',
             'submenu' => [

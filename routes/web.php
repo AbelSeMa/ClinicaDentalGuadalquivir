@@ -67,15 +67,20 @@ Route::middleware('admin')->group(function () {
 
     Route::get('/admin/crear-usuario', [AdminController::class, 'crearUsuario'])->name('user.create');
     Route::post('/admin/almacenar-usuario', [AdminController::class, 'storeUser'])->name('user.storage');
+    Route::get('admin/editar-usuario', [AdminController::class, 'editarUsuario'])->name('index.user');
+    Route::get('admin/editar-usuario/{id}', [AdminController::class, 'editUser'])->name('edit.user');
+    Route::put('admin/update-usuario/{id}', [AdminController::class, 'updateUser'])->name('update.user');
+    Route::get('admin/eliminar-usuario', [AdminController::class, 'borrarUsuario'])->name('user.delete');
+    Route::delete('admin/eliminar-usuario/{user}', [AdminController::class, 'destroyUser'])->name('user.destroy');
 
     Route::get('admin/crear-trabajador', [AdminController::class, 'crearTrabajador'])->name('worker.create');
     Route::post('admin/almacenar-trabajador', [AdminController::class, 'storeWorker'])->name('worker.storage');
     Route::get('admin/editar-trabajador', [AdminController::class, 'editarTrabajador'])->name('index.worker');
     Route::get('admin/editar-trabajador/{id}', [AdminController::class, 'editWorker'])->name('edit.worker');
-    Route::put('admin/update-trabajador/{id}', [AdminController::class, 'update'])->name('update.worker');
+    Route::put('admin/update-trabajador/{id}', [AdminController::class, 'updateWorker'])->name('update.worker');
     
     Route::get('admin/eliminar-trabajador', [AdminController::class, 'borrarTrabajador'])->name('worker.delete');
-    Route::delete('admin/eliminar-trabajador/{worker}', [AdminController::class, 'destroy'])->name('worker.destroy');
+    Route::delete('admin/eliminar-trabajador/{worker}', [AdminController::class, 'destroyWorker'])->name('worker.destroy');
 });
 
 require __DIR__ . '/auth.php';
