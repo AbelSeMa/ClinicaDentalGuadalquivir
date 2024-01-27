@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
             formulario.submit();
         } else {
             // Si la validación falla, puedes mostrar mensajes de error o realizar otras acciones
-            alert('La validación del formulario falló. Por favor, corrija los errores.');
+            alert('El formulario no ha sido completado correctamente. Por favor verifique los campos en color rojo.');
         }
     });
 
@@ -33,29 +33,31 @@ document.addEventListener('DOMContentLoaded', function () {
         var regexCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 
+        let isValid = true;
+
         if (!regexAlfabetico.test(nombre)) {
             // La validación falla
 
             document.getElementById('nombre').className = 'border-red-600';
-            return false;
+            isValid =  false;
         }
 
         if (!regexAlfabetico.test(apellido)) {
 
             document.getElementById('apellido').className = 'border-red-500';
-            return false;
+            isValid =  false;
         }
 
         if (!regexDireccion.test(direccion)) {
 
             document.getElementById('direccion').className = 'border-red-500';
-            return false;
+            isValid =  false;
         }
 
         if (!regexTelefono.test(telefono)) {
 
             document.getElementById('telefono').className = 'border-red-500';
-            return false;
+            isValid =  false;
         }
 
 
@@ -65,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // Verificar el formato del DNI
             if (!regexDNI.test(dni)) {
                 document.getElementById('dni').className = 'border-red-500';
-                return false;
+                isValid =  false;
             }
 
             // Extraer el número y la letra del DNI
@@ -77,16 +79,40 @@ document.addEventListener('DOMContentLoaded', function () {
             var letraEsperada = letras[numero % 23];
 
             // Verificar si la letra coincide
-            return letra === letraEsperada;
-
-
+            if (letra !== letraEsperada) {
+                isValid = false;
+            }
         }
 
+        if (nacimiento) {
+           
+                // Crear objeto de fecha a partir de la fecha de nacimiento
+                var fechaNacimientoDate = new Date(nacimiento);
+            
+                // Crear objeto de fecha para la fecha actual
+                var fechaActual = new Date();
+            
+                // Calcular la diferencia en años
+                var edad = fechaActual.getFullYear() - fechaNacimientoDate.getFullYear();
+            
+                // Restar un año si la persona aún no ha tenido su cumpleaños este año
+                if (fechaActual.getMonth() < fechaNacimientoDate.getMonth() ||
+                    (fechaActual.getMonth() == fechaNacimientoDate.getMonth() && fechaActual.getDate() < fechaNacimientoDate.getDate())) {
+                    edad--;
+                }
+            
+                // Verificar si la persona tiene al menos 18 años y no más de 100 años
+                if (edad < 18 || edad > 100) {
+                    document.getElementById('nacimiento').className = 'border-red-500';
+                    isValid =  false;
+                }
+
+        }
         if (!regexCorreo.test(correo)) {
             document.getElementById('correo').className = 'border-red-500';
-            return false;
+            isValid =  false;
         }
         // La validación es exitosa
-        return true;
+        return isValid;
     }
 });
