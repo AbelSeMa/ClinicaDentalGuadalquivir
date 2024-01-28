@@ -6,9 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Worker;
 use App\Models\Patient;
 use App\Models\User;
-use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\Rules\Unique;
+use Illuminate\Validation\Rules\Password;
+use Illuminate\Validation\Rule;
 
 class AdminController extends Controller
 {
@@ -136,6 +136,8 @@ class AdminController extends Controller
             'birth_date' => ['required', 'date', 'before:-18 years'],
             'dni' => ['required', 'Unique:users', 'regex:/^[0-9]{8}[A-Z]$/'],
             'email' => ['required', 'email', 'Unique:users', 'regex:/^[^\s@]+@[^\s@]+\.[^\s@]+$/'],
+            'password' => ['required', 'confirmed', Password::min(8)->letters()->mixedCase()->numbers()->symbols() ],
+            'password_confirmation' => ['required', 'min:8']
         ];
         $mensajes = [
             #campo nombre
@@ -230,8 +232,8 @@ class AdminController extends Controller
             'address' => ['required', 'string', 'min:5', 'max:100', 'regex:/^[a-zA-ZzÑñÁáÉéÍíÓóÚúÜü0-9\s\º\-\/\.,]+$/'],
             'phone' => ['required', 'regex:/^(956\d{6}|[67]\d{8})$/'],
             'birth_date' => ['required', 'date', 'before:-18 years'],
-            'dni' => ['required', 'Unique:users', 'regex:/^[0-9]{8}[A-Z]$/'],
-            'email' => ['required', 'email', 'Unique:users', 'regex:/^[^\s@]+@[^\s@]+\.[^\s@]+$/'],
+            'dni' => ['required', Rule::unique('users')->ignore($id), 'regex:/^[0-9]{8}[A-Z]$/'],
+            'email' => ['required', 'email', Rule::unique('users')->ignore($id), 'regex:/^[^\s@]+@[^\s@]+\.[^\s@]+$/'],
         ];
         $mensajes = [
             'birth_date.required' => 'La fecha de nacimiento es obligatorio.',

@@ -2,21 +2,16 @@ document.addEventListener('DOMContentLoaded', function () {
     var formulario = document.getElementById('form-usuario');
 
     formulario.addEventListener('submit', function (event) {
-        // Cancelar el envío predeterminado del formulario
         event.preventDefault();
 
-        // Realizar la validación
         if (validarFormulario()) {
-            // Si la validación es exitosa, enviar el formulario
             formulario.submit();
         } else {
-            // Si la validación falla, puedes mostrar mensajes de error o realizar otras acciones
             alert('El formulario no ha sido completado correctamente. Por favor verifique los campos en color rojo.');
         }
     });
 
     function validarFormulario() {
-        // Obtener el valor del campo de título
         var nombre = document.getElementById('nombre').value;
         var apellido = document.getElementById('apellido').value;
         var direccion = document.getElementById('direccion').value;
@@ -25,7 +20,6 @@ document.addEventListener('DOMContentLoaded', function () {
         var dni = document.getElementById('dni').value;
         var correo = document.getElementById('email').value;
 
-        // Realizar la validación (cadena de letras incluyendo mayúsculas)
         var regexAlfabetico = /^[A-Za-zÑñÁáÉéÍíÓóÚúÜü]+$/;
         var regexDireccion = /^[a-zA-ZzÑñÁáÉéÍíÓóÚúÜü0-9\s\º\-\/\.,]+$/;
         var regexTelefono = /^(956\d{6}|[67]\d{8})$/;
@@ -36,8 +30,6 @@ document.addEventListener('DOMContentLoaded', function () {
         let isValid = true;
 
         if (!regexAlfabetico.test(nombre)) {
-            // La validación falla
-
             document.getElementById('nombre').className = 'border-red-600';
             isValid =  false;
         }
