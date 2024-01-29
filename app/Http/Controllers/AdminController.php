@@ -132,15 +132,15 @@ class AdminController extends Controller
             'first_name' => ['required', 'string', 'max:100', 'regex:/^[A-Za-zÑñÁáÉéÍíÓóÚúÜü]+$/'],
             'last_name' => ['required', 'string', 'max:100', 'regex:/^[A-Za-zÑñÁáÉéÍíÓóÚúÜü]+$/'],
             'address' => ['required', 'string', 'min:5', 'max:100', 'regex:/^[a-zA-ZzÑñÁáÉéÍíÓóÚúÜü0-9\s\º\-\/\.,]+$/'],
-            'phone' => ['required', 'numeric','regex:/^(956\d{6}|[6789]\d{8})$/'],
+            'phone' => ['required', 'numeric', 'regex:/^(956\d{6}|[6789]\d{8})$/'],
             'birth_date' => ['required', 'date', 'before:-18 years'],
             'dni' => ['required', 'Unique:users', 'regex:/^[0-9]{8}[A-Z]$/'],
             'email' => ['required', 'email', 'Unique:users', 'regex:/^[^\s@]+@[^\s@]+\.[^\s@]+$/'],
-            'password' => ['required', 'confirmed', Password::min(8)->letters()->mixedCase()->numbers()->symbols() ],
+            'password' => ['required', 'confirmed', Password::min(8)->letters()->mixedCase()->numbers()],
             'password_confirmation' => ['required', 'min:8']
         ];
         $mensajes = [
-            #campo nombre
+            #campo.validacion
             'first_name.required' => 'El nombre es obligatorio',
             'first_name.max' => 'El nombre es muy largo',
             'first_name.regex' => 'El nombre debe estar compuesto sólo por letras',
@@ -158,15 +158,21 @@ class AdminController extends Controller
             'dni.required' => 'El campo DNI es obligatorio.',
             'dni.unique' => 'El DNI ya está registrado.',
             'dni.regex' => 'El DNI no es correcto.',
-           'email.required' => 'El campo Email es obligatorio.',
-           'email.unique' => 'El Email ya está registrado.',
-           'email.regex' => 'El Email no tiene un formato válido.',
+            'email.required' => 'El campo Email es obligatorio.',
+            'email.unique' => 'El Email ya está registrado.',
+            'email.regex' => 'El Email no tiene un formato válido.',
+            'password.min' => 'Contraseña demasiado corta.',
+            'password.letters' => 'Debe contener al menos una letra',
+            'password.mixedCase' => 'Debes utilizar al menos una letra minúscula y otra mayúscula.',
+            'password.numbers' => 'Debes utilizar al menos un número.',
+            'password.symbols' => 'Debes utilizar al menos un caracter especial.',
+
 
 
         ];
 
         $this->validate($request, $rules, $mensajes);
- 
+
         try {
             $user = new User();
 
