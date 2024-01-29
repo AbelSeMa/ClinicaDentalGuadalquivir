@@ -27,14 +27,33 @@ class AuthenticatedSessionController extends Controller
     {
         $request->authenticate();
 
-        $request->session()->regenerate();
+        if (Auth::user()->banned) {
+            Auth::guard('web')->logout();
 
-        if (Auth::user()->admin) {
+            $request->session()->invalidate();
 
-            return redirect(RouteServiceProvider::DASHBOARD);
-        } else {
-            return redirect(RouteServiceProvider::HOME);
+            $request->session()->regenerateToken();
+            return redirect('/')->with('error', 'Está cuenta está bloqueada temporalmente. Ponte en contacto con la administración del sitio.');
         }
+
+
+
+
+        if (!Auth::user()->banned) {
+            if (Auth::user()->admin) {
+                return redirect(RouteServiceProvider::DASHBOARD);
+            }
+
+            if (Auth::user()->paciente) {
+                return redirect(RouteServiceProvider::USERDASHBOARD);
+            }
+
+            if (Auth::user()->trabajador) {
+                return redirect(RouteServiceProvider::TRABAJADOR);
+            }
+        }
+        
+        $request->session()->regenerate();
     }
 
     /**

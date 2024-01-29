@@ -31,7 +31,8 @@
                         <a href="/admin/editar-usuario/{{$usuario}}"><span class="material-symbols-outlined">
                                 edit
                             </span></a>
-                        <form action="{{ route('user.ban'), $usuario }}" method="POST">
+                        <form action="{{ route('user.ban', $usuario) }}" method="POST">
+                            @csrf
                             @if ($usuario->banned)
                                 <button type="submit">
                                     <span class="material-symbols-outlined">
