@@ -31,8 +31,9 @@ class UserFactory extends Factory
             'dni' => $faker->unique()->dni(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
+            'banned' => $faker->boolean,
             'password' => static::$password ??= bcrypt('password'),
-            'remember_token' => Str::random(10),
+            'remember_token' => Str::random(10)
         ];
     }
 

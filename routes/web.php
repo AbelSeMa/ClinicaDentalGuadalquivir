@@ -72,6 +72,7 @@ Route::middleware('admin')->group(function () {
     Route::put('admin/update-usuario/{id}', [AdminController::class, 'updateUser'])->name('update.user');
     Route::get('admin/eliminar-usuario', [AdminController::class, 'borrarUsuario'])->name('user.delete');
     Route::delete('admin/eliminar-usuario/{user}', [AdminController::class, 'destroyUser'])->name('user.destroy');
+    Route::post('admin/denegar-acceso/{user}', [AdminController::class, 'banear'])->name('user.ban');
 
     Route::get('admin/crear-trabajador', [AdminController::class, 'crearTrabajador'])->name('worker.create');
     Route::post('admin/almacenar-trabajador', [AdminController::class, 'storeWorker'])->name('worker.storage');
