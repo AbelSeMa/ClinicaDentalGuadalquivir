@@ -265,4 +265,12 @@ class AdminController extends Controller
             return redirect()->route('admin.dashboard')->with('error', 'No se ha podido actualizar el usuario. Intentelo de nuevo.');
         }
     }
+
+    public function banear(User $user)
+    {
+        $user->banned = !$user->banned;
+        $user->save();
+
+        return redirect()->back();
+    }
 }

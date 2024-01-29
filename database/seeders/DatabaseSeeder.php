@@ -32,6 +32,7 @@ class DatabaseSeeder extends Seeder
         $admin->address = 'Calle Real nº 14';
         $admin->phone = '609124980';
         $admin->password = bcrypt('admin');
+        $admin->banned = false;
         $admin->admin = true;
 
         $admin->save();
