@@ -1,92 +1,87 @@
-document.addEventListener('DOMContentLoaded', function () {
-    var formulario = document.getElementById('form-usuario');
+document.addEventListener("DOMContentLoaded", function () {
+    var formulario = document.getElementById("form-usuario");
 
-    formulario.addEventListener('submit', function (event) {
-        // Cancelar el envío predeterminado del formulario
+    formulario.addEventListener("submit", function (event) {
         event.preventDefault();
 
-        // Realizar la validación
         if (validarFormulario()) {
-            // Si la validación es exitosa, enviar el formulario
             formulario.submit();
         } else {
-            // Si la validación falla, puedes mostrar mensajes de error o realizar otras acciones
-            alert('La validación del formulario falló. Por favor, corrija los errores.');
+            alert(
+                "El formulario no ha sido completado correctamente. Por favor verifique los campos en color rojo."
+            );
         }
     });
 
     function validarFormulario() {
-        // Obtener el valor del campo de título
-        var nombre = document.getElementById('nombre').value;
-        var apellido = document.getElementById('apellido').value;
-        var direccion = document.getElementById('direccion').value;
-        var telefono = document.getElementById('telefono').value;
-        var nacimiento = document.getElementById('nacimiento').value;
-        var dni = document.getElementById('dni').value;
-        var correo = document.getElementById('email').value;
 
-        // Realizar la validación (cadena de letras incluyendo mayúsculas)
-        var regexAlfabetico = /^[A-Za-zÑñÁáÉéÍíÓóÚúÜü]+$/;
-        var regexDireccion = /^[a-zA-ZzÑñÁáÉéÍíÓóÚúÜü0-9\s\º\-\/\.,]+$/;
-        var regexTelefono = /^(956\d{6}|[67]\d{8})$/;
-        var regexDNI = /^[0-9]{8}[a-zA-Z]$/;
-        var regexCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        var errores = {};
+        var isValid = true;
 
-
-        if (!regexAlfabetico.test(nombre)) {
-            // La validación falla
-
-            document.getElementById('nombre').className = 'border-red-600';
-            return false;
+        if (!nombre(errores)) {
+            isValid = false;
         }
 
-        if (!regexAlfabetico.test(apellido)) {
-
-            document.getElementById('apellido').className = 'border-red-500';
-            return false;
+        if (!apellido(errores)) {
+            isValid = false;
         }
 
-        if (!regexDireccion.test(direccion)) {
-
-            document.getElementById('direccion').className = 'border-red-500';
-            return false;
+        if (!direccion(errores)) {
+            isValid = false;
         }
 
-        if (!regexTelefono.test(telefono)) {
-
-            document.getElementById('telefono').className = 'border-red-500';
-            return false;
+        if (!telefono(errores)) {
+            isValid = false;
         }
 
+        if (!dni(errores)) {
+            isValid = false;
+        }
 
-        if (dni) {
-            var regexDNI = /^[0-9]{8}[a-zA-Z]$/;
+        if (nacimiento(errores)) {
+            isValid = false;
+        }
 
-            // Verificar el formato del DNI
-            if (!regexDNI.test(dni)) {
-                document.getElementById('dni').className = 'border-red-500';
-                return false;
+        if (!password(errores)) {
+            isValid = false;
+        }
+
+        if (!correo(errores)) {
+            isValid = false;
+        }
+
+        var mensajesError = document.getElementsByClassName('error-message');
+        while (mensajesError[0]) {
+            mensajesError[0].parentNode.removeChild(mensajesError[0]);
+        }
+
+        if (!isValid) {
+            mostrarErrores(errores)
+        }
+
+        return isValid;
+    }
+
+    function mostrarErrores(errores) {
+        for (var campo in errores) {
+            var mensajeError = errores[campo];
+            var elemento = document.getElementById(campo);
+
+            // Eliminar el mensaje de error existente, si lo hay
+            var errorExistente = document.getElementById(campo + '-error');
+            if (errorExistente) {
+                errorExistente.remove();
             }
 
-            // Extraer el número y la letra del DNI
-            var numero = dni.substring(0, 8);
-            var letra = dni.charAt(8).toUpperCase();
+            // Crear un elemento para el mensaje de error
+            var errorDiv = document.createElement("div");
+            errorDiv.id = campo + '-error'; // Asegúrate de que cada mensaje de error tenga un ID único
+            errorDiv.className = "error-message block mt-2 text-sm text-red-600 dark:text-red-500";
+            errorDiv.innerText = mensajeError;
 
-            // Calcular la letra esperada
-            var letras = 'TRWAGMYFPDXBNJZSQVHLCKE';
-            var letraEsperada = letras[numero % 23];
-
-            // Verificar si la letra coincide
-            return letra === letraEsperada;
-
-
+            // Añadir el mensaje de error después del campo de entrada
+            elemento.parentNode.insertBefore(errorDiv, elemento.nextSibling);
         }
-
-        if (!regexCorreo.test(correo)) {
-            document.getElementById('correo').className = 'border-red-500';
-            return false;
-        }
-        // La validación es exitosa
-        return true;
     }
+
 });

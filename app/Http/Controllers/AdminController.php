@@ -6,9 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Worker;
 use App\Models\Patient;
 use App\Models\User;
-use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\Rules\Unique;
+use Illuminate\Validation\Rules\Password;
+use Illuminate\Validation\Rule;
 
 class AdminController extends Controller
 {
@@ -70,9 +70,7 @@ class AdminController extends Controller
         } catch (\Throwable $th) {
             //throw $th;
             return redirect()->route('admin.dashboard')->with('error', 'No se ha podido actualizar el trabajdor. Intentelo de nuevo.');
-
         }
-
     }
 
 
@@ -110,7 +108,7 @@ class AdminController extends Controller
         return view('borrarTrabajador', compact('trabajadores'));
     }
 
-    public function destroy($id)
+    public function destroyWorker($id)
     {
         $worker = Worker::findOrFail($id);
         try {
@@ -121,7 +119,7 @@ class AdminController extends Controller
             return redirect('/admin/dashboard')->with('error', 'No se ha podido eliminar el trabajador. Revisa que no tenga citas pendientes.');
         }
     }
-    
+
 
     public function crearUsuario()
     {
@@ -130,20 +128,50 @@ class AdminController extends Controller
 
     public function storeUser(Request $request)
     {
-        $request->validate([
+        $rules = [
             'first_name' => ['required', 'string', 'max:100', 'regex:/^[A-Za-zÑñÁáÉéÍíÓóÚúÜü]+$/'],
             'last_name' => ['required', 'string', 'max:100', 'regex:/^[A-Za-zÑñÁáÉéÍíÓóÚúÜü]+$/'],
             'address' => ['required', 'string', 'min:5', 'max:100', 'regex:/^[a-zA-ZzÑñÁáÉéÍíÓóÚúÜü0-9\s\º\-\/\.,]+$/'],
-            'phone' => ['required', 'regex:/^(956\d{6}|[67]\d{8})$/'],
+            'phone' => ['required', 'numeric', 'regex:/^(956\d{6}|[6789]\d{8})$/'],
             'birth_date' => ['required', 'date', 'before:-18 years'],
             'dni' => ['required', 'Unique:users', 'regex:/^[0-9]{8}[A-Z]$/'],
             'email' => ['required', 'email', 'Unique:users', 'regex:/^[^\s@]+@[^\s@]+\.[^\s@]+$/'],
-            [
-                'birth_date.required' => 'La fecha de nacimiento es obligatorio.',
-                'birth_date.date' => 'La fecha de nacimiento debe ser una fecha válida.',
-                'birth_date.before' => 'Debes tener al menos 18 años.',
-            ]
-        ]);
+            'password' => ['required', 'confirmed', Password::min(8)->letters()->mixedCase()->numbers()],
+            'password_confirmation' => ['required', 'min:8']
+        ];
+        $mensajes = [
+            #campo.validacion
+            'first_name.required' => 'El nombre es obligatorio',
+            'first_name.max' => 'El nombre es muy largo',
+            'first_name.regex' => 'El nombre debe estar compuesto sólo por letras',
+            'last_name.required' => 'El apellido es obligatorio',
+            'last_name.max' => 'El apellido es muy largo',
+            'last_name.regex' => 'El apellido debe estar compuesto sólo por letras',
+            'address.required' => 'El campo dirección es obligatorio',
+            'address.min' => 'La dirección debe tener una longitud mínima de 5 caracteres',
+            'address.max' => 'La dirección es demasido larga.',
+            'phone.required' => 'El número de teléfono es obligatorio',
+            'phone.regex' => 'El número de teléfono no es válido. Compruebe que comience por 6|7|8 o 9',
+            'birth_date.required' => 'La fecha de nacimiento es obligatorio.',
+            'birth_date.date' => 'La fecha de nacimiento debe ser una fecha válida.',
+            'birth_date.before' => 'Debes tener al menos 18 años.',
+            'dni.required' => 'El campo DNI es obligatorio.',
+            'dni.unique' => 'El DNI ya está registrado.',
+            'dni.regex' => 'El DNI no es correcto.',
+            'email.required' => 'El campo Email es obligatorio.',
+            'email.unique' => 'El Email ya está registrado.',
+            'email.regex' => 'El Email no tiene un formato válido.',
+            'password.min' => 'Contraseña demasiado corta.',
+            'password.letters' => 'Debe contener al menos una letra',
+            'password.mixedCase' => 'Debes utilizar al menos una letra minúscula y otra mayúscula.',
+            'password.numbers' => 'Debes utilizar al menos un número.',
+            'password.symbols' => 'Debes utilizar al menos un caracter especial.',
+
+
+
+        ];
+
+        $this->validate($request, $rules, $mensajes);
 
         try {
             $user = new User();
@@ -160,11 +188,81 @@ class AdminController extends Controller
             $user->save();
 
             return redirect()->route('admin.dashboard')->with('success', 'El usuario se ha creado correctamente.');
-
         } catch (\Throwable $th) {
             return redirect()->route('admin.dashboard')->with('error', 'No se ha podido crear el usuario. Por favor intentelo de nuevo');
         }
+    }
 
 
+    public function borrarUsuario()
+    {
+        $usuarios = User::all();
+
+        return view('borrarUsuario', compact('usuarios'));
+    }
+
+    public function destroyUser($id)
+    {
+        $user = User::findOrFail($id);
+        try {
+            $user->delete();
+            return redirect('/admin/dashboard')->with('success', 'Usuario eliminado con éxito.');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect('/admin/dashboard')->with('error', 'No se ha podido eliminar el Usuario. Revisa que no tenga citas pendientes o aún conserve algún rol.');
+        }
+    }
+
+    public function editarUsuario()
+    {
+        $usuarios = User::all();
+
+        return view('editarUsuarios', compact('usuarios'));
+    }
+
+    public function editUser($id)
+    {
+        $usuario = User::findOrFail($id);
+
+        return view('editarUsuario', compact('usuario'));
+    }
+
+    public function updateUser(Request $request, $id)
+    {
+        $usuario = User::findOrFail($id);
+
+
+        $rules = [
+            'first_name' => ['required', 'string', 'max:100', 'regex:/^[A-Za-zÑñÁáÉéÍíÓóÚúÜü]+$/'],
+            'last_name' => ['required', 'string', 'max:100', 'regex:/^[A-Za-zÑñÁáÉéÍíÓóÚúÜü]+$/'],
+            'address' => ['required', 'string', 'min:5', 'max:100', 'regex:/^[a-zA-ZzÑñÁáÉéÍíÓóÚúÜü0-9\s\º\-\/\.,]+$/'],
+            'phone' => ['required', 'regex:/^(956\d{6}|[67]\d{8})$/'],
+            'birth_date' => ['required', 'date', 'before:-18 years'],
+            'dni' => ['required', Rule::unique('users')->ignore($id), 'regex:/^[0-9]{8}[A-Z]$/'],
+            'email' => ['required', 'email', Rule::unique('users')->ignore($id), 'regex:/^[^\s@]+@[^\s@]+\.[^\s@]+$/'],
+        ];
+        $mensajes = [
+            'birth_date.required' => 'La fecha de nacimiento es obligatorio.',
+            'birth_date.date' => 'La fecha de nacimiento debe ser una fecha válida.',
+            'birth_date.before' => 'Debes tener al menos 18 años.',
+        ];
+
+        $this->validate($request, $rules, $mensajes);
+        try {
+            $usuario->update([
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'address' => $request->address,
+                'phone' => $request->phone,
+                'birth_date' => $request->birth_date,
+                'dni' => $request->dni,
+                'email' => $request->email,
+            ]);
+
+            return redirect()->route('admin.dashboard')->with('success', 'Usuario actualizado exitosamente');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->route('admin.dashboard')->with('error', 'No se ha podido actualizar el usuario. Intentelo de nuevo.');
+        }
     }
 }
