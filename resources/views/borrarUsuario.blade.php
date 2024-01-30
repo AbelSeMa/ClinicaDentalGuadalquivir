@@ -12,7 +12,7 @@
             {{ session('success') }}
         </div>
     @endif
-    <div x-data="{ isMobile: window.innerWidth <= 375 }" x-init="isMobile = window.innerWidth <= 375" @resize.window="isMobile = window.innerWidth <= 375">
+    <div x-data="{ isMobile: window.innerWidth <= 420 }" x-init="() => { isMobile = window.innerWidth <= 420 }" @resize.window="isMobile = window.innerWidth <= 420">
         <table id="trabajadores-table" class="table-auto w-full">
             <thead class="text-xs text-white uppercase bg-blue-600 border-b border-blue-400 dark:text-white">
                 <tr>
@@ -28,7 +28,7 @@
                     <tr>
                         <td scope="row" class="px-6 py-4">{{ $usuario->last_name }}, <br>
                             {{ $usuario->first_name }}</td>
-                        <td scope="row" class="px-6 py-4" x-show="!isMobile">{{$usuario->email}}</td>
+                        <td scope="row" class="px-6 py-4" x-show="!isMobile">{{ $usuario->email }}</td>
                         <td scope="row" class="py-4 overflow-hidden text-ellipsis whitespace-nowrap">{{ $usuario->dni }}
                         </td>
                         @if ($usuario->trabajador)
@@ -103,5 +103,18 @@
 
         });
     </script>
+    <script>
+        function initIsMobile() {
+            const isMobile = window.innerWidth <= 420;
+            Alpine.data('isMobile', () => ({
+                isMobile
+            }));
 
+            window.addEventListener('resize', () => {
+                isMobile = window.innerWidth <= 420;
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', initIsMobile);
+    </script>
 @stop
