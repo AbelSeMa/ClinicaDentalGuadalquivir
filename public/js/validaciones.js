@@ -5,13 +5,13 @@ function nombre(errores) {
     if (!regexAlfabetico.test(nombre)) {
         errores["nombre"] =
             "El nombre es inválido. Debe contener sólo letras.";
-        document.getElementById("nombre").className =
-            "border-red-500";
+            document.getElementById("nombre").classList.remove("border-gray-300");
+            document.getElementById("nombre").classList.add("border-red-300");  
         return false
     }
 
-    document.getElementById("nombre").className =
-        "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500";
+    document.getElementById("nombre").classList.remove("border-red-300");
+    document.getElementById("nombre").classList.add("border-gray-300");
 
     return true
 }
@@ -23,14 +23,13 @@ function apellido(errores) {
     if (!regexAlfabetico.test(apellido)) {
         errores["apellido"] =
             "El apellido es inválido. Debe contener sólo letras.";
-        document.getElementById("apellido").className =
-            "border-red-500";
+           document.getElementById("apellido").classList.remove("border-gray-300");
+            document.getElementById("apellido").classList.add("border-red-300");
         return false;
 
     }
-
-    document.getElementById("apellido").className =
-        "border-gray-500";
+    document.getElementById("apellido").classList.remove("border-red-300");
+    document.getElementById("apellido").classList.add("border-gray-300");
 
     return true;
 
@@ -42,12 +41,12 @@ function direccion(errores) {
 
     if (!regexDireccion.test(direccion)) {
         errores["direccion"] = "La dirección es inválida.";
-        document.getElementById("direccion").className =
-            "border-red-500";
+        document.getElementById("direccion").classList.remove("border-gray-300");
+        document.getElementById("direccion").classList.add("border-red-300");
         return false;
     }
-    document.getElementById("direccion").className =
-        "border-gray-500";
+    document.getElementById("direccion").classList.remove("border-red-300");
+    document.getElementById("direccion").classList.add("border-gray-300");
 
     return true
 
@@ -61,13 +60,13 @@ function telefono(errores) {
     if (!regexTelefono.test(telefono)) {
         errores["telefono"] =
             "El teléfono es invalido. Asegurate que empiece por el prefijo (956) o si es un móvil por alguno de estos dígitos (6-7-8-9).";
-        document.getElementById("telefono").className =
-            "border-red-500";
+            document.getElementById("telefono").classList.remove("border-gray-300");
+            document.getElementById("telefono").classList.add("border-red-300");
         isValid = false;
 
     }
-    document.getElementById("telefono").className =
-        "border-gray-500";
+    document.getElementById("telefono").classList.remove("border-red-300");
+    document.getElementById("telefono").classList.add("border-gray-300");
 
     return true
 }
@@ -79,8 +78,8 @@ function dni(errores) {
 
     if (!regexDNI.test(dni)) {
         errores["dni"] = "El DNI no tiene un formato válido.";
-        document.getElementById("dni").className =
-            "border-red-500";
+        document.getElementById("dni").classList.remove("border-gray-300");
+        document.getElementById("dni").classList.add("border-red-300");
         return false;
     }
 
@@ -92,10 +91,12 @@ function dni(errores) {
 
     if (letra !== letraEsperada) {
         errores["dni"] = "El DNI no ha podido ser validado. Comprueba que que el nº de identificación sea correcto.";
+        document.getElementById("dni").classList.remove("border-gray-300");
+        document.getElementById("dni").classList.add("border-red-300");
         return false;
     }
-    document.getElementById("dni").className =
-        "border-gray-500";
+    document.getElementById("dni").classList.remove("border-red-300");
+    document.getElementById("dni").classList.add("border-gray-300");
 
     return true
 }
@@ -119,22 +120,21 @@ function nacimiento(errores) {
     }
 
     if (edad < 18) {
-        document.getElementById("nacimiento").className =
-            "border-red-500";
+        document.getElementById("nacimiento").classList.remove("border-gray-300");
+        document.getElementById("nacimiento").classList.add("border-red-300");
         errores["nacimiento"] = "Debes ser mayor de edad.";
         return false;
     }
 
     if (edad > 110) {
-        document.getElementById("nacimiento").className =
-            "border-red-500";
+        document.getElementById("nacimiento").classList.remove("border-gray-300");
+        document.getElementById("nacimiento").classList.add("border-red-300");
         errores["nacimiento"] =
             "Verifica la fecha de nacimiento. Si es correcta y tienes más de 110 años ponte en contacto con la dirección de la clínica";
         return false;
     }
-
-    document.getElementById("nacimiento").className =
-        "border-gray-500";
+    document.getElementById("nacimiento").classList.remove("border-red-300");
+    document.getElementById("nacimiento").classList.add("border-gray-300");
 
     return true
 }
@@ -148,30 +148,31 @@ function password(errores) {
 
 
     if (password.length < 8) {
-        document.getElementById("password").className =
-            "border-red-500";
+        document.getElementById("password").classList.remove("border-gray-300");
+        document.getElementById("password").classList.add("border-red-300");
         errores["password"] =
             "La contraseña debe tener una longitud de al menos 8 carácteres.";
         return false;
     }
 
     if (!mayus.test(password) && !minus.test(password)) {
-        document.getElementById("password").className =
-            "border-red-500";
+        document.getElementById("password").classList.remove("border-gray-300");
+        document.getElementById("password").classList.add("border-red-300");
         errores["password"] =
             "La contraseña debe contener una letra mayúscula y una minúscula.";
         return false;
     }
 
     if (!num.test(password)) {
-        document.getElementById("password").className =
-            "border-red-500";
+        document.getElementById("password").classList.remove("border-gray-300");
+        document.getElementById("password").classList.add("border-red-300");
         errores["password"] =
             "La contraseña debe contener al menos un número.";
         return false;
     }
-    document.getElementById("password").className =
-        "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500";
+
+    document.getElementById("password").classList.remove("border-red-300");
+    document.getElementById("password").classList.add("border-gray-300");
 
     return true
 }
@@ -181,15 +182,15 @@ function correo(errores) {
     var regexCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!regexCorreo.test(correo)) {
-        document.getElementById("email").className =
-            "border-red-500";
+        document.getElementById("email").classList.remove("border-gray-300");
+        document.getElementById("email").classList.add("border-red-300");
         errores["correo"] = "Formato de correo inválido.";
 
         isValid = false;
     }
 
-    document.getElementById("email").className =
-        "border-gray-500";
+    document.getElementById("email").classList.remove("border-red-300");
+    document.getElementById("email").classList.add("border-gray-300");
 
     return true
 }
