@@ -24,25 +24,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', HomeController::class);
-
-
 Route::get('/planes', [PlanesController::class, 'index'])->name('index.plan');
-
 Route::get('plan/{id}', [PlanesController::class, 'show'])->name('show.plan');
 
 
+Route::middleware(['patient', 'verified'])->group(function () {
+    Route::get('/user/dashboard', [PatientController::class, 'index'])->name('user.dashboard');
 
-
-
-Route::get('/user/dashboard', [PatientController::class, 'index'])
-    ->middleware(['auth'])
-    ->name('user.dashboard');
-
-Route::get('/altapaciente', [PatientController::class])
-    ->middleware(['auth', 'admin'])
-    ->name('altapaciente');
-
-Route::middleware('patient')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -58,8 +46,6 @@ Route::middleware('patient')->group(function () {
     Route::get('paypal/payment/success', [PayPalController::class, 'paymentSuccess'])->name('paypal.payment.success');
     Route::get('paypal/payment/cancel', [PayPalController::class, 'paymentCancel'])->name('paypal.payment/cancel');
 });
-
-Route::get('/prueba', [CitasController::class, 'diasSinCitas']);
 
 Route::middleware('admin')->group(function () {
     Route::get('/admin/dashboard', [CitasController::class, 'index'])->name('admin.dashboard');

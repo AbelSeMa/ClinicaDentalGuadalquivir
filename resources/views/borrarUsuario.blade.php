@@ -7,6 +7,7 @@
 @stop
 
 @section('content')
+@include('_mensajesError')
     @if (session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
