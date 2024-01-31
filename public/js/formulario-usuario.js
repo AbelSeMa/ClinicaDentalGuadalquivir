@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function () {
             isValid = false;
         }
 
-        if (nacimiento(errores)) {
+        if (!nacimiento(errores)) {
             isValid = false;
         }
 
