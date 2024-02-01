@@ -28,8 +28,6 @@ class PatientController extends Controller
 
     public function buscar(Request $request)
     {
-        info('Contenido de $request: ' . json_encode($request->all()));
-        $request->get('term');
 
         $patients = User::where('first_name', 'like', '%' . $request->get('term') . '%')->get();
         return response()->json($patients);

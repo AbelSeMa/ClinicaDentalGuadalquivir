@@ -24,7 +24,7 @@ class AppointmentSeeder extends Seeder
             
             $attended = $fecha->isPast() ? (bool) rand(0, 1) : false; // Si la fecha es pasada, el estado es false
             $worker_id = rand(1, 20); // Generar worker_id aleatorio entre 1 y 20
-            $patient_id = rand(1, 20);
+            $patient_id = rand(1, 70);
 
             $citas[] = [
                 'patient_id' => $patient_id,
