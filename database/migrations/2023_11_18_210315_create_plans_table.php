@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->decimal('price', 8, 2);
             $table->integer('duration_in_months');
+            $table->boolean('active')->default(true);
             $table->timestamps();
         });
     }

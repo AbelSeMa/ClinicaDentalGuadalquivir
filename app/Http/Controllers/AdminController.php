@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Worker;
 use App\Models\Patient;
+use App\Models\Plan;
+use App\Models\Service;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\Rule;
 
@@ -272,5 +275,84 @@ class AdminController extends Controller
         $user->save();
 
         return redirect()->back();
+    }
+
+    public function planes()
+    {
+        $planes = Plan::all();
+        $services = Service::all();
+
+        return view('adminPlanes', compact('planes', 'services'));
+    }
+
+    public function storePlan(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|regex:/^[A-Za-záéíóúüÁÉÍÓÚÜñÑ\s]+$/u',
+            'price' => 'required|numeric',
+            'duration_in_months' => 'required|numeric'
+        ]);
+
+        try {
+            $plan = new Plan;
+            $plan->name = $request->name;
+            $plan->price = $request->price;
+            $plan->duration_in_months = $request->duration_in_months;
+            $plan->save();
+        
+            // Sincroniza los servicios con el plan
+            $plan->services()->sync($request->services);
+        
+            return redirect()->route('admin.plans');
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+    }
+
+    public function editPlan($id)
+    {
+        $plan = Plan::find($id);
+        $services = Service::all();
+
+        return view('editarPlan', compact('plan', 'services'));
+    }
+
+    public function updatePlan(Request $request, $id)
+    {
+        $plan = Plan::find($id);
+
+        $request->validate([
+            'name' => 'required|string|regex:/^[A-Za-záéíóúüÁÉÍÓÚÜñÑ\s]+$/u',
+            'price' => 'required|numeric',
+            'duration_in_months' => 'required|numeric'
+        ]);
+
+        try {
+            $plan->update([
+                'name' => $request->name,
+                'price' => $request->price,
+                'duration_in_months' => $request->duration_in_months
+            ]);
+            $plan->services()->sync($request->services);
+        } catch (\Throwable $th) {
+            Log::error('Error al actualizar el plan: ' . $th->getMessage());
+            return redirect()->route('admin.planes')->with('error', 'No se ha podido actualizar el plan');
+        }
+
+        return redirect()->route('admin.planes')->with('success', 'El plan ha sido actualizado');
+    }
+
+    public function togglePlan($id)
+    {
+        $plan = Plan::find($id);
+
+        try {
+            $plan->update(['active' => !$plan->active]);
+        } catch (\Throwable $th) {
+            return redirect()->route('admin.planes')->with('error', 'No se ha podido realizar la operación');
+        }
+        
+
+        return redirect()->route('admin.planes')->with('success', 'El plan ha sido cambiado');
     }
 }

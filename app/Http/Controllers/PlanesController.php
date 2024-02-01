@@ -9,7 +9,7 @@ class PlanesController extends Controller
 {
     public function index()
     {
-        $planes = Plan::all();
+        $planes = Plan::orderBy('id')->get();
         return view('planes', compact('planes'));
     }
 
