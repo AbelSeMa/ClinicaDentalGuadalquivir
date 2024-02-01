@@ -376,6 +376,11 @@ return [
                 ]
             ]
         ],
+        [
+            'text' => 'Planes',
+            'icon' => 'fa fa-th-large',
+            'url' => 'admin/planes'
+        ],
         ['header' => 'labels'],
         [
             'text'       => 'important',

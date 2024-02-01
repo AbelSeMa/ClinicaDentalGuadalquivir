@@ -9,7 +9,7 @@ class Plan extends Model
 {
     use HasFactory;
 
-    protected $fillable = [ 'name', 'price', 'duration_in_months' ];
+    protected $fillable = [ 'name', 'price', 'duration_in_months', 'active' ];
 
     public function services()
     {

@@ -9,6 +9,7 @@ use App\Http\Controllers\PlanesController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WorkerController;
 use App\Models\Patient;
+use App\Models\Plan;
 use App\Models\Worker;
 use Illuminate\Support\Facades\Route;
 
@@ -70,6 +71,12 @@ Route::middleware('admin')->group(function () {
     Route::delete('admin/eliminar-trabajador/{worker}', [AdminController::class, 'destroyWorker'])->name('worker.destroy');
 
     Route::get('obtener-usuario', [PatientController::class, 'buscar'])->name('obtener.usuario');
+
+    Route::get('/admin/planes', [AdminController::class, 'planes'])->name('admin.planes');
+    Route::post('/admin/crear-plan', [AdminController::class, 'storePlan'])->name('admin.store-plan');
+    Route::get('admin/editar-plan/{id}', [AdminController::class, 'editPlan']);
+    Route::put('/admin/update-plan/{id}', [AdminController::class, 'updatePlan'])->name('admin.update-plan');
+    Route::post('/admin/plan/{id}/desactivar', [AdminController::class, 'togglePlan'])->name('admin.desactivar-plan');
 
 });
 
