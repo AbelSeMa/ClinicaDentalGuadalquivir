@@ -45,6 +45,11 @@ class CitasController extends Controller
             $query->where('worker_id', $request->input('doctor'));
         }
 
+        if ($request->has('paciente_id') && $request->input('paciente_id') !== null) {
+            $query->whereHas('patient.usuario', function ($query) use ($request) {
+                $query->where('id', $request->input('paciente_id'));
+            });
+        }
         return $query->paginate(25);
     }
 
