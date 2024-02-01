@@ -68,6 +68,9 @@ Route::middleware('admin')->group(function () {
     
     Route::get('admin/eliminar-trabajador', [AdminController::class, 'borrarTrabajador'])->name('worker.delete');
     Route::delete('admin/eliminar-trabajador/{worker}', [AdminController::class, 'destroyWorker'])->name('worker.destroy');
+
+    Route::get('obtener-usuario', [PatientController::class, 'buscar'])->name('obtener.usuario');
+
 });
 
 require __DIR__ . '/auth.php';

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Appointment;
+use App\Models\Patient;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class PatientController extends Controller
@@ -22,5 +24,14 @@ class PatientController extends Controller
         $numCitas = Appointment::where('patient_id', $patientId)->count();
 
         return view('userDashboard', compact('patient', 'citas', 'numCitas'));
+    }
+
+    public function buscar(Request $request)
+    {
+        info('Contenido de $request: ' . json_encode($request->all()));
+        $request->get('term');
+
+        $patients = User::where('first_name', 'like', '%' . $request->get('term') . '%')->get();
+        return response()->json($patients);
     }
 }

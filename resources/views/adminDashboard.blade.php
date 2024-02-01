@@ -14,13 +14,21 @@
             <div>
                 <form method="GET" action="{{ route('admin.dashboard') }}">
                     <fieldset>
-                        <legend> Búsqueda
+                        <legend> Búsqueda de citas
                         </legend>
-                        <label for="filtro_anio" class="sr-only">Filtrar por
+                        <label for="filtro_anio" class="">Buscar por
                             año:</label>
                         <input type="number" name="filtro_anio" id="filtro_anio" min="1900" max="{{ date('Y') + 1 }}"
                             aria-describedby="helper-text-explanation" placeholder="Indica el año de busqueda"
                             class="block w-48 mb-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+
+
+
+                        <label for="paciente" class="">Buscar por nombre de paciente</label>
+                        <input type="text" name="paciente" id="paciente" placeholder="Introduce nombre paciente"
+                            class="block w-48 mb-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <input type="hidden" id="paciente_id" name="paciente_id">
+
 
                         <label for="doctor" class="sr-only">Elige un
                             doctor</label>
@@ -32,7 +40,6 @@
                                     {{ $trabajador->usuario->first_name }}</option>
                             @endforeach
                         </select>
-
                         <button type="submit"
                             class="block px-3 py-2 text-xs font-medium text-center text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 rounded-lg me-2 my-4 ">
                             Buscar
@@ -116,7 +123,13 @@
     @endsection
 
     @section('js')
-        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
+        <!-- jQuery -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+        <!-- jQuery UI -->
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
         <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.1.1/flowbite.min.js"></script>
 
@@ -126,6 +139,37 @@
                 bInfo: false,
                 searching: false
 
+            });
+
+            $(document).ready(function() {
+                $('#paciente').autocomplete({
+                    source: function(request, response) {
+                        $.ajax({
+                            url: "{{ route('obtener.usuario') }}",
+                            dataType: "json",
+                            data: {
+                                term: request.term
+                            },
+                            success: function(data) {
+                                response(data.map(function(item) {
+                                    return {
+                                        label: item.first_name + " " + item
+                                            .last_name,
+                                        value: item.id
+                                    };
+                                }));
+                            }
+                        });
+                    },
+                    minLength: 1,
+                    select: function(event, ui) {
+                        $('#paciente').val(ui.item
+                            .label); // Establecer el valor del campo de entrada como el nombre
+                        $('#paciente_id').val(ui.item
+                            .value); // Establecer el valor del campo oculto como el ID
+                        return false; // Evitar que el valor seleccionado se muestre en el campo de entrada
+                    }
+                });
             });
         </script>
     @stop
