@@ -76,7 +76,7 @@
             </div>
         </div>
         <div>
-            <table id="citas-table">
+            <table id="citas-table" class="w-full">
                 <thead class="text-xs text-white uppercase bg-blue-600 border-b border-blue-400 dark:text-white">
                     <tr>
                         <th scope="col" class="px-6 py-3">
@@ -102,15 +102,20 @@
                             {{ $cita->worker->usuario->first_name }} {{ $cita->worker->usuario->last_name }}
                         </td>
                         <td class="px-6 py-4">
-                            {{ \Carbon\Carbon::parse($cita->date)->format('d/m/Y') }}
+                            {{ \Carbon\Carbon::parse($cita->date)->format('d/m/Y') }} <br>
+                            {{ $cita->hour }}
                         </td>
                         @if ($cita->attended)
                             <td class="px-6 py-4">
-                                Atentidida
+                                <span class="material-symbols-outlined">
+                                    event_available
+                                </span>
                             </td>
                         @else
-                            <td class="px-6 py-4">
-                                No presentado
+                            <td class="px-6 py-4 truncate">
+                                <span class="material-symbols-outlined">
+                                    event_busy
+                                </span>
                             </td>
                         @endif
                         </tr>
@@ -137,7 +142,11 @@
             $('#citas-table').DataTable({
                 paging: false,
                 bInfo: false,
-                searching: false
+                searching: false,
+                responive: true,
+                "language": {
+                    "emptyTable": "No hay datos."
+                }
 
             });
 
