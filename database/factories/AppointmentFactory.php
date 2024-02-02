@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Patient;
 use App\Models\Worker;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Faker\Factory as Faker;
 
@@ -30,17 +31,21 @@ class AppointmentFactory extends Factory
         if (!static::$randomWorkerIds) {
             $randomWorkerIds = Worker::all()->pluck('id')->shuffle();
         }
-        
-        // Genera una hora aleatoria entre las 8:00 y las 16:00
+
+        $date = $faker->dateTimeBetween(now()->startOfYear(), now()->endOfYear())->format('Y-m-d');
         $hour = $this->faker->numberBetween(8, 15) . ':' . $this->faker->randomElement(['00', '30']);
+
+        // Establecer el estado de la cita
+        $today = Carbon::today();
+        $status = $date <= $today ? $faker->randomElement(['Presentado', 'No presentado']) : 'Pendiente';
 
         return [
             'patient_id' => $randomPatientIds->pop(),
             'worker_id' => $randomWorkerIds->pop(),
-            'date' => $faker->dateTimeBetween(now()->startOfYear(), now()->endOfYear())->format('Y-m-d'),
+            'date' => $date,
             'hour' => $hour, // Hora ajustada
             'notes' => $this->faker->text,
-            'attended' => $this->faker->boolean,
+            'status' => $status,
         ];
     }
 }

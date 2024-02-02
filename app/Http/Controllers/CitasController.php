@@ -20,12 +20,28 @@ class CitasController extends Controller
     {
         $trabajadores = Worker::all();
         $citas = $this->getCitasFiltradas($request);
+
         return view('adminDashboard', compact('citas', 'trabajadores'));
+    }
+
+    public function workerDashboard(Request $request)
+    {
+        $trabajador = Auth::user()->trabajador;
+        $citas = $this->getCitasFiltradas($request)->sortBy('date');
+
+        return view('worker.dashboard', compact('citas'));
     }
 
     private function getCitasFiltradas(Request $request)
     {
-        $query = Appointment::with(['patient.usuario', 'worker.usuario']);
+        if (Auth::user()->admin) {
+            $query = Appointment::with(['patient.usuario', 'worker.usuario']);
+        }
+
+        if (Auth::user()->paciente) {
+            $query = Appointment::where('worker_id', Auth::user()->trabajador->id)
+                ->with(['patient.usuario', 'worker.usuario']);
+        }
 
         if ($request->has('filtro_anio') && $request->input('filtro_anio') !== null) {
             $query->whereYear('date', $request->input('filtro_anio'));

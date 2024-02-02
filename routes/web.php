@@ -8,6 +8,7 @@ use App\Http\Controllers\PaypalController;
 use App\Http\Controllers\PlanesController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WorkerController;
+use App\Models\Appointment;
 use App\Models\Patient;
 use App\Models\Plan;
 use App\Models\Worker;
@@ -66,18 +67,25 @@ Route::middleware('admin')->group(function () {
     Route::get('admin/editar-trabajador', [AdminController::class, 'editarTrabajador'])->name('index.worker');
     Route::get('admin/editar-trabajador/{id}', [AdminController::class, 'editWorker'])->name('edit.worker');
     Route::put('admin/update-trabajador/{id}', [AdminController::class, 'updateWorker'])->name('update.worker');
-    
+
     Route::get('admin/eliminar-trabajador', [AdminController::class, 'borrarTrabajador'])->name('worker.delete');
     Route::delete('admin/eliminar-trabajador/{worker}', [AdminController::class, 'destroyWorker'])->name('worker.destroy');
 
-    Route::get('obtener-usuario', [PatientController::class, 'buscar'])->name('obtener.usuario');
 
     Route::get('/admin/planes', [AdminController::class, 'planes'])->name('admin.planes');
     Route::post('/admin/crear-plan', [AdminController::class, 'storePlan'])->name('admin.store-plan');
     Route::get('admin/editar-plan/{id}', [AdminController::class, 'editPlan']);
     Route::put('/admin/update-plan/{id}', [AdminController::class, 'updatePlan'])->name('admin.update-plan');
     Route::post('/admin/plan/{id}/desactivar', [AdminController::class, 'togglePlan'])->name('admin.desactivar-plan');
-
 });
+
+Route::middleware('worker')->group(function () {
+    Route::get('trabajador/dashboard', [CitasController::class, 'workerDashboard'])->name('worker.dashboard');
+    Route::put('trabajador/atender-cita', [WorkerController::class, 'atenderCita'])->name('worker-atender-cita');
+    Route::get('trabajador/datos-paciente/{citaId}', [WorkerController::class, 'datosPaciente'])->name('trabajardor.datos-paciente');
+});
+
+
+Route::get('obtener-usuario', [PatientController::class, 'buscar'])->middleware('worker_admin')->name('obtener.usuario');
 
 require __DIR__ . '/auth.php';
