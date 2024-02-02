@@ -38,7 +38,7 @@ class CitasController extends Controller
             $query = Appointment::with(['patient.usuario', 'worker.usuario']);
         }
 
-        if (Auth::user()->paciente) {
+        if (Auth::user()->trabajador) {
             $query = Appointment::where('worker_id', Auth::user()->trabajador->id)
                 ->with(['patient.usuario', 'worker.usuario']);
         }
