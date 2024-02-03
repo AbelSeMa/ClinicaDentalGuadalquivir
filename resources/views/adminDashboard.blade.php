@@ -113,16 +113,22 @@
                                 {{ \Carbon\Carbon::parse($cita->date)->format('d/m/Y') }} <br>
                                 {{ $cita->hour }}
                             </td>
-                            @if ($cita->attended)
+                            @if ($cita->status === 'Presentado')
                                 <td class="px-6 py-4">
                                     <span class="material-symbols-outlined">
                                         event_available
                                     </span>
                                 </td>
-                            @else
+                            @elseif($cita->status === 'No presentado')
                                 <td class="px-6 py-4 truncate">
                                     <span class="material-symbols-outlined">
                                         event_busy
+                                    </span>
+                                </td>
+                            @elseif($cita->status === 'Pendiente')
+                                <td>
+                                    <span class="material-symbols-outlined">
+                                        event_upcoming
                                     </span>
                                 </td>
                             @endif

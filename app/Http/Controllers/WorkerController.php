@@ -7,10 +7,15 @@ use App\Models\Patient;
 use App\Models\Report;
 use App\Models\User;
 use App\Models\Worker;
+use Carbon\Carbon;
 use DragonCode\Contracts\Cashier\Auth\Auth;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rule;
 
 class WorkerController extends Controller
 {
@@ -65,13 +70,59 @@ class WorkerController extends Controller
 
     public function datosPaciente($id)
     {
-        $cita = Appointment::findOrFail($id);
-    
+        $cita = Appointment::with('report')->findOrFail($id);
+
         $paciente = Patient::with('usuario')->findOrFail($cita->patient_id);
-    
+
+        $reporte = $cita->report;
+
         return response()->json([
-            'paciente' => $paciente
+            'paciente' => $paciente,
+            'reporte' => $reporte
         ]);
     }
-    
+
+    public function asignarCita()
+    {
+        return view('worker.citas');
+    }
+
+    public function almacenarCita(Request $request)
+    {
+
+        $pacienteId = $_COOKIE['paciente'];
+
+        $horasValidas = [
+            '08:00:00', '08:30:00', '09:00:00', '09:30:00', '10:00:00', '10:30:00', '11:00:00', '11:30:00',
+            '12:00:00', '12:30:00', '13:00:00', '13:30:00', '14:00:00', '14:30:00', '15:00:00', '15:30:00'
+        ];
+        $request->validate(
+            [
+                'fecha' => 'required|date',
+                'hora' => ['required', 'date_format:H:i:s', Rule::in($horasValidas)],
+                'doctor' => 'required'
+            ]
+        );
+
+
+        try {
+            DB::table('appointments')->insert([
+                'patient_id' => $pacienteId,
+                'worker_id' => $request->doctor,
+                'date' => $request->fecha,
+                'hour' => Carbon::createFromFormat('H:i:s', $request->hora)->format('H:i'),
+                'notes' => $request->notas,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            $response = new Response('Su cita ha sido reservada correctamente.');
+            $response->withCookie(Cookie::forget('paciente'));
+
+            return redirect('trabajador/dashboard')->with('success', $response);
+        } catch (QueryException $e) {
+            // Manejar el error aquí
+            return redirect()->back()->with('error', 'Error al almacenar la cita: ' . $e->getMessage());
+        }
+    }
 }

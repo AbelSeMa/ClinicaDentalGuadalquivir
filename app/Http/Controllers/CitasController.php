@@ -183,7 +183,6 @@ class CitasController extends Controller
                 'date' => $request->fecha,
                 'hour' => Carbon::createFromFormat('H:i:s', $request->hora)->format('H:i'),
                 'notes' => $request->notas,
-                'attended' => false,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

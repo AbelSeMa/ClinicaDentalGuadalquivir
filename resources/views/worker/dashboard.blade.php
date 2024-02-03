@@ -97,12 +97,28 @@
                                         class="px-2 py-4 font-medium text-gray-900 text-center text-sm dark:text-white">
                                         {{ $cita->status }}</td>
                                     <td scope="row" class="flex justify-center px-6 py-4 text-gray-900 dark:text-white">
-                                        <button data-modal-target="crud-modal" data-modal-toggle="crud-modal"
-                                            data-cita-id="{{ $cita->id }}"
-                                            class="btn-atender block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-18 h-18 px-2 py-2.5 text-center md:w-32 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                                            type="button">
-                                            Gestionar cita
-                                        </button>
+                                        @if ($cita->date > now())
+                                            <button data-modal-target="crud-modal" data-modal-toggle="crud-modal"
+                                                data-cita-id="{{ $cita->id }}"
+                                                class="btn-atender block text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm w-18 h-18 px-2 py-2.5 text-center md:w-32 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                                type="button" disabled>
+                                                Gestionar cita
+                                            </button>
+                                        @elseif($cita->date < now())
+                                            <button
+                                                class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-18 h-18 px-2 py-2.5 text-center md:w-32 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                                type="button" onclick="nuevaCita(this)"
+                                                data-paciente-id="{{ $cita->patient->id }}">
+                                                Nueva cita
+                                            </button>
+                                        @elseif($cita->date = now())
+                                            <button data-modal-target="crud-modal" data-modal-toggle="crud-modal"
+                                                data-cita-id="{{ $cita->id }}"
+                                                class="btn-atender block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-18 h-18 px-2 py-2.5 text-center md:w-32 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                                type="button">
+                                                Gestionar cita
+                                            </button>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach
@@ -162,7 +178,8 @@
                                                 paciente:</label>
                                             <select id="estado" name="estado"
                                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                                <option value="Presentado" selected="">Presentado</option>
+                                                <option value="" selected="">--Selecciona una--</option>
+                                                <option value="Presentado">Presentado</option>
                                                 <option value="No presentado">No presentado</option>
                                             </select>
                                         </div>
@@ -187,22 +204,56 @@
                     </div>
                 </div>
                 <script>
+                    function nuevaCita(btn) {
+                        const pacienteId = btn.getAttribute('data-paciente-id');
+
+                        // Obtener la zona horaria del navegador del usuario
+                        const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+                        // Obtener la fecha y hora actual en la zona horaria del usuario
+                        const now = new Date();
+                        const userNow = new Date(now.toLocaleString('en-US', {
+                            timeZone: userTimezone
+                        }));
+
+                        const expiration = new Date(userNow.getTime() + 10 * 60 * 1000); // 10 minutos * 60 segundos * 1000 milisegundos
+                        const expirationString = expiration.toUTCString();
+
+                        // Establecer la cookie con la fecha y hora de expiración y la zona horaria local
+                        document.cookie = `paciente=${pacienteId}; expires=${expirationString}; path=/; SameSite=Strict`;
+
+                        let nuevaVentana = window.open(`/trabajador/nueva-cita`, '_blank');
+
+                        if (nuevaVentana === null || typeof(nuevaVentana) == 'undefined') {
+                            alert(
+                                'La ventana emergente ha sido bloqueada por tu navegador. Por favor, permite las ventanas emergentes para este sitio.'
+                            );
+                        }
+                    }
+
                     document.addEventListener('DOMContentLoaded', function() {
                         const btnsAtender = document.querySelectorAll('.btn-atender');
                         const nombreInput = document.getElementById('name');
                         const dniInput = document.getElementById('dni');
+                        const informeInput = document.getElementById('description');
 
                         btnsAtender.forEach(btn => {
                             btn.addEventListener('click', function() {
                                 const citaId = this.getAttribute('data-cita-id');
                                 document.getElementById('cita-id').value = citaId;
 
+                                nombreInput.value = '';
+                                dniInput.value = '';
+                                informeInput.value = '';
                                 fetch(`datos-paciente/${citaId}`)
                                     .then(response => response.json())
                                     .then(data => {
                                         nombreInput.value = data.paciente.usuario.first_name + ' ' + data
                                             .paciente.usuario.last_name;
                                         dniInput.value = data.paciente.usuario.dni
+                                        if (data.reporte != null) {
+                                            informeInput.value = data.reporte.content;
+                                        }
                                     })
                                     .catch(error => console.error(
                                         'Error al obtener detalles del paciente:', error));
