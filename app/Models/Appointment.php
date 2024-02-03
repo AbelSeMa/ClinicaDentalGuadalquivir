@@ -27,10 +27,8 @@ class Appointment extends Model
         return $this->belongsTo('App\Models\Worker');
     }
 
-    // Relación 1:1
-
-    public function appointment()
+    public function report()
     {
-        return $this->belongsTo('App\Models\Appointment');
+        return $this->hasOne('App\Models\Report');
     }
 }

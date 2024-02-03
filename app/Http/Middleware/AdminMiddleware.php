@@ -15,8 +15,5 @@ class AdminMiddleware
 
         abort(403, 'No tienes permisos de administrador.');
 
-        sleep(5);
-        return redirect(route('index'));
     }
-    // Puedes personalizar la lógica según tus necesidades.
 }

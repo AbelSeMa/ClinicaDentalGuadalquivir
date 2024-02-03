@@ -1,4 +1,4 @@
-@extends('layouts.userDashboard')
+@extends('layouts.workerDashboard')
 
 @section('title', 'Reserva tu cita')
 
@@ -7,7 +7,7 @@
     <h2 class="text-5xl  font-extrabold dark:text-white text-center ">Reserva tu cita ahora</h2><br>
 
     <div class="rounded-lg w-[355px] text-center mx-auto backdrop-blur-xl bg-white/30 lg:w-[500px]">
-        <form action="/almacenar-cita" method="POST" class="max-w-sm mx-auto py-3">
+        <form action="{{ route('trabajador.almacenar-cita')}}" method="POST" class="max-w-sm mx-auto py-3">
             @csrf
             <label for="doctor" class="block mb-2 text-lg font-medium text-gray-900 dark:text-white">Selecciona un
                 doctor:</label>
@@ -20,12 +20,8 @@
             <select name="doctor" id="doctor"
                 class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-[90%] mx-5  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 <option value="" default>--Elige una opción--</option>
-                @foreach ($doctores as $doctor)
-                    @if($doctor->usuario->dni !== auth()->user()->dni)
-                    <option value="{{ $doctor->id }}">{{ $doctor->usuario->first_name }} - {{ $doctor->specialty }}
-                    </option>
-                    @endif
-                @endforeach
+                <option value="{{ auth()->user()->trabajador->id }}">{{ auth()->user()->first_name }}
+                    {{ auth()->user()->last_name }}
             </select><br>
             <label for="fecha" class="block mb-2 text-lg font-medium text-gray-900 dark:text-white">Selecciona una
                 fecha:</label>
@@ -69,10 +65,6 @@
 
     <script>
         $(document).ready(function() {
-            $('#doctor').select2();
-        });
-
-        $(document).ready(function() {
 
             $('#doctor').change(function() {
                 var doctor = $(this).val();
@@ -106,9 +98,9 @@
                         ]
 
                         // Combinar días sin citas y fines de semana
-                        const diasDeshabilitados = [...diasSinCitas, 
-                                                    ...finesDeSemana, 
-                                                    ...diasFiesta
+                        const diasDeshabilitados = [...diasSinCitas,
+                            ...finesDeSemana,
+                            ...diasFiesta
                         ];
 
                         flatpickr("#fecha", {

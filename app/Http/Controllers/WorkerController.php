@@ -2,95 +2,127 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Appointment;
+use App\Models\Patient;
+use App\Models\Report;
 use App\Models\User;
 use App\Models\Worker;
-use Doctrine\Inflector\Rules\Word;
+use Carbon\Carbon;
+use DragonCode\Contracts\Cashier\Auth\Auth;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rule;
 
 class WorkerController extends Controller
 {
     //
-
-    public function editarTrabajador()
+    public function index()
     {
-        $trabajadores = Worker::with('usuario')->get();
+        // Obtener el paciente actualmente autenticado
 
-        return view('editarTrabajadores', compact('trabajadores'));
+        $worker = auth()->user()->trabajador->id;
+
+        $citas = Appointment::where('worker_id', $worker)->get();
+
+        return view('worker.dashboard', compact('worker', 'citas'));
     }
 
-    public function edit($id)
-    {
-        $trabajador =  DB::table('workers')
-        ->join('users', 'workers.user_id', '=', 'users.id')
-        ->where('workers.id', $id)
-        ->select('workers.*', 'users.first_name', 'users.last_name')
-        ->first();
-
-        return view('editarTrabajador', compact('trabajador'));
-    }
-
-    public function update(Request $request, $id)
-    {
-        $trabajador = Worker::findOrFail($id);
-
-        // Validación y lógica de actualización según tus necesidades
-
-        $trabajador->update([
-            'title' => $request->input('title'),
-            'specialty' => $request->input('specialty'),
-            // Otros campos según tus necesidades
-        ]);
-       
-
-        return redirect()->route('admin.dashboard')->with('success', 'Trabajador actualizado exitosamente');
-    }
-
-
-    public function crearTrabajador()
-    {
-        return view('crearTrabajador');
-    }
-
-    public function store(Request $request)
+    public function atenderCita(Request $request)
     {
         $request->validate([
-            'usuario' => 'required|exists:users,id',
-            'titulacion' => 'required|string|min:5|max:100',
-            'especializacion' => 'required|string|min:5|max:100'
+            'estado' => 'required|in:Presentado,No presentado', // Validar que el estado sea uno de los valores permitidos
+            'informe' => 'required|string|min:10' // El informe debe ser requerido y tener al menos 10 caracteres
         ]);
 
         try {
-            DB::table('workers')->insert([
-                'user_id' => $request->usuario,
-                'title' => $request->titulacion,
-                'specialty' => $request->especializacion
+            $cita = Appointment::findOrFail($request->cita_id);
+
+            // Actualizar el estado de la cita
+            $cita->status = $request->estado;
+            $cita->save();
+
+            // Buscar el reporte asociado a la cita
+            $report = Report::where('appointment_id', $request->cita_id)->first();
+
+            if ($report) {
+                // Si existe, actualizar el contenido del informe
+                $report->content = $request->informe;
+                $report->save();
+            } else {
+                // Si no existe, crear un nuevo informe
+                $report = new Report();
+                $report->appointment_id = $request->cita_id;
+                $report->worker_id = $request->worker_id;
+                $report->content = $request->informe;
+                $report->save();
+            }
+
+            return redirect('trabajador/dashboard')->with('success', 'La cita ha sido atendida correctamente.');
+        } catch (\Throwable $th) {
+            Log::error($th);
+            return redirect('trabajador/dashboard')->with('error', 'No se ha podido atender la cita correctamente.');
+        }
+    }
+
+    public function datosPaciente($id)
+    {
+        $cita = Appointment::with('report')->findOrFail($id);
+
+        $paciente = Patient::with('usuario')->findOrFail($cita->patient_id);
+
+        $reporte = $cita->report;
+
+        return response()->json([
+            'paciente' => $paciente,
+            'reporte' => $reporte
+        ]);
+    }
+
+    public function asignarCita()
+    {
+        return view('worker.citas');
+    }
+
+    public function almacenarCita(Request $request)
+    {
+
+        $pacienteId = $_COOKIE['paciente'];
+
+        $horasValidas = [
+            '08:00:00', '08:30:00', '09:00:00', '09:30:00', '10:00:00', '10:30:00', '11:00:00', '11:30:00',
+            '12:00:00', '12:30:00', '13:00:00', '13:30:00', '14:00:00', '14:30:00', '15:00:00', '15:30:00'
+        ];
+        $request->validate(
+            [
+                'fecha' => 'required|date',
+                'hora' => ['required', 'date_format:H:i:s', Rule::in($horasValidas)],
+                'doctor' => 'required'
+            ]
+        );
+
+
+        try {
+            DB::table('appointments')->insert([
+                'patient_id' => $pacienteId,
+                'worker_id' => $request->doctor,
+                'date' => $request->fecha,
+                'hour' => Carbon::createFromFormat('H:i:s', $request->hora)->format('H:i'),
+                'notes' => $request->notas,
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
 
-            return redirect()->route('admin.dashboard')->with('success', 'Trabajador creado correctamente.');
-        } catch (\Throwable $th) {
-            //throw $th;
-            return redirect()->route('admin.dashboard')->with('error', 'Algo ha salido mal. Inténtelo de nuevo.');
+            $response = new Response('Su cita ha sido reservada correctamente.');
+            $response->withCookie(Cookie::forget('paciente'));
+
+            return redirect('trabajador/dashboard')->with('success', $response);
+        } catch (QueryException $e) {
+            // Manejar el error aquí
+            return redirect()->back()->with('error', 'Error al almacenar la cita: ' . $e->getMessage());
         }
-    }
-
-    public function borrarTrabajador()
-    {
-        $trabajadores = Worker::with('usuario')->get();
-
-        return view('borrarTrabajador', compact('trabajadores'));
-    }
-
-    public function destroy(Worker $worker)
-    {
-        try {
-            //code...
-            $worker->delete();
-            return redirect('/admin/dashboard')->with('success', 'Trabajador eliminado con éxito.');
-        } catch (\Throwable $th) {
-            //throw $th;
-            return redirect('/admin/dashboard')->with('error', 'No se ha podido eliminar el trabajador. Revisa que no tenga citas pendientes.');
-        }
-
     }
 }

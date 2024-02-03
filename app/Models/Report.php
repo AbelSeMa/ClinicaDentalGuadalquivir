@@ -9,7 +9,7 @@ class Report extends Model
 {
     use HasFactory;
     
-    protected $fillable = [ 'content' ];
+    protected $fillable = [ 'appointment_id', 'worker_id', 'content' ];
     
     public function trabajador() {
         return $this->belongsTo(Worker::class);
