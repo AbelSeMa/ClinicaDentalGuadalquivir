@@ -56,7 +56,7 @@
             <label for="notas" class="block mb-2 text-lg font-medium text-gray-900 dark:text-white">Describe brevemente
                 el motivo de tu consulta:</label>
             <textarea
-                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="block p-2.5 w-11/12 mx-4 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 name="notas" id="notas" cols="30" rows="10" placeholder="Escribe una breve descripción"></textarea>
 
             <x-primary-button class="ms-3 mt-2">
@@ -67,81 +67,81 @@
 
 
 
-    <script>
-        $(document).ready(function() {
-            $('#doctor').select2();
-        });
+        <script>
+            $(document).ready(function() {
+                $('#doctor').select2();
+            });
 
-        $(document).ready(function() {
+            $(document).ready(function() {
 
-            $('#doctor').change(function() {
-                var doctor = $(this).val();
-                $.ajax({
-                    url: '/obtener-dias-sin-citas',
-                    data: {
-                        doctor: doctor
-                    },
-                    type: 'GET',
-                    success: function(data) {
-                        const diasSinCitas = data.dias;
-                        console.log(diasSinCitas)
+                $('#doctor').change(function() {
+                    var doctor = $(this).val();
+                    $.ajax({
+                        url: '/obtener-dias-sin-citas',
+                        data: {
+                            doctor: doctor
+                        },
+                        type: 'GET',
+                        success: function(data) {
+                            const diasSinCitas = data.dias;
+                            console.log(diasSinCitas)
 
-                        const finesDeSemana = obtenerFinesDeSemana();
+                            const finesDeSemana = obtenerFinesDeSemana();
 
-                        const anyo = new Date();
-                        const anyoActual = anyo.getFullYear();
+                            const anyo = new Date();
+                            const anyoActual = anyo.getFullYear();
 
-                        const diasFiesta = [
-                            `${anyoActual}-01-01`,
-                            `${anyoActual}-01-06`,
-                            `${anyoActual}-02-28`,
-                            `${anyoActual}-05-01`,
-                            `${anyoActual}-08-15`,
-                            `${anyoActual}-10-12`,
-                            `${anyoActual}-11-01`,
-                            `${anyoActual}-12-06`,
-                            `${anyoActual}-12-08`,
-                            `${anyoActual}-12-06`,
-                            `${anyoActual}-12-25`,
-                        ]
+                            const diasFiesta = [
+                                `${anyoActual}-01-01`,
+                                `${anyoActual}-01-06`,
+                                `${anyoActual}-02-28`,
+                                `${anyoActual}-05-01`,
+                                `${anyoActual}-08-15`,
+                                `${anyoActual}-10-12`,
+                                `${anyoActual}-11-01`,
+                                `${anyoActual}-12-06`,
+                                `${anyoActual}-12-08`,
+                                `${anyoActual}-12-06`,
+                                `${anyoActual}-12-25`,
+                            ]
 
-                        // Combinar días sin citas y fines de semana
-                        const diasDeshabilitados = [...diasSinCitas, 
-                                                    ...finesDeSemana, 
-                                                    ...diasFiesta
-                        ];
+                            // Combinar días sin citas y fines de semana
+                            const diasDeshabilitados = [...diasSinCitas, 
+                                                        ...finesDeSemana, 
+                                                        ...diasFiesta
+                            ];
 
-                        flatpickr("#fecha", {
-                            minDate: 'today',
-                            maxDate: new Date().getFullYear() + "-12-31",
-                            disable: diasDeshabilitados,
-                            dateFormat: "d-m-Y",
-                            locale: "es",
-                        });
-                    },
-                    error: function(error) {
-                        console.log(error);
+                            flatpickr("#fecha", {
+                                minDate: 'today',
+                                maxDate: new Date().getFullYear() + "-12-31",
+                                disable: diasDeshabilitados,
+                                dateFormat: "d-m-Y",
+                                locale: "es",
+                            });
+                        },
+                        error: function(error) {
+                            console.log(error);
+                        }
+                    });
+                })
+            });
+
+            function obtenerFinesDeSemana() {
+
+                const hoy = new Date();
+                const finDeSemana = [];
+
+                for (let i = 0; i <
+                    365; i++) { // Agregar los próximos 365 días y descartamos los sábados y domingos
+                    const dia = new Date();
+                    dia.setDate(hoy.getDate() + i);
+
+                    if (dia.getDay() === 0 || dia.getDay() === 6) {
+                        finDeSemana.push(dia.toISOString().split("T")[0]);
                     }
-                });
-            })
-        });
-
-        function obtenerFinesDeSemana() {
-
-            const hoy = new Date();
-            const finDeSemana = [];
-
-            for (let i = 0; i <
-                365; i++) { // Agregar los próximos 365 días y descartamos los sábados y domingos
-                const dia = new Date();
-                dia.setDate(hoy.getDate() + i);
-
-                if (dia.getDay() === 0 || dia.getDay() === 6) {
-                    finDeSemana.push(dia.toISOString().split("T")[0]);
                 }
-            }
 
-            return finDeSemana;
-        }
-    </script>
+                return finDeSemana;
+            }
+        </script>
 @endsection
