@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Appointment;
-use App\Models\Patient;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -12,9 +11,8 @@ class PatientController extends Controller
     public function index()
     {
         // Obtener el paciente actualmente autenticado
-        $patientId = auth()->user()->id;
-
         $patient = auth()->user()->paciente;
+        $patientId = $patient->id;
 
         $citas = Appointment::where('patient_id', $patientId)
             ->with('patient', 'worker.usuario')
