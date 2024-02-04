@@ -33,7 +33,7 @@ Route::get('/obtener-dias-sin-citas', [CitasController::class, 'diasSinCitas']);
 
 
 Route::middleware(['patient', 'verified'])->group(function () {
-    Route::get('/user/dashboard', [PatientController::class, 'index'])->name('user.dashboard');
+    Route::get('/usuario/dashboard', [PatientController::class, 'index'])->name('user.dashboard');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -48,6 +48,9 @@ Route::middleware(['patient', 'verified'])->group(function () {
     Route::post('/paypal/payment', [PayPalController::class, 'payment'])->name('paypal.payment');
     Route::get('/paypal/payment/success', [PayPalController::class, 'paymentSuccess'])->name('paypal.payment.success');
     Route::get('/paypal/payment/cancel', [PayPalController::class, 'paymentCancel'])->name('paypal.payment/cancel');
+
+    Route::get('/usuario/citas/historial', [CitasController::class, 'historial'])->name('citas.historial');
+    Route::get('/usuario/ver-informe/{id}', [CitasController::class, 'verInforme'])->name('usuario.ver-informe');
 });
 
 Route::middleware('admin')->group(function () {

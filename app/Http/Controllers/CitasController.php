@@ -3,16 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Appointment;
+use App\Models\Report;
 use App\Models\Worker;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 use DateInterval;
 use DatePeriod;
 use DateTime;
-use Illuminate\Validation\Rule;
 
 class CitasController extends Controller
 {
@@ -175,10 +177,15 @@ class CitasController extends Controller
             ]
         );
 
+        $usuario = Auth::user()->paciente->id;
+        $numCitas = Appointment::where('patient_id', $usuario)->count();
 
         try {
+            if ($numCitas >= 4) {
+                return redirect('usuario/dashboard')->with('error', 'Has alcanzado el límite de citas reservadas');
+            }
             DB::table('appointments')->insert([
-                'patient_id' => Auth::user()->id,
+                'patient_id' => $usuario,
                 'worker_id' => $request->doctor,
                 'date' => $request->fecha,
                 'hour' => Carbon::createFromFormat('H:i:s', $request->hora)->format('H:i'),
@@ -187,10 +194,10 @@ class CitasController extends Controller
                 'updated_at' => now(),
             ]);
 
-            return redirect('user/dashboard')->with('success', 'Su cita ha sido reservada correctamente.');
+            return redirect('usuario/dashboard')->with('success', 'Su cita ha sido reservada correctamente.');
         } catch (QueryException $e) {
             // Manejar el error aquí
-            return redirect()->back()->with('error', 'Error al almacenar la cita: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Error al almacenar la cita');
         }
     }
 
@@ -198,7 +205,7 @@ class CitasController extends Controller
     {
         $appointment->delete();
 
-        return redirect('/user/dashboard');
+        return redirect('/usuario/dashboard');
     }
 
     public function update(Request $request, $id)
@@ -208,5 +215,43 @@ class CitasController extends Controller
         $cita->save();
 
         return redirect()->back()->with('success', 'La hora de la cita se ha actualizado correctamente.');
+    }
+
+    public function historial(Request $request)
+    {
+        $usuario = Auth::user()->paciente->id;
+        $numCitas = Appointment::where('patient_id', $usuario)->count();
+
+        $citas = $this->historialFiltrado($request);
+
+        return view('historial', compact('citas', 'numCitas'));
+    }
+
+    private function historialFiltrado(Request $request)
+    {
+        $usuario = Auth::user()->paciente->id;
+
+        $query = Appointment::where('patient_id', $usuario)
+            ->with('worker', 'report')
+            ->orderBy('date');
+
+        if ($request->has('filtro_anyo') && $request->input('filtro_anyo') !== null) {
+            $query->whereYear('date', $request->input('filtro_anyo'));
+        }
+
+        if ($request->has('filtro_mes') && $request->input('filtro_mes') !== null) {
+            $query->whereMonth('date', $request->input('filtro_mes'));
+        }
+
+        return $query->paginate(25);
+    }
+
+    public function verInforme($id)
+    {
+        $report = Report::with('appointment', 'worker')->find($id);
+        // Asegúrate de tener los datos necesarios para la vista
+        $data = ['report' => $report];
+        $pdf = FacadePdf::loadView('informe', $data);
+        return $pdf->stream('nombre_del_archivo.pdf');
     }
 }
