@@ -63,7 +63,7 @@
                             <td class="text-center font-medium text-gray-900 dark:text-white">
                                 {{ $cita->worker->usuario->first_name }} {{ $cita->worker->usuario->last_name }}
                             </td>
-                            <td>
+                            <td class="text-center font-medium text-gray-900 dark:text-white">
                                 @if ($cita->report)
                                 <button onclick="abrirInforme({{$cita->report->id}})">Ver reporte</button>
                                 @else

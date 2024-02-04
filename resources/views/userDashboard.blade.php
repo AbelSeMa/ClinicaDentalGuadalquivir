@@ -13,13 +13,13 @@
             <table class="table-auto w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="px-2 py-3 text-center">
                             Nombre del plan actual
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="px-2 py-3 text-center">
                             Fecha vencimiento
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="px-2 py-3 text-center">
                             Precio
                         </th>
                     </tr>
@@ -60,16 +60,16 @@
             <table class="w-full table-fixed text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="px-2 py-3 text-center">
                             Fecha
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="px-2 py-3 text-center">
                             Hora
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="px-2 py-3 text-center">
                             Doctor
                         </th>
-                        <th>
+                        <th scope="col" class="px-2 py-3 text-center">
                             Acciones
                         </th>
                     </tr>
@@ -77,16 +77,16 @@
                 <tbody>
                     @foreach ($citas as $cita)
                         <tr class="text-center bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                            <td scope="row" class="text-center px-6 py-4 font-medium text-gray-900 dark:text-white">
+                            <td scope="row" class="text-center font-medium text-gray-900 dark:text-white">
                                 {{ \Carbon\Carbon::parse($cita->date)->formatLocalized('%d %B %Y') }}
                             </td>
-                            <td class="px-6 py-4">
+                            <td class="py-3 text-center font-medium text-gray-900 dark:text-white">
                                 {{ substr($cita->hour, 0, 5) }}
                             </td>
-                            <td class="px-6 py-4">
+                            <td class="text-center font-medium text-gray-900 dark:text-white">
                                 {{ $cita->worker->usuario->last_name }}, {{ $cita->worker->usuario->first_name }}
                             </td>
-                            <td class="text-center">
+                            <td class="text-center font-medium text-gray-900 dark:text-white"
                                 <form action="{{ route('citas.destroy', $cita) }}" method="post">
                                     @csrf
                                     @method('delete')
