@@ -165,10 +165,10 @@
         <div class="p-4 border-gray-200 rounded-lg dark:border-gray-700">
             <div class="grid grid-cols-3 gap-4 mb-4">
                 <div class="flex border-2  items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
-                    <a href="/usuario/citas/historial" class="text-2xl text-gray-400 dark:text-gray-500">Historial</a>
+                    <a href="/usuario/citas/historial" class="text-2xl text-gray-400 dark:text-gray-500">Historial de citas</a>
                 </div>
                 <div class="flex border-2  items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
-                    <button class="text-2xl text-gray-400 dark:text-gray-500"> Informes </button>
+                    <button class="text-2xl text-gray-400 dark:text-gray-500"> Ver pagos </button>
                 </div>
                 <div class="flex border-2  items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
                     <a href="/reservar-cita" class="text-center text-2xl text-gray-400 dark:text-gray-500">Coger

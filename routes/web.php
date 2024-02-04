@@ -50,6 +50,7 @@ Route::middleware(['patient', 'verified'])->group(function () {
     Route::get('/paypal/payment/cancel', [PayPalController::class, 'paymentCancel'])->name('paypal.payment/cancel');
 
     Route::get('/usuario/citas/historial', [CitasController::class, 'historial'])->name('citas.historial');
+    Route::get('/usuario/ver-informe/{id}', [CitasController::class, 'verInforme'])->name('usuario.ver-informe');
 });
 
 Route::middleware('admin')->group(function () {

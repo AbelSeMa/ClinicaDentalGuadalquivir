@@ -11,7 +11,7 @@ class Report extends Model
     
     protected $fillable = [ 'appointment_id', 'worker_id', 'content' ];
     
-    public function trabajador() {
+    public function worker() {
         return $this->belongsTo(Worker::class);
     }
 
@@ -19,7 +19,7 @@ class Report extends Model
         return $this->belongsTo(Patient::class);
     }
 
-    public function cita() {
+    public function appointment() {
         return $this->belongsTo(Appointment::class);
     }
 }

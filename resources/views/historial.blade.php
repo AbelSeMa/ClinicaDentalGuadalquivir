@@ -10,7 +10,7 @@
 @section('content')
 
     <div>
-        <form action="{{route('citas.historial')}}">
+        <form action="{{ route('citas.historial') }}">
             <label for="mes">Filtrado por mes</label>
             <select name="filtro_mes" id="mes">
                 <option value="" selected>Selecciona un mes</option>
@@ -46,10 +46,10 @@
                             Fecha
                         </th>
                         <th scope="col" class="px-6 py-3 text-center">
-                            Atendido
+                            Atendido por
                         </th>
                         <th scope="col" class="px-6 py-3 text-center">
-                            Estado
+                            Informe
                         </th>
                     </tr>
                 </thead>
@@ -63,25 +63,13 @@
                             <td class="text-center font-medium text-gray-900 dark:text-white">
                                 {{ $cita->worker->usuario->first_name }} {{ $cita->worker->usuario->last_name }}
                             </td>
-                            @if ($cita->status === 'Presentado')
-                                <td class="flex justify-center items-center font-medium text-gray-900 dark:text-white">
-                                    <span class="material-symbols-outlined">
-                                        event_available
-                                    </span>
-                                </td>
-                            @elseif($cita->status === 'No presentado')
-                                <td class="flex justify-center items-center font-medium text-gray-900 dark:text-white">
-                                    <span class="material-symbols-outlined">
-                                        event_busy
-                                    </span>
-                                </td>
-                            @elseif($cita->status === 'Pendiente')
-                                <td class="flex justify-center items-center font-medium text-gray-900 dark:text-white">
-                                    <span class="material-symbols-outlined">
-                                        event_upcoming
-                                    </span>
-                                </td>
-                            @endif
+                            <td>
+                                @if ($cita->report)
+                                <button onclick="abrirInforme({{$cita->report->id}})">Ver reporte</button>
+                                @else
+                                    <p class="text-center">Sin informe disponible</p>
+                                @endif
+                            </td>
                         </tr>
 
                         </tr>
@@ -92,4 +80,11 @@
             </table>
         </div>
     </div>
+
+    <script>
+        function abrirInforme(id) {
+            var url = '/usuario/ver-informe/' + id;
+            window.open(url, '_blank', 'width:800');
+        }
+    </script>
 @endsection

@@ -3,16 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Appointment;
+use App\Models\Report;
 use App\Models\Worker;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 use DateInterval;
 use DatePeriod;
 use DateTime;
-use Illuminate\Validation\Rule;
 
 class CitasController extends Controller
 {
@@ -175,10 +177,15 @@ class CitasController extends Controller
             ]
         );
 
+        $usuario = Auth::user()->paciente->id;
+        $numCitas = Appointment::where('patient_id', $usuario)->count();
 
         try {
+            if ($numCitas >= 4) {
+                return redirect('usuario/dashboard')->with('error', 'Has alcanzado el límite de citas reservadas');
+            }
             DB::table('appointments')->insert([
-                'patient_id' => Auth::user()->paciente->id,
+                'patient_id' => $usuario,
                 'worker_id' => $request->doctor,
                 'date' => $request->fecha,
                 'hour' => Carbon::createFromFormat('H:i:s', $request->hora)->format('H:i'),
@@ -190,7 +197,7 @@ class CitasController extends Controller
             return redirect('usuario/dashboard')->with('success', 'Su cita ha sido reservada correctamente.');
         } catch (QueryException $e) {
             // Manejar el error aquí
-            return redirect()->back()->with('error', 'Error al almacenar la cita: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Error al almacenar la cita');
         }
     }
 
@@ -225,7 +232,7 @@ class CitasController extends Controller
         $usuario = Auth::user()->paciente->id;
 
         $query = Appointment::where('patient_id', $usuario)
-            ->with('worker')
+            ->with('worker', 'report')
             ->orderBy('date');
 
         if ($request->has('filtro_anyo') && $request->input('filtro_anyo') !== null) {
@@ -237,5 +244,14 @@ class CitasController extends Controller
         }
 
         return $query->paginate(25);
+    }
+
+    public function verInforme($id)
+    {
+        $report = Report::with('appointment', 'worker')->find($id);
+        // Asegúrate de tener los datos necesarios para la vista
+        $data = ['report' => $report];
+        $pdf = FacadePdf::loadView('informe', $data);
+        return $pdf->stream('nombre_del_archivo.pdf');
     }
 }
