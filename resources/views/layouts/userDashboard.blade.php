@@ -102,6 +102,28 @@
                         </a>
                     </li>
                     <li>
+                        <div class="flex">
+                            <span class="material-symbols-outlined pl-2">
+                                warning
+                            </span>
+                            <button data-modal-target="static-modal" data-modal-toggle="static-modal"type="button"
+                                class="ml-2">
+                                Dar de baja
+                            </button>
+                        </div>
+                    </li>
+                    <li>
+                        <form method="POST" action="{{ route('logout') }}"
+                            class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                            @csrf
+                            <button type="submit" class="material-symbols-outlined">
+                                logout
+                            </button>
+                            <button type="submit" class=" ml-2 whitespace-nowrap">Cerrar sesión</button>
+                        </form>
+                    </li>
+                    <br>
+                    <li>
                         <p
                             class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                             <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
@@ -185,6 +207,73 @@
                 </div>
             </div>
         </div>
+
+
+        <!-- Modal toggle -->
+        <button data-modal-target="static-modal" data-modal-toggle="static-modal"
+            class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            type="button">
+            Toggle modal
+        </button>
+
+        <!-- Main modal -->
+        <div id="static-modal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true"
+            class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+            <div class="relative p-4 w-full max-w-2xl max-h-full">
+                <!-- Modal content -->
+                <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                    <!-- Modal header -->
+                    <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                            Baja del sitio web
+                        </h3>
+                        <button type="button"
+                            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                            data-modal-hide="static-modal">
+                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                fill="none" viewBox="0 0 14 14">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                            </svg>
+                            <span class="sr-only">Close modal</span>
+                        </button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="p-4 md:p-5 space-y-4">
+                        <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                            Apreciado/a {{ auth()->user()->first_name}} {{auth()->user()->last_name }}, <br>
+
+                            Queremos informarte que hemos recibido tu solicitud para dar de baja tu cuenta en nuestro sitio web. Valoramos tu decisión y queremos asegurarte que estamos tomando todas las medidas necesarias para cumplir con tus solicitudes y las regulaciones de protección de datos. <br>
+                            
+                            De acuerdo con las leyes de protección de datos médicos, queremos asegurarte que tu cuenta no será borrada de forma permanente. En lugar de eso, tu cuenta será marcada como inactiva. Esto significa que ya no podrás acceder a tu cuenta ni utilizar nuestros servicios. <br> 
+                            Sin embargo, toda la información asociada a tu cuenta, incluyendo citas médicas, informes y cualquier otro dato relevante, se mantendrá almacenada de manera segura en nuestros sistemas.
+                            
+                            Esta medida se toma para garantizar que conservemos tu información médica de manera segura y en cumplimiento con las regulaciones aplicables. 
+                        </p>
+                        <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                            Si en algún momento deseas reactivar tu cuenta o acceder a tus datos, no dudes en contactarnos y estaremos encantados de ayudarte.
+                            
+                            Si tienes alguna pregunta adicional o necesitas asistencia, no dudes en ponerte en contacto con nuestro equipo de soporte en soporte@clinicaguadalquivir.com
+                            
+                            Gracias por habernos elegido como tu proveedor de servicios médicos en línea. Valoramos tu confianza y esperamos poder servirte nuevamente en el futuro.
+                        </p>
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                        <form action=" {{ route('usuario.baja', Auth::user())}} " method="post">
+                            @csrf
+                            @method('delete')
+                            <button data-modal-hide="static-modal" type="submit"
+                                class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                Dar de baja</button>
+                        </form>
+                        <button data-modal-hide="static-modal" type="button"
+                            class="ms-3 text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Rechazar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         @yield('content')
     </div>
 

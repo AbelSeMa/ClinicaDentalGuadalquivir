@@ -1,9 +1,9 @@
 @extends('layouts.userDashboard')
 
 @section('numCitas')
-    {{$numCitas}}
+    {{ $numCitas }}
 @endsection
-    
+
 
 @section('content')
     <br>
@@ -32,15 +32,16 @@
                                 {{ $patient->plan->name }}
                             </td>
                             <td class="px-6 py-4">
-                                {{ \Carbon\Carbon::parse($patient->expiration_date)->format('d-m-Y')}}
+                                {{ \Carbon\Carbon::parse($patient->expiration_date)->format('d-m-Y') }}
                             </td>
                             <td class="px-6 py-4">
                                 {{ $patient->plan->price }}€
                             </td>
-                            @else
+                        @else
                             <td class="px-6 py-4 col-span-3">
                                 No tienes ningún plan contratado. <br>
-                                 Revisa nuestros planes <a href="{{ Route('index.plan')}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline"> aquí</a>
+                                Revisa nuestros planes <a href="{{ Route('index.plan') }}"
+                                    class="font-medium text-blue-600 dark:text-blue-500 hover:underline"> aquí</a>
                             </td>
                             <td></td>
                             <td></td>
@@ -86,13 +87,13 @@
                             <td class="text-center font-medium text-gray-900 dark:text-white">
                                 {{ $cita->worker->usuario->last_name }}, {{ $cita->worker->usuario->first_name }}
                             </td>
-                            <td class="text-center font-medium text-gray-900 dark:text-white"
-                                <form action="{{ route('citas.destroy', $cita) }}" method="post">
-                                    @csrf
-                                    @method('delete')
-                                    <button type="submit" class="material-symbols-outlined">
-                                        delete_forever
-                                    </button>
+                            <td class="text-center font-medium text-gray-900 dark:text-white" <form
+                                action="{{ route('citas.destroy', $cita) }}" method="post">
+                                @csrf
+                                @method('delete')
+                                <button type="submit" class="material-symbols-outlined">
+                                    delete_forever
+                                </button>
                                 </form>
 
                                 <button data-fecha="{{ $cita->date }}" data-modal-target="crud-modal"
@@ -165,7 +166,12 @@
 
                 </tbody>
             </table>
+
             {{ $citas->links() }}
         </div>
     </div>
+
+
+
+   
 @endsection

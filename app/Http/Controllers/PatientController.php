@@ -15,11 +15,15 @@ class PatientController extends Controller
         $patientId = $patient->id;
 
         $citas = Appointment::where('patient_id', $patientId)
-            ->with('patient', 'worker.usuario')
-            ->orderBy('date')
-            ->simplePaginate(5);
+                            ->where('status', 'Pendiente')
+                            ->with('patient', 'worker.usuario')
+                            ->orderBy('date')
+                            ->simplePaginate(5);
 
-        $numCitas = Appointment::where('patient_id', $patientId)->count();
+        $numCitas = Appointment::where('patient_id', $patientId)
+                                ->where('status', 'Pendiente')
+                                ->count();
+
 
         return view('userDashboard', compact('patient', 'citas', 'numCitas'));
     }

@@ -79,4 +79,19 @@ class UserController extends Controller
 
         }
     }
+
+    public function delete(User $user)
+    {
+        try {
+            $user->delete();
+            Auth::guard('web')->logout();
+    
+            return redirect('/')->with('success', 'Se ha dado de baja a la cuenta de forma indefinida.');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect('/')->with('error', 'No e ha podido dar de baja a la cuenta.Intentelo de nuevo o pongase en contacto con el sitio web.');
+
+        }
+
+    }
 }
