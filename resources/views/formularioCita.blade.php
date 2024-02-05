@@ -2,6 +2,11 @@
 
 @section('title', 'Reserva tu cita')
 
+@section('numCitas')
+    {{$numCitas}}
+@endsection
+    
+
 @section('content')
 
     <h2 class="text-5xl  font-extrabold dark:text-white text-center ">Reserva tu cita ahora</h2><br>

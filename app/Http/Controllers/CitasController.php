@@ -158,8 +158,12 @@ class CitasController extends Controller
     {
 
         $doctores = Worker::all();
+        $usuario = Auth::user()->paciente->id;
+        $numCitas = Appointment::where('patient_id', $usuario   )
+                                ->where('status', 'Pendiente')
+                                ->count();
 
-        return view('formularioCita', compact('doctores'));
+        return view('formularioCita', compact('doctores', 'numCitas'));
     }
 
     public function store(Request $request)
@@ -220,7 +224,9 @@ class CitasController extends Controller
     public function historial(Request $request)
     {
         $usuario = Auth::user()->paciente->id;
-        $numCitas = Appointment::where('patient_id', $usuario)->count();
+        $numCitas = Appointment::where('patient_id', $usuario   )
+                                ->where('status', 'Pendiente')
+                                ->count();
 
         $citas = $this->historialFiltrado($request);
 

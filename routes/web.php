@@ -39,10 +39,8 @@ Route::middleware(['patient', 'verified'])->group(function () {
     Route::get('/usuario/dashboard/editar-perfil', [UserController::class, 'edit'])->name('usuario.editar-perfil');
     Route::put('/usuario/dashboard/actualizar-perfil', [UserController::class, 'update'])->name('usuario.actualizar');
     Route::put('/usuario/dashboard/actualizar-contraseña', [UserController::class, 'updatePassword'])->name('usuario.actualizar-contraseña');
+    Route::delete('/usuario/dashboard/baja/{user}', [UserController::class, 'delete'])->name('usuario.baja');
 
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/reservar-cita', [CitasController::class, 'formulario']);
 
     Route::post('/almacenar-cita', [CitasController::class, 'store']);
