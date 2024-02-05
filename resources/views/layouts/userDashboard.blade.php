@@ -15,12 +15,12 @@
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
-    
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    
+
     <style>
         .material-symbols-outlined {
             font-variation-settings:
@@ -93,7 +93,16 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#"
+                        <a href="/usuario/dashboard/editar-perfil"
+                            class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                            <span class="material-symbols-outlined">
+                                person_edit
+                            </span>
+                            <span class="flex-1 ms-3 whitespace-nowrap">Editar perfil</span>
+                        </a>
+                    </li>
+                    <li>
+                        <p
                             class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                             <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                                 aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
@@ -104,9 +113,8 @@
                             <span class="flex-1 ms-3 whitespace-nowrap">Citas actuales</span>
                             <span
                                 class="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">@yield('numCitas')</span>
-                        </a>
+                        </p>
                     </li>
-
                 </ul>
             </div>
         </aside>
@@ -165,7 +173,8 @@
         <div class="p-4 border-gray-200 rounded-lg dark:border-gray-700">
             <div class="grid grid-cols-3 gap-4 mb-4">
                 <div class="flex border-2  items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
-                    <a href="/usuario/citas/historial" class="text-2xl text-gray-400 dark:text-gray-500">Historial de citas</a>
+                    <a href="/usuario/citas/historial" class="text-2xl text-gray-400 dark:text-gray-500">Historial de
+                        citas</a>
                 </div>
                 <div class="flex border-2  items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
                     <button class="text-2xl text-gray-400 dark:text-gray-500"> Ver pagos </button>
