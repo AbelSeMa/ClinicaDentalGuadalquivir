@@ -11,14 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('workers', function (Blueprint $table) {
+        Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id')->unique();
-            $table->string('title'); // Dentista, asistente, tecnico, laboratorio, etc
-            $table->string('specialty')->nullable();
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('plan_id');
+            $table->date('date');
+            $table->decimal('amount', 10, 2);
             $table->timestamps();
-        
+
             $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('plan_id')->references('id')->on('plans');
         });
     }
 
@@ -27,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('workers');
+        Schema::dropIfExists('transactions');
     }
 };

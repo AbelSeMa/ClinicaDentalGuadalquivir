@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Appointment;
+use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 
 class UserController extends Controller
 {
@@ -93,5 +95,24 @@ class UserController extends Controller
 
         }
 
+    }
+
+    public function pagos()
+    {
+        $usuario = Auth::user();
+
+        $pagos = Transaction::where('user_id', $usuario->id)->get();
+
+        return view('pagos', compact('pagos'));
+        
+    }
+
+    public function verFactura($id)
+    {
+        $transa = Transaction::with('user', 'plan')->find($id);
+        // Asegúrate de tener los datos necesarios para la vista
+        $data = ['transa' => $transa];
+        $pdf = FacadePdf::loadView('factura', $data);
+        return $pdf->stream('factura_' . $transa->id .'pdf');
     }
 }

@@ -12,6 +12,7 @@ use App\Http\Controllers\WorkerController;
 use App\Models\Appointment;
 use App\Models\Patient;
 use App\Models\Plan;
+use App\Models\User;
 use App\Models\Worker;
 use Illuminate\Support\Facades\Route;
 
@@ -41,13 +42,17 @@ Route::middleware(['patient', 'verified'])->group(function () {
     Route::put('/usuario/dashboard/actualizar-contraseña', [UserController::class, 'updatePassword'])->name('usuario.actualizar-contraseña');
     Route::delete('/usuario/dashboard/baja/{user}', [UserController::class, 'delete'])->name('usuario.baja');
 
-    Route::get('/reservar-cita', [CitasController::class, 'formulario']);
+    Route::get('usuario/dashboard/ver-pagos', [UserController::class, 'pagos'])->name('usuario.pagos');
+    Route::get('usuario/ver-factura/{id}', [UserController::class, 'verFactura'])->name('usuario.factura');
 
+    
+    Route::get('/reservar-cita', [CitasController::class, 'formulario']);
     Route::post('/almacenar-cita', [CitasController::class, 'store']);
     Route::delete('/citas/{appointment}', [CitasController::class, 'destroy'])->name('citas.destroy');
     Route::put('/actualizar-hora-cita/{id}', [CitasController::class, 'update'])->name('citas.update');
+    
+    
     Route::get('plan/{id}/pagar', [PaypalController::class, 'resumen'])->name('pagar.paypal');
-
     Route::post('/paypal/payment', [PayPalController::class, 'payment'])->name('paypal.payment');
     Route::get('/paypal/payment/success', [PayPalController::class, 'paymentSuccess'])->name('paypal.payment.success');
     Route::get('/paypal/payment/cancel', [PayPalController::class, 'paymentCancel'])->name('paypal.payment/cancel');
