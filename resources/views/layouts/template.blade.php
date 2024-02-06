@@ -14,19 +14,8 @@
     @vite('resources/js/app.js')
     @vite('resources/css/app.css')
     @yield('css')
-    <script>
-        function checkCookie(cookieName) {
-            var cookies = document.cookie.split("; ");
-            for (var i = 0; i < cookies.length; i++) {
-                var cookie = cookies[i].split("=");
-                if (cookie[0] === cookieName) {
-                    return true;
-                }
-            }
-            return false;
-        }
-    </script>
-    
+
+
 </head>
 
 <body class="h-ful">
@@ -85,9 +74,10 @@
                 <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
                     <button data-modal-hide="static-modal" type="button"
                         class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    Si, acepto.</button>
+                        Si, acepto.</button>
                     <a href="/politicas-privacidad"
-                    class="ms-3 text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Leer politicas</button></a>
+                        class="ms-3 text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Leer
+                        politicas</button></a>
                 </div>
             </div>
         </div>
@@ -106,14 +96,11 @@
             var closeButton = modal.querySelector(
                 ".relative > div > button:first-child"); // Selección del primer botón dentro del modal
 
-            var modalButton = document.querySelector("[data-modal-toggle='static-modal']");
-
-            console.log(acceptButton); // Verificar si el botón de aceptar se selecciona correctamente
 
             // Verificar si la cookie no está presente
             if (!checkCookie("policiesAccepted")) {
-                modalButton.click(); // Simular clic en el botón para abrir el modal
-                modal.classList.remove("hidden"); // Mostrar el modal
+                modal.classList.remove("hidden");
+                modal.classList.add("flex");
             }
 
             // Función para establecer la cookie y ocultar el modal cuando se hace clic en "Aceptar"
@@ -123,6 +110,7 @@
                 var date = new Date();
                 date.setMonth(date.getMonth() + 1);
                 document.cookie = "policiesAccepted=true; expires=" + date.toUTCString();
+                modal.classList.remove("flex");
                 modal.classList.add("hidden"); // Ocultar el modal
             });
 
@@ -130,6 +118,18 @@
             acceptButton.addEventListener("click", function() {
                 modal.classList.add("hidden"); // Ocultar el modal
             });
+
+
+            function checkCookie(cookieName) {
+                var cookies = document.cookie.split("; ");
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].split("=");
+                    if (cookie[0] === cookieName) {
+                        return true;
+                    }
+                }
+                return false;
+            }
         });
     </script>
 
