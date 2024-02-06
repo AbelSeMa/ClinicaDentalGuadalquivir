@@ -23,12 +23,21 @@
         @if(Auth::user()->admin)
             
         <x-dropdown-link :href="route('admin.dashboard')">
-            {{ __('Panel de control') }}
+            {{ __('Panel de administración') }}
         </x-dropdown-link>
-        @else
+        @elseif(Auth::user()->trabajador && Auth::user()->paciente)
+        <x-dropdown-link :href="route('usuario.elegir-perfil')">
+            {{ __('Elegir perfil') }}
+        </x-dropdown-link>
+        @elseif(Auth::user()->paciente)
         <x-dropdown-link :href="route('user.dashboard')">
-            {{ __('Panel de control') }}
+            {{ __('Panel de usuario') }}
         </x-dropdown-link>
+        @elseif($Auth::user()->trabajador)
+        <x-dropdown-link :href="route('worker.dashboard')">
+            {{ __('Panel de trabajador') }}
+        </x-dropdown-link>
+
         @endif
 
         <!-- Authentication -->
