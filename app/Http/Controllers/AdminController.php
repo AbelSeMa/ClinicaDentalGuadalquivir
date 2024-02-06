@@ -57,6 +57,7 @@ class AdminController extends Controller
     {
         $trabajador = Worker::findOrFail($id);
 
+
         $request->validate([
             'usuario' => 'required|exists:users,id',
             'titulacion' => 'required|string|min:5|max:100',
@@ -79,7 +80,8 @@ class AdminController extends Controller
 
     public function crearTrabajador()
     {
-        return view('crearTrabajador');
+        $usuarios = User::whereDoesntHave('trabajador')->get();
+        return view('crearTrabajador', compact('usuarios'));
     }
 
     public function storeWorker(Request $request)
