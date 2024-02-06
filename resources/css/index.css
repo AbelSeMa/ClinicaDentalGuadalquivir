@@ -1,0 +1,107 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    overflow: hidden;
+}
+
+main {
+    height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    perspective: 2px;
+}
+
+section {
+    transform-style: preserve-3d;
+    position: relative;
+    height: 100vh;
+    display: block;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+}
+
+section h1 {
+    text-align: center;
+    font-family: sans-serif;
+    font-size: 3rem;
+    margin-left: 10px;
+}
+
+section p {
+    text-align: left;
+    font-family: sans-serif;
+    font-size: 2rem;
+    margin-left: 20px;
+    margin-right: 20px;
+
+}
+
+.no-parallax {
+    background-size: cover;
+    z-index: 999;
+    color: white;
+    border-image: fill 0 linear-gradient(rgb(203, 210, 218), rgb(107, 207, 224));
+}
+
+.parallax p {
+    color: black;
+}
+
+.parallax a {
+    color: white;
+}
+
+.parallax::after {
+    content: " ";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transform: translateZ(-1px) scale(1.5);
+    background-size: 100%;
+    z-index: -1;
+}
+
+.bg-1::after {
+    background: linear-gradient(rgb(107, 207, 224,0.5), rgb(203, 210, 218)),
+        url(/public/img/herramientas.png);
+    background-size: cover;
+}
+
+.bg-2::after {
+    background: linear-gradient(rgb(107, 207, 224,0.5), rgb(203, 210, 218)),
+        url(/public/img/dentista.jpg);
+    background-size: cover;
+}
+
+.bg-3::after {
+    background: linear-gradient(rgb(107, 207, 224,0.5), rgb(203, 210, 218)),
+        url(/public/img/silla.jpg);
+    background-size: cover;
+}
+
+@media screen and (min-width: 425px) {
+
+    section {
+        display: flex;
+    }
+
+    section h1 {
+        font-size: 6rem;
+    }
+
+    .parallax h1 {
+        font-size: 4rem;
+    }
+}
