@@ -99,6 +99,9 @@ Route::middleware('worker')->group(function () {
     Route::post('/trabajador/almacenar-cita', [WorkerController::class, 'almacenarCita'])->name('trabajador.almacenar-cita');
 });
 
+Route::middleware('worker', 'patient')->group(function () {
+    Route::get('elegir-perfil', [UserController::class, 'elegirPerfil'])->name('usuario.elegir-perfil');
+});
 
 Route::get('/obtener-usuario', [PatientController::class, 'buscar'])->middleware('worker_admin')->name('obtener.usuario');
 

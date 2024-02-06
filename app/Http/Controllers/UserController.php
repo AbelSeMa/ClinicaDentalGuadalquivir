@@ -115,4 +115,10 @@ class UserController extends Controller
         $pdf = FacadePdf::loadView('factura', $data);
         return $pdf->stream('factura_' . $transa->id .'pdf');
     }
+
+    public function elegirPerfil()
+    {
+        return view('elegirPerfil');
+        
+    }
 }
