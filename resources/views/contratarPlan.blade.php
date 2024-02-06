@@ -74,7 +74,18 @@
                                     Precio</th>
                                 <td>{{ $plan->price }}€</td>
                             </tr>
-
+                            <tr>
+                                <th scope="row"
+                                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
+                                    Precio con descuento</th>
+                                <td>
+                                    @if (auth()->user()->paciente->plan->id < $plan->id)
+                                    {{number_format($plan->price - auth()->user()->paciente->plan->price, 2)}}€
+                                    @else
+                                        ------
+                                    @endif
+                                </td>
+                            </tr>
                         </tbody>
 
                     </table>
@@ -93,11 +104,10 @@
                             </svg>
                         </button>
                     </form>
-                    <a href="{{ route('index.plan') }}"
-                        class="button mt-4 md:ml-4">
+                    <a href="{{ route('index.plan') }}" class="button mt-4 md:ml-4">
                         Elegir otro plan</a>
                 </div>
-                
+
                 <form class="space-y-4 md:space-y-6" method="POST" action="{{ route('login') }}">
 
                 </form>

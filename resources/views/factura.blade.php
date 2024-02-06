@@ -65,8 +65,14 @@
                 <tr>
                     <td></td>
                     <td></td>
+                    <td style="border: 1px solid black; padding: 8px;">Descuento</td>
+                    <td style="border: 1px solid black; padding: 8px;">{{$transa->plan->price - $transa->amount}}€</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
                     <td style="border: 1px solid black; padding: 8px;">Total (con IVA)</td>
-                    <td style="border: 1px solid black; padding: 8px;">{{ number_format(($transa->plan->price / 1.21), 2) + number_format($transa->plan->price - ($transa->plan->price / 1.21), 2) }}€</td>
+                    <td style="border: 1px solid black; padding: 8px;">{{$transa->amount}}€</td>
                 </tr>
             </table>
             

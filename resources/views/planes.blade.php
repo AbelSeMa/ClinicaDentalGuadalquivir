@@ -3,7 +3,7 @@
 @section('title', 'Contratar plan')
 
 @section('content')
-
+    @include('_mensajesError')
     <div>
         <h1
             class="px-5 text-center text-3xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl">

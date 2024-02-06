@@ -9,6 +9,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PaypalController extends Controller
 {
@@ -41,7 +42,23 @@ class PaypalController extends Controller
         // Realiza una consulta para obtener el plan correspondiente
         $plan = Plan::find($planId);
 
-        $precio = $plan->price;
+        // Obtiene el plan actual del usuario
+        $currentPlan = Auth::user()->paciente->plan;
+    
+        // Comprueba si el usuario ya tiene un plan contratado
+        if ($currentPlan) {
+            // Comprueba si el nuevo plan es superior al actual
+            if ($plan->id > $currentPlan->id) {
+                // Si es así, cobra sólo la diferencia de precio
+                $precio = $plan->price - $currentPlan->price;
+            } else {
+                // Si no, devuelve un error
+                return redirect('/planes')->with('error', 'El nuevo plan debe ser superior al actual');
+            }
+        } else {
+            $precio = $plan->price;
+        }
+
         $response = $provider->createOrder([
             "intent" => "CAPTURE",
             "application_context" => [
@@ -119,7 +136,13 @@ class PaypalController extends Controller
                         $transaction = new Transaction();
                         $transaction->user_id = $userId;
                         $transaction->plan_id = $planId;
-                        $transaction->amount = $plan->price;
+
+                        if ($planId > Auth::user()->paciente->plan->id) {
+                            $transaction->amount = $plan->price - Auth::user()->paciente->plan->price;
+                        } else {
+                            $transaction->amount = $plan->price;
+                        }
+                        
                         $transaction->date = now(); // Opcional: establece la fecha actual
                         $transaction->save();
 
