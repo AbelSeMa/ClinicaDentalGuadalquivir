@@ -1,7 +1,7 @@
 
 # Proyecto final de grado - DAW
-
- **ClinicaDentalGuadalquivir**
+<p align="center"><img src="/public/img/logo-2.png" width="300" alt="Finca Monterruiz Logo"></p>
+ **Clinica Dental Guadalquivir**
  **Por: Abel Sexto Martínez**
  **Curso 2023/24**
 
