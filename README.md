@@ -69,6 +69,7 @@ Ejecuta estos comandos en tu terminal de Linux/Debian para instalar todo lo nece
 ```sh
 sudo apt install php8.3 php8.3-amqp php8.3-cgi php8.3-cli php8.3-common php8.3-curl php8.3-fpm php8.3-gd php8.3-igbinary php8.3-intl php8.3-mbstring php8.3-opcache php8.3-pgsql php8.3-readline php8.3-redis php8.3-sqlite3 php8.3-xml php8.3-zip php8.3-bcmath php8.3-gmp php-imagick
 ```
+
 ## Instalación de PostgreSQL
 
 Se requiere PostgreSQL en su versión más actual [Página oficial de PostgreSQL](https://php.net).
@@ -78,13 +79,21 @@ Ejecuta estos comandos en tu terminal de Linux/Debian para instalar todo lo nece
 ```sh
 sudo apt install postgresql postgresql-contrib
 ```
+
 A continuación crea su usuario de PostgreSQL con el comando:
+
 ```sh
 sudo -u postgres createuser -P nombredeusuario
 ```
+
 Y creamos una base de datos para el proyecto:
+
 ```sh
 sudo -u postgres createdb -O nombreusuario nombrebasedatos
+```
+## Instalación de composer
+```sh
+ composer install
 ```
 Hasta aquí todo lo necesario antes de descargar el proyecto.
 
@@ -93,8 +102,10 @@ Hasta aquí todo lo necesario antes de descargar el proyecto.
 Puede descargarse el proyecto o directamente clonarlo desde el repositorio.
 
 Para clonar:
-* Abra una terminal en el directorio que quiere hacer la copia
-* Utilize el siguiente comando
+
+-   Abra una terminal en el directorio que quiere hacer la copia
+-   Utilize el siguiente comando
+
 ```sh
 gh repo clone AbelSeMa/ClinicaDentalGuadalquivir
 cd ClinicaDentalGuadalquivir
@@ -108,29 +119,69 @@ cp .env.example .env
 ```
 
 Si abre el archivo verá que muchas de las variables están vacías. Pero vamos a rellenar las importantes para nuestro proyecto:
-* APP_KEY
-* DB_DATABASE
-* DB_USERNAME
-* DB_PASSWORD
-  
+
+-   APP_KEY
+-   DB_DATABASE
+-   DB_USERNAME
+-   DB_PASSWORD
+
 Vamos a empezar por generar una APP_KEY:
+
 ```sh
 php artisan key:generate
 ```
 
 Después debes rellenar las variables:
- `DB_DATABASE` con el nombre de su base de datos.
- `DB_USERNAME` con el nombre del usuario creado.
- `DB_PASSWORD` con su clave del usuario PostgreSQL
+`DB_DATABASE` con el nombre de su base de datos.
+`DB_USERNAME` con el nombre del usuario creado.
+`DB_PASSWORD` con su clave del usuario PostgreSQL
 
- ### Servidor de correos.
- Aunque no es de vital importancia para el funcionamiento de nuestro proyecto,
- algunas de las funciones si necesitan de tal servicio.
- Para este proyecto yo personalmente he usado [Mailtrap.io](https://mailtrap.io/)
- pero puedes usar otras como la propia de GMAIL.
+### Servidor de correos.
 
- Crea una cuenta en [Mailtrap.io](https://mailtrap.io/). En la pestaña de Email Testing crea un nuevo buzón para nuestro proyecto en el botón `Add inbox` y dele un nombre.
+Aunque no es de vital importancia para el funcionamiento de nuestro proyecto,
+algunas de las funciones si necesitan de tal servicio.
+Para este proyecto yo personalmente he usado [Mailtrap.io](https://mailtrap.io/)
+pero puedes usar otras como la propia de GMAIL.
 
- Una vex creado nuestro buzón hay que abrir la pestaña SMTP Settings y en el despegable seleccionar Larave 9+.
- 
- Copia las variables en tu archivo .env
+Crea una cuenta en [Mailtrap.io](https://mailtrap.io/). En la pestaña de Email Testing crea un nuevo buzón para nuestro proyecto en el botón `Add inbox` y dele un nombre.
+
+Una vex creado nuestro buzón hay que abrir la pestaña SMTP Settings y en el despegable seleccionar Larave 9+.
+
+Copia las variables en tu archivo .env
+
+Con esto ya habremos terminado con el archivo .env
+
+## Paypal
+
+Una de las funcionalidades importate es el uso de PayPal en la aplicación. Para ello dirigete a [PaypalDeveloper](https://developer.paypal.com/home) y crea una cuenta o logea si ya tenías una de Paypal.
+
+Acceder al Panel de Desarrollador de PayPal. Aquí es donde puedes gestionar tus aplicaciones y obtener tus credenciales API. Para obtener tus credenciales API, necesitas crear una aplicación en el Dashboard de Desarrolladores:
+
+Haz clic en "Crear Aplicación". Esto te llevará a una página donde puedes nombrar tu nueva aplicación. El nombre que elijas te ayudará a identificarla, así que preferiblente pon el nombre de la web o algo relacionado. Selecciona la cuenta de sandbox asociada que deseas usar para pruebas.
+Cuando hayas creado tu aplicación en paypal podras acceder a tus credenciales, simplemente rellenas las variables:
+`PAYPAL_SANDBOX_CLIENT_ID=`
+`PAYPAL_SANDBOX_CLIENT_SECRET=`
+
+Una vez puesta las credenciales y procedas a pagar en nuestra app, te hará una redirección al sitio de PayPal Dev y tendrás que acceder con tu cuenta recién creada.
+
+## Creación de las tablas y datos
+Para hacer un uso correcto de nuestra web deberás migrar las tablas a tu base de dato. Para ello ejecuta el siguiente comando en la terminal:
+```sh
+php artisan migrate --seed
+```
+`--seed` Creará en las tablas registros aleatorios para que la aplicación pueda funcionar.
+
+# Uso del servidor laravel
+Antes de hacer uso del servidor web vamos a instalar las dependecias que necesita el proyecto:
+```sh
+npm install
+```
+Para poder acceder a nuestra web desde un navegador, deberás iniciar el servidor web. Para ello:
+```sh
+php artisan serve
+```
+y en otra ventana distinta del terminal:
+```sh
+npm run dev
+```
+Y desde nuestro navegador web accedemos con la url: [http://127.0.0.1:8000/]
