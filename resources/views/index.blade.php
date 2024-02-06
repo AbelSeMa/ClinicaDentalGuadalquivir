@@ -135,5 +135,5 @@
             </p>
         </section>
     </main>
-    @include('_footer')
+    @include('_footerIndex')
 @endsection
