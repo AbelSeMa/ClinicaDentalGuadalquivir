@@ -16,7 +16,7 @@
             @if ($plan->active)
                 <div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow">
                     <a href="{{ route('show.plan', $plan->id) }}">
-                        <img class="h-40 w-72 p-8 rounded-t-lg slide-top" src="{{ asset('img/' . $plan->name . '.png') }}"
+                        <img class="h-50 w-full p-8 rounded-t-lg slide-top" src="{{ asset('img/logo-2.png') }}"
                             alt="Logo plan dental" />
                     </a>
                     <div class="px-5 pb-5">
