@@ -20,7 +20,7 @@ return new class extends Migration
             $table->date('expiration_date')->nullable()->default(null); // Fecha en la que expira la suscripción (normalmente dura un año)
         
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('plan_id')->references('id')->on('plans')->onDelete('set null');
+            $table->foreign('plan_id')->references('id')->on('plans');
             $table->timestamps();
         });
     }

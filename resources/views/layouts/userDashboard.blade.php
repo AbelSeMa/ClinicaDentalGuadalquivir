@@ -195,11 +195,12 @@
         <div class="p-4 border-gray-200 rounded-lg dark:border-gray-700">
             <div class="grid grid-cols-3 gap-4 mb-4">
                 <div class="flex border-2  items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
-                    <a href="/usuario/citas/historial" class="text-2xl text-gray-400 dark:text-gray-500">Historial de
+                    <a href="/usuario/citas/historial" class="text-2xl text-center text-gray-400 dark:text-gray-500">Historial de
                         citas</a>
                 </div>
-                <div class="flex border-2  items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
-                    <button class="text-2xl text-gray-400 dark:text-gray-500"> Ver pagos </button>
+                <div class="flex border-2 items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
+                    <a href="/usuario/dashboard/ver-pagos" class="text-2xl text-center text-gray-400 dark:text-gray-500"> Ver
+                        pagos </a>
                 </div>
                 <div class="flex border-2  items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
                     <a href="/reservar-cita" class="text-center text-2xl text-gray-400 dark:text-gray-500">Coger
@@ -208,13 +209,6 @@
             </div>
         </div>
 
-
-        <!-- Modal toggle -->
-        <button data-modal-target="static-modal" data-modal-toggle="static-modal"
-            class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            type="button">
-            Toggle modal
-        </button>
 
         <!-- Main modal -->
         <div id="static-modal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true"
@@ -241,26 +235,36 @@
                     <!-- Modal body -->
                     <div class="p-4 md:p-5 space-y-4">
                         <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                            Apreciado/a {{ auth()->user()->first_name}} {{auth()->user()->last_name }}, <br>
+                            Apreciado/a {{ auth()->user()->first_name }} {{ auth()->user()->last_name }}, <br>
 
-                            Queremos informarte que hemos recibido tu solicitud para dar de baja tu cuenta en nuestro sitio web. Valoramos tu decisión y queremos asegurarte que estamos tomando todas las medidas necesarias para cumplir con tus solicitudes y las regulaciones de protección de datos. <br>
-                            
-                            De acuerdo con las leyes de protección de datos médicos, queremos asegurarte que tu cuenta no será borrada de forma permanente. En lugar de eso, tu cuenta será marcada como inactiva. Esto significa que ya no podrás acceder a tu cuenta ni utilizar nuestros servicios. <br> 
-                            Sin embargo, toda la información asociada a tu cuenta, incluyendo citas médicas, informes y cualquier otro dato relevante, se mantendrá almacenada de manera segura en nuestros sistemas.
-                            
-                            Esta medida se toma para garantizar que conservemos tu información médica de manera segura y en cumplimiento con las regulaciones aplicables. 
+                            Queremos informarte que hemos recibido tu solicitud para dar de baja tu cuenta en nuestro
+                            sitio web. Valoramos tu decisión y queremos asegurarte que estamos tomando todas las medidas
+                            necesarias para cumplir con tus solicitudes y las regulaciones de protección de datos. <br>
+
+                            De acuerdo con las leyes de protección de datos médicos, queremos asegurarte que tu cuenta
+                            no será borrada de forma permanente. En lugar de eso, tu cuenta será marcada como inactiva.
+                            Esto significa que ya no podrás acceder a tu cuenta ni utilizar nuestros servicios. <br>
+                            Sin embargo, toda la información asociada a tu cuenta, incluyendo citas médicas, informes y
+                            cualquier otro dato relevante, se mantendrá almacenada de manera segura en nuestros
+                            sistemas.
+
+                            Esta medida se toma para garantizar que conservemos tu información médica de manera segura y
+                            en cumplimiento con las regulaciones aplicables.
                         </p>
                         <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                            Si en algún momento deseas reactivar tu cuenta o acceder a tus datos, no dudes en contactarnos y estaremos encantados de ayudarte.
-                            
-                            Si tienes alguna pregunta adicional o necesitas asistencia, no dudes en ponerte en contacto con nuestro equipo de soporte en soporte@clinicaguadalquivir.com
-                            
-                            Gracias por habernos elegido como tu proveedor de servicios médicos en línea. Valoramos tu confianza y esperamos poder servirte nuevamente en el futuro.
+                            Si en algún momento deseas reactivar tu cuenta o acceder a tus datos, no dudes en
+                            contactarnos y estaremos encantados de ayudarte.
+
+                            Si tienes alguna pregunta adicional o necesitas asistencia, no dudes en ponerte en contacto
+                            con nuestro equipo de soporte en soporte@clinicaguadalquivir.com
+
+                            Gracias por habernos elegido como tu proveedor de servicios médicos en línea. Valoramos tu
+                            confianza y esperamos poder servirte nuevamente en el futuro.
                         </p>
                     </div>
                     <!-- Modal footer -->
                     <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                        <form action=" {{ route('usuario.baja', Auth::user())}} " method="post">
+                        <form action=" {{ route('usuario.baja', Auth::user()) }} " method="post">
                             @csrf
                             @method('delete')
                             <button data-modal-hide="static-modal" type="submit"

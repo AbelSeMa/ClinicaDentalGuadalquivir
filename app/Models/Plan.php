@@ -20,4 +20,9 @@ class Plan extends Model
     {
         return $this->hasMany(Patient::class);
     }
+
+    public function transaction()
+    {
+        return $this->hasMany(Transaction::class);
+    }
 }

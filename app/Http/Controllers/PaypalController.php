@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Patient;
 use App\Models\Plan;
+use App\Models\Transaction;
 use App\Models\User;
 use Carbon\Carbon;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
@@ -105,22 +106,32 @@ class PaypalController extends Controller
             if (isset($response['status']) && $response['status'] == 'COMPLETED') {
                 $planId = intval($request->session()->get('idPlan'));
                 $userId = auth()->user()->paciente->user_id;
+                $plan = Plan::findOrFail($planId);
 
                 // Busca el paciente existente por user_id
                 $patient = Patient::where('user_id', $userId)->first();
 
 
                 if ($patient) {
-                    // Si el paciente existe, actualiza los campos relevantes
                     try {
+
+                        // Crear la factura
+                        $transaction = new Transaction();
+                        $transaction->user_id = $userId;
+                        $transaction->plan_id = $planId;
+                        $transaction->amount = $plan->price;
+                        $transaction->date = now(); // Opcional: establece la fecha actual
+                        $transaction->save();
 
                         $patient->plan_id = $planId;
                         $patient->payment_date = Carbon::now();
                         $patient->expiration_date = Carbon::now()->addYear();
 
                         $patient->save();
+
+
                     } catch (\Exception $e) {
-                        return redirect()->route('user.dashboard')->with('error', 'Error al actualizar el plan ' . $e->getMessage());
+                        return redirect()->route('user.dashboard')->with('error', 'Error al actualizar el plan ');
                     }
                 } else {
                     // Maneja el caso en el que el paciente no existe (opcional)
