@@ -1,8 +1,9 @@
-# ClinicaDentalGuadalquivir
 
-## Proyecto final de grado - DAW
-## Por: Abel Sexto Martínez
-## Curso 2023/24
+# Proyecto final de grado - DAW
+
+ **ClinicaDentalGuadalquivir**
+ **Por: Abel Sexto Martínez**
+ **Curso 2023/24**
 
 # Descripción general del proyecto
 
