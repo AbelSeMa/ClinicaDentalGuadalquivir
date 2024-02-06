@@ -119,10 +119,10 @@ class WorkerController extends Controller
             $response = new Response('Su cita ha sido reservada correctamente.');
             $response->withCookie(Cookie::forget('paciente'));
 
-            return redirect('trabajador/dashboard')->with('success', $response);
+            return redirect('trabajador/dashboard')->with('success', 'Su cita ha sido reservada correctamente.');
         } catch (QueryException $e) {
             // Manejar el error aquí
-            return redirect()->back()->with('error', 'Error al almacenar la cita: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Error al almacenar la cita. Intentelo de nuevo');
         }
     }
 }
