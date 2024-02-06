@@ -8,11 +8,10 @@
     <title>@yield('title')</title>
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.css"  rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.css" rel="stylesheet" />
 
 
     @vite('resources/js/app.js')
-    @vite('resources/css/app.css')
     @vite('resources/css/index.css')
     @yield('css')
 </head>
@@ -23,14 +22,13 @@
     <!-- NavBar -->
     @include('layouts.navbar')
 
-    <div class="container w-auto h-auto mx-auto mb-10 py-8 px-8">
-        @yield('content')
-    </div>
+    @yield('content')
+
 
     <!-- Footer -->
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
 
 </body>
-@yield('js')
+
 </html>
