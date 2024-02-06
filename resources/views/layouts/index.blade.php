@@ -14,6 +14,7 @@
     @vite('resources/js/app.js')
     @vite('resources/css/index.css')
     @yield('css')
+    
 </head>
 
 <body class="h-ful">
@@ -26,6 +27,9 @@
 
 
     <!-- Footer -->
+    <footer>
+        @include('_footerIndex')
+    </footer>
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
 
