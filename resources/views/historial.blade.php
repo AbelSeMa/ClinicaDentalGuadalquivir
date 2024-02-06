@@ -9,7 +9,11 @@
 
 @section('content')
 
-    <div>
+<div x-data="{ mostrarBusqueda: false }">
+    <button @click="mostrarBusqueda = !mostrarBusqueda" class="my-4 bg-blue-500 text-white px-4 py-2 rounded-md">
+        Mostrar opciones de búsqueda
+    </button>
+    <div x-show="mostrarBusqueda" class="grid grid-cols-1 gap-2lg:grid-cols-2-">
         <form action="{{ route('citas.historial') }}">
             <label for="mes">Filtrado por mes</label>
             <select name="filtro_mes" id="mes">
