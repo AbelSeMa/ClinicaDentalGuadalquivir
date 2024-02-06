@@ -339,17 +339,12 @@ return [
             'submenu' => [
                 [
                     'text' => 'Crear nuevo paciente',
-                    'url'  => 'patient/create',
+                    'url'  => '/admin/crear-paciente',
                     'icon' => 'fa fa-user-plus'
                 ],
                 [
-                    'text' => 'Borrar paciente',
-                    'url'  => 'patient/delete',
-                    'icon' => 'fa fa-user-times'
-                ],
-                [
                     'text' => 'Editar paciente',
-                    'url'  => 'patient/edit',
+                    'url'  => '/admin/editar-paciente',
                     'icon' => 'fa fa-pen'
                 ]
             ],

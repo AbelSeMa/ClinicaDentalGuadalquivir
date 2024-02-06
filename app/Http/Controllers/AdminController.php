@@ -125,6 +125,69 @@ class AdminController extends Controller
         }
     }
 
+    // pacientes
+    public function editarPaciente()
+    {
+        $pacientes = Patient::with('usuario')->get();
+
+        return view('editarPacientes', compact('pacientes'));
+    }
+
+    public function editPatient($id)
+    {
+        $paciente = Patient::findOrFail($id);
+
+        return view('editarPaciente', compact('paciente'));
+    }
+
+    public function updatePatient(Request $request, $id)
+    {
+        $paciente = Patient::findOrFail($id);
+
+
+        $request->validate([
+            'usuario' => 'required|exists:users,id',
+            'medical_history' => 'required|string|min:5',
+        ]);
+
+        try {
+            $paciente->update([
+                'medical_history' => $request->input('medical_history'),
+            ]);
+
+            return redirect()->route('admin.dashboard')->with('success', 'Paciente actualizado exitosamente');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->route('admin.dashboard')->with('error', 'No se ha podido actualizar el paciente. Intentelo de nuevo.');
+        }
+    }
+
+
+    public function crearPaciente()
+    {
+        $pacientes = User::whereDoesntHave('paciente')->get();
+        return view('crearPacientes', compact('pacientes'));
+    }
+
+    public function storePatient(Request $request)
+    {
+        $request->validate([
+            'usuario' => 'required|exists:users,id',
+            'medical_history' => 'required|string|min:5'
+        ]);
+
+        try {
+            DB::table('patients')->insert([
+                'user_id' => $request->usuario,
+                'medical_history' => $request->medical_history
+            ]);
+
+            return redirect()->route('admin.dashboard')->with('success', 'Paciente creado correctamente.');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->route('admin.dashboard')->with('error', 'Algo ha salido mal. Inténtelo de nuevo.');
+        }
+    }
 
     public function crearUsuario()
     {
@@ -301,10 +364,10 @@ class AdminController extends Controller
             $plan->price = $request->price;
             $plan->duration_in_months = $request->duration_in_months;
             $plan->save();
-        
+
             // Sincroniza los servicios con el plan
             $plan->services()->sync($request->services);
-        
+
             return redirect()->route('admin.plans');
         } catch (\Throwable $th) {
             //throw $th;
@@ -353,7 +416,7 @@ class AdminController extends Controller
         } catch (\Throwable $th) {
             return redirect()->route('admin.planes')->with('error', 'No se ha podido realizar la operación');
         }
-        
+
 
         return redirect()->route('admin.planes')->with('success', 'El plan ha sido cambiado');
     }
