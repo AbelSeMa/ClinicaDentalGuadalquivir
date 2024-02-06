@@ -311,7 +311,8 @@ return [
             'url'  => 'admin/blog',
             'can'  => 'manage-blog',
         ],
-        ['header' => 'Area de trabajo'],
+        ['text' => 'Area de trabajo',
+        'url' => '/admin/dashboard'],
         [
             'text'    => 'Usuarios',
             'icon'    => 'fa fa-users',
@@ -375,22 +376,6 @@ return [
             'text' => 'Planes',
             'icon' => 'fa fa-th-large',
             'url' => 'admin/planes'
-        ],
-        ['header' => 'labels'],
-        [
-            'text'       => 'important',
-            'icon_color' => 'red',
-            'url'        => '#',
-        ],
-        [
-            'text'       => 'warning',
-            'icon_color' => 'yellow',
-            'url'        => '#',
-        ],
-        [
-            'text'       => 'information',
-            'icon_color' => 'cyan',
-            'url'        => '#',
         ],
     ],
 

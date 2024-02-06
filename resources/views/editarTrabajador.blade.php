@@ -10,6 +10,7 @@
     <form class="max-w-sm mx-auto" action="{{ route('update.worker', $trabajador->id) }}" method="post">
         @csrf
         @method('PUT') <!-- Utiliza el método PUT para enviar una solicitud de actualización -->
+        <input type="hidden" name="usuario" value=" {{$trabajador->id }}"> 
         <div class="mb-5">
             <label for="nombre" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" readonly>Trabajador</label>
             <input type="text" id="nombre" name="name" value="{{ $trabajador->usuario->last_name }}, {{ $trabajador->usuario->first_name }}"

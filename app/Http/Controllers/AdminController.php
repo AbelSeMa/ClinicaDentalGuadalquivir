@@ -60,8 +60,8 @@ class AdminController extends Controller
 
         $request->validate([
             'usuario' => 'required|exists:users,id',
-            'titulacion' => 'required|string|min:5|max:100',
-            'especializacion' => 'required|string|min:5|max:100'
+            'title' => 'required|string|min:5|max:100',
+            'specialty' => 'required|string|min:5|max:100'
         ]);
 
         try {
@@ -130,14 +130,14 @@ class AdminController extends Controller
     {
         $pacientes = Patient::with('usuario')->get();
 
-        return view('editarPacientes', compact('pacientes'));
+        return view('admin.editarPacientes', compact('pacientes'));
     }
 
     public function editPatient($id)
     {
         $paciente = Patient::findOrFail($id);
 
-        return view('editarPaciente', compact('paciente'));
+        return view('admin.editarPaciente', compact('paciente'));
     }
 
     public function updatePatient(Request $request, $id)
@@ -165,8 +165,8 @@ class AdminController extends Controller
 
     public function crearPaciente()
     {
-        $pacientes = User::whereDoesntHave('paciente')->get();
-        return view('crearPacientes', compact('pacientes'));
+        $usuarios = User::whereDoesntHave('paciente')->get();
+        return view('admin.crearPaciente', compact('usuarios'));
     }
 
     public function storePatient(Request $request)
